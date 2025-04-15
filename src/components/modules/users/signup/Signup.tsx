@@ -14,11 +14,13 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import LoadingButton from "@/components/ui/Loading/Loader";
 import Link from "next/link";
-// import { toast } from "sonner";
+import { signupUser } from "@/services/Auth/authServices";
+import { toast } from "sonner";
 
 type RegistrationSchema = z.infer<typeof registrationSchema>;
 
 export function SignupForm() {
+
   const form = useForm<RegistrationSchema>({
     resolver: zodResolver(registrationSchema),
   });
@@ -31,7 +33,10 @@ export function SignupForm() {
     formState: { errors },
     setValue, // Use setValue for manual setting of the radio group value
   } = form;
-  const fullname = form.watch("fullname");
+
+
+
+  const fullName = form.watch("fullName");
   const email = form.watch("email");
   const phoneNumber = form.watch("phoneNumber");
   const secondaryPhone = form.watch("secondaryPhone");
@@ -45,7 +50,7 @@ export function SignupForm() {
   const password = form.watch("password");
   const confirmPassword = form.watch("confirmPassword");
   const isDisabled =
-    !fullname ||
+    !fullName ||
     !phoneNumber ||
     !dateOfBirth ||
     !email ||
@@ -64,11 +69,11 @@ export function SignupForm() {
     //   duration: 2000,
     // });
     const userData = {
-      fullname: data.fullname,
+      fullName: data.fullName,
       email: data.email,
       password: data.password,
-      phoneNumber: data.phoneNumber,
-      secondaryPhone: data.secondaryPhone,
+      phoneNumber: Number(data.phoneNumber),
+      secondaryPhone: Number(data.secondaryPhone),
       dateOfBirth: data.dateOfBirth,
       address: {
         village: data.address?.village || "",
@@ -80,16 +85,17 @@ export function SignupForm() {
       gender: data.gender as "male" | "female" | "other", // make sure to cast properly
     };
     console.log(userData);
+
     try {
-      //   const result = "";
-      //   if (result?.success) {
-      //     toast.success(result?.message, { id: toastId, duration: 2000 });
-      //     router.push("/");
-      //   } else {
-      //     toast.error(result?.message, { id: toastId, duration: 2000 });
-      //   }
+      const result = await signupUser(userData);
+      console.log("result", result);
+      if (result.success) {
+        toast.success(result?.message || "signup success");
+      } else {
+        toast.error(result?.message);
+      }
     } catch (error: any) {
-      return Error(error);
+      console.log(error);
     }
   };
 
@@ -116,13 +122,13 @@ export function SignupForm() {
         <Divider />
 
         <LabelInputContainer className="mb-4">
-          <Label htmlFor="fullname">Full Name</Label>
+          <Label htmlFor="fullName">Full Name</Label>
           <Input
-            id="fullname"
-            {...register("fullname")}
+            id="fullName"
+            {...register("fullName")}
             placeholder="Enter your fullname"
           />
-          <ErrorMsg msg={errors.fullname?.message} />
+          <ErrorMsg msg={errors.fullName?.message} />
         </LabelInputContainer>
 
         <LabelInputContainer className="mb-4">
