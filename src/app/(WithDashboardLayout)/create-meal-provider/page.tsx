@@ -1,9 +1,9 @@
-import { MealProviderForm } from "@/components/modules/mealProvider/createMealProvider/MealProviderForm";
+import { CreateMealProviderForm } from "@/components/modules/mealProvider/createMealProvider/CreateMealProvider";
 
 const CreateMealProvider = () => {
   return (
     <div>
-      <MealProviderForm />
+      <CreateMealProviderForm />
     </div>
   );
 };

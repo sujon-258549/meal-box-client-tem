@@ -3,8 +3,6 @@ import { z } from "zod";
 export const mealProviderSchema = z.object({
   shopName: z.string().min(1, "Shop name is required"),
   shopAddress: z.string().min(1, "Shop address is required"),
-  authorShopId: z.string().min(1, "Author Shop ID is required"),
-  shopLogo: z.string().url("Invalid logo URL").optional(),
   phoneNumber: z.string().min(1, "Phone number is required"),
   website: z.string().url("Invalid website URL").optional(),
   ownerName: z.string().min(1, "Owner name is required"),

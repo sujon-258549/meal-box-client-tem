@@ -1,18 +1,29 @@
-// MealProviderForm.tsx
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { mealProviderSchema } from "./mealProviderValidaction";
+import { Checkbox } from "@/components/ui/checkbox";
+import {
+  FieldValues,
+  SubmitHandler,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
+import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/ui/Loading/Loader";
+import { mealProviderSchema } from "./mealProviderValidaction";
+import { Textarea } from "@/components/ui/textarea";
+import { CircleFadingPlus } from "lucide-react";
+import { useState } from "react";
+import { FileUpload } from "@/components/ui/file-upload";
 
-type MealProviderSchema = z.infer<typeof mealProviderSchema>;
+// import { toast } from "sonner";
 
+type loginSchema = z.infer<typeof mealProviderSchema>;
 const DAYS_OF_WEEK = [
   "Sunday",
   "Monday",
@@ -22,58 +33,35 @@ const DAYS_OF_WEEK = [
   "Friday",
   "Saturday",
 ];
-
-const PRODUCT_CATEGORIES = [
-  "Biryani",
-  "Pulao",
-  "Fried Rice",
-  "Khichuri",
-  "Beef Curry",
-  "Chicken Curry",
-  "Mutton Curry",
-  "Fish Curry",
-  "Shorshe Ilish",
-  "Panta Bhat",
-  "Prawn Curry",
-  "Veg Bhaji",
-  "Beguni",
-  "Chingri Malai",
-  "Macher Jhol",
-];
-
 const PAYMENT_METHODS = ["Cash", "Credit Card", "Debit Card", "Mobile Payment"];
-
-export function MealProviderForm() {
+export function CreateMealProviderForm() {
+  const form = useForm<loginSchema>({
+    resolver: zodResolver(mealProviderSchema),
+    defaultValues: {
+      // @ts-expect-error value
+      productCategories: [{ value: "" }],
+      operatingHours: {
+        open: "",
+        close: "",
+        daysOpen: [],
+      },
+    },
+  });
+  //   file upload
+  const [files, setFiles] = useState<File[]>([]);
+  const handleFileUpload = (files: File[]) => {
+    setFiles(files);
+  };
+  const {
+    formState: { isSubmitting },
+  } = form;
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting, errors },
-    setValue,
     watch,
-  } = useForm<MealProviderSchema>({
-    resolver: zodResolver(mealProviderSchema),
-    // defaultValues: {
-    //   operatingHours: {
-    //     open: "09:00",
-    //     close: "21:00",
-    //     daysOpen: [
-    //       "Monday",
-    //       "Tuesday",
-    //       "Wednesday",
-    //       "Thursday",
-    //       "Friday",
-    //       "Saturday",
-    //     ],
-    //   },
-    //   paymentMethods: ["Cash"],
-    //   productCategories: [],
-    // },
-  });
-
-  const submit: SubmitHandler<FieldValues> = async (data) => {
-    console.log(data);
-  };
-
+    setValue,
+    formState: { errors },
+  } = form;
   const toggleDay = (day: string) => {
     const currentDays = watch("operatingHours.daysOpen");
     setValue(
@@ -83,19 +71,8 @@ export function MealProviderForm() {
         : [...currentDays, day]
     );
   };
-
-  const toggleCategory = (category: string) => {
-    const currentCategories = watch("productCategories");
-    setValue(
-      "productCategories",
-      currentCategories.includes(category)
-        ? currentCategories.filter((c) => c !== category)
-        : [...currentCategories, category]
-    );
-  };
-
   const togglePaymentMethod = (method: string) => {
-    const currentMethods = watch("paymentMethods");
+    const currentMethods = watch("paymentMethods") || [];
     setValue(
       "paymentMethods",
       currentMethods.includes(method)
@@ -104,23 +81,63 @@ export function MealProviderForm() {
     );
   };
 
+  //   mutiple add
+  const { append: appendproductCategories, fields: productCategories } =
+    useFieldArray({
+      control: form.control,
+      // @ts-expect-error value
+      name: "productCategories",
+    });
+  const addAppendColor = () => {
+    appendproductCategories({
+      value: "",
+    });
+  };
+
+  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+    // const toastId = toast.loading("User Creating...............", {
+    const modifiedData = {
+      shopName: data.shopName,
+    };
+    console.log(data);
+    try {
+      //   const formData = new FormData();
+      //   formData.append("data", JSON.stringify(modifiedData));
+      //   for (const file of files) {
+      //     formData.append("file", file);
+      //   }
+      //   const result = "";
+      //   if (result?.success) {
+      //     toast.success(result?.message, { id: toastId, duration: 2000 });
+      //     router.push("/");
+      //   } else {
+      //     toast.error(result?.message, { id: toastId, duration: 2000 });
+      //   }
+    } catch (error: any) {
+      return Error(error);
+    }
+  };
+
   return (
-    <div className="max-w-2xl mx-auto p-6 my-10 bg-white rounded-lg shadow">
+    <div
+      style={{ boxShadow: "2px 2px 20px" }}
+      className=" my-10 shadow-input mx-auto w-full max-w-2xl rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black"
+    >
       <div className="flex gap-2.5 items-center">
-        <img className="w-20" src="./mealbox.png" alt="Mealbox Logo" />
+        <img className="w-20" src="./mealbox.png" alt="" />
         <div>
           <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">
-            Register as a Meal Provider
+            Create Your Mealbox Account
           </h2>
           <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-300 max-w-md">
-            Fill out the form below to create your meal provider account and
-            start managing your offerings efficiently.
+            Please enter your credentials to access your account and start
+            enjoying delicious meals delivered to your doorstep.
           </p>
         </div>
       </div>
 
-      <form onSubmit={handleSubmit(submit)} className="space-y-6">
-        {/* Basic Shop Info */}
+      {/* <form className="my-8" onSubmit={handleSubmit(submit)}> */}
+      <form className="my-8" onSubmit={handleSubmit(onSubmit)}>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-5">
           <div>
             <Label className="pb-3.5">Shop Name*</Label>
@@ -146,8 +163,7 @@ export function MealProviderForm() {
             )}
           </div>
         </div>
-
-        <div>
+        <div className="mt-4">
           <Label className="pb-3.5">Shop Address*</Label>
           <Textarea
             {...register("shopAddress")}
@@ -157,8 +173,7 @@ export function MealProviderForm() {
             <p className="text-red-500 text-sm">{errors.shopAddress.message}</p>
           )}
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="grid mt-4 grid-cols-1 md:grid-cols-2 gap-4">
           <div>
             <Label className="pb-3.5">Phone Number*</Label>
             <Input
@@ -189,7 +204,6 @@ export function MealProviderForm() {
           </div>
         </div>
 
-        {/* Operating Hours */}
         <div className="space-y-4">
           <div className="my-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
           <h2 className="text-xl font-semibold">Operating Hours</h2>
@@ -217,7 +231,7 @@ export function MealProviderForm() {
             </div>
           </div>
 
-          {/* <div>
+          <div>
             <Label className="pb-3.5">Days Open*</Label>
             <div className="flex flex-wrap gap-2">
               {DAYS_OF_WEEK.map((day) => (
@@ -241,59 +255,29 @@ export function MealProviderForm() {
                 {errors.operatingHours.daysOpen.message}
               </p>
             )}
-          </div> */}
+          </div>
         </div>
-
-        {/* Product Categories */}
-        {/* <div className="space-y-4">
-          <div className="my-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
-          <Label>Product Categories*</Label>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
-            {PRODUCT_CATEGORIES.map((category) => (
-              <div key={category} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`category-${category}`}
-                  checked={watch("productCategories").includes(category)}
-                  onCheckedChange={() => toggleCategory(category)}
-                />
-                <Label htmlFor={`category-${category}`}>{category}</Label>
-              </div>
-            ))}
-          </div>
-          {errors.productCategories && (
-            <p className="text-red-500 text-sm">
-              {errors.productCategories.message}
-            </p>
-          )}
-        </div> */}
-
         {/* Payment Methods */}
-        {/* <div className="space-y-4">
-          <div className="my-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
-          <Label className="pb-3.5">Payment Methods*</Label>
-          <div className="flex flex-wrap gap-4">
-            {PAYMENT_METHODS.map((method) => (
-              <div key={method} className="flex items-center space-x-2">
-                <Checkbox
-                  id={`payment-${method}`}
-                  checked={watch("paymentMethods").includes(method)}
-                  onCheckedChange={() => togglePaymentMethod(method)}
-                />
-                <Label htmlFor={`payment-${method}`}>{method}</Label>
-              </div>
-            ))}
+        <div className="my-6">
+          <Label className="pb-2">Payment Methods*</Label>
+          <div className="flex flex-wrap gap-4 mt-2">
+            {PAYMENT_METHODS.map((method) => {
+              const paymentMethods = watch("paymentMethods") || [];
+              return (
+                <div key={method} className="flex items-center space-x-2">
+                  <Checkbox
+                    id={`payment-${method}`}
+                    checked={paymentMethods.includes(method)}
+                    onCheckedChange={() => togglePaymentMethod(method)}
+                  />
+                  <Label htmlFor={`payment-${method}`}>{method}</Label>
+                </div>
+              );
+            })}
           </div>
-          {errors.paymentMethods && (
-            <p className="text-red-500 text-sm">
-              {errors.paymentMethods.message}
-            </p>
-          )}
-        </div> */}
-
-        {/* Optional Fields */}
+          <ErrorMsg msg={errors.paymentMethods?.message} />
+        </div>
         <div className="space-y-4">
-          <div className="my-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
-
           <div>
             <Label className="pb-3.5">Website</Label>
             <Input {...register("website")} placeholder="https://" type="url" />
@@ -357,12 +341,44 @@ export function MealProviderForm() {
               </p>
             )}
           </div>
+          <div className="my-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
+          <div className="flex justify-between">
+            <h2 className="text-xl  md:text-2xl font-bold">
+              Product Categories
+            </h2>
+            <Button type="button" onClick={addAppendColor} variant={"outline"}>
+              <CircleFadingPlus />
+            </Button>
+          </div>
+          <div className="-mt-2 mb-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
 
+          <div className="space-y-3">
+            {productCategories.map((field, index) => (
+              <div key={field.id} className="">
+                <Input
+                  // @ts-expect-error name
+                  {...register(`productCategories?.${index}.name`)}
+                  placeholder="Enter product category name"
+                />
+                {errors.customerServiceContact && (
+                  <p className="text-red-500 text-sm">
+                    {errors.customerServiceContact.message}
+                  </p>
+                )}
+              </div>
+            ))}
+          </div>
+          {errors.productCategories?.root && (
+            <p className="text-red-500 text-sm">
+              {errors.productCategories.root.message}
+            </p>
+          )}
           <div>
             <Label className="pb-3.5">Customer Service Contact</Label>
             <Input
               {...register("customerServiceContact")}
               placeholder="Enter customer service number"
+              type="number"
             />
             {errors.customerServiceContact && (
               <p className="text-red-500 text-sm">
@@ -371,11 +387,17 @@ export function MealProviderForm() {
             )}
           </div>
         </div>
-
-        <Button type="submit" className="w-full">
-          {isSubmitting ? <LoadingButton /> : "Register Shop"}
+        <div className="w-full my-5 max-w-4xl mx-auto min-h-10 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
+          <FileUpload onChange={handleFileUpload} />
+        </div>
+        <Button className="w-full" type="submit">
+          {isSubmitting ? <LoadingButton /> : "Sign up "}
         </Button>
       </form>
     </div>
   );
 }
+
+// Component to show errors
+const ErrorMsg = ({ msg }: { msg?: string }) =>
+  msg ? <p className="text-red-500 text-sm mt-1">{msg}</p> : null;
