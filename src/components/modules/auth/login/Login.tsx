@@ -59,66 +59,68 @@ export function LoginForm() {
   };
 
   return (
-    <div
-      style={{ boxShadow: "2px 2px 20px" }}
-      className=" my-10 shadow-input mx-auto w-full max-w-2xl rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black"
-    >
-      <div className="flex gap-2.5 items-center">
-        <img className="w-20" src="./mealbox.png" alt="" />
-        <div>
-          <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">
-            Login to Your Mealbox Account
-          </h2>
-          <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-300 max-w-md">
-            Please enter your credentials to access your account and start
-            enjoying delicious meals delivered to your doorstep.
-          </p>
+    <div className="mx-5">
+      <div
+        style={{ boxShadow: "2px 2px 20px" }}
+        className=" my-10  shadow-input mx-auto w-full max-w-2xl rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black"
+      >
+        <div className="flex gap-2.5 items-center">
+          <img className="w-20" src="./mealbox.png" alt="" />
+          <div>
+            <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">
+              Login to Your Mealbox Account
+            </h2>
+            <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-300 max-w-md">
+              Please enter your credentials to access your account and start
+              enjoying delicious meals delivered to your doorstep.
+            </p>
+          </div>
         </div>
+
+        <form className="my-8" onSubmit={handleSubmit(submit)}>
+          <LabelInputContainer className="mb-4">
+            <Label htmlFor="email">Email Address</Label>
+            <Input
+              id="email"
+              {...register("email")}
+              placeholder="projectmayhem@gmail.com"
+            />
+            <ErrorMsg msg={errors.email?.message} />
+          </LabelInputContainer>
+
+          <LabelInputContainer className="mb-8">
+            <Label htmlFor="password"> Password</Label>
+            <Input
+              id="password"
+              {...register("password")}
+              placeholder="Enter your password"
+              type={showPassword ? "text" : "password"}
+            />
+            <ErrorMsg msg={errors.password?.message} />
+          </LabelInputContainer>
+
+          <div className="pb-5 -mt-2.5">
+            <Checkbox onClick={() => setShowPassword(!showPassword)} />
+            <span className="ml-2.5">
+              {showPassword ? "Hide Password" : "Show Password"}
+            </span>
+          </div>
+
+          <Button disabled={isDisabled} className="w-full" type="submit">
+            {isSubmitting ? <LoadingButton /> : "Sign up "}
+          </Button>
+        </form>
+        <div className="my-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
+        <p className="mt-4 text-sm text-center text-neutral-600 dark:text-neutral-300">
+          Don t have an account?{" "}
+          <a
+            href="/signup"
+            className="text-blue-600 hover:underline dark:text-blue-400"
+          >
+            Register here
+          </a>
+        </p>
       </div>
-
-      <form className="my-8" onSubmit={handleSubmit(submit)}>
-        <LabelInputContainer className="mb-4">
-          <Label htmlFor="email">Email Address</Label>
-          <Input
-            id="email"
-            {...register("email")}
-            placeholder="projectmayhem@gmail.com"
-          />
-          <ErrorMsg msg={errors.email?.message} />
-        </LabelInputContainer>
-
-        <LabelInputContainer className="mb-8">
-          <Label htmlFor="password"> Password</Label>
-          <Input
-            id="password"
-            {...register("password")}
-            placeholder="Enter your password"
-            type={showPassword ? "text" : "password"}
-          />
-          <ErrorMsg msg={errors.password?.message} />
-        </LabelInputContainer>
-
-        <div className="pb-5 -mt-2.5">
-          <Checkbox onClick={() => setShowPassword(!showPassword)} />
-          <span className="ml-2.5">
-            {showPassword ? "Hide Password" : "Show Password"}
-          </span>
-        </div>
-
-        <Button disabled={isDisabled} className="w-full" type="submit">
-          {isSubmitting ? <LoadingButton /> : "Sign up "}
-        </Button>
-      </form>
-      <div className="my-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
-      <p className="mt-4 text-sm text-center text-neutral-600 dark:text-neutral-300">
-        Don t have an account?{" "}
-        <a
-          href="/signup"
-          className="text-blue-600 hover:underline dark:text-blue-400"
-        >
-          Register here
-        </a>
-      </p>
     </div>
   );
 }

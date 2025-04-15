@@ -31,7 +31,7 @@ export function SignupForm() {
     formState: { errors },
     setValue, // Use setValue for manual setting of the radio group value
   } = form;
-  const fullname = form.watch("fullname");
+  const fullName = form.watch("fullName");
   const email = form.watch("email");
   const phoneNumber = form.watch("phoneNumber");
   const secondaryPhone = form.watch("secondaryPhone");
@@ -45,7 +45,7 @@ export function SignupForm() {
   const password = form.watch("password");
   const confirmPassword = form.watch("confirmPassword");
   const isDisabled =
-    !fullname ||
+    !fullName ||
     !phoneNumber ||
     !dateOfBirth ||
     !email ||
@@ -64,7 +64,7 @@ export function SignupForm() {
     //   duration: 2000,
     // });
     const userData = {
-      fullname: data.fullname,
+      fullName: data.fullName,
       email: data.email,
       password: data.password,
       phoneNumber: data.phoneNumber,
@@ -116,13 +116,13 @@ export function SignupForm() {
         <Divider />
 
         <LabelInputContainer className="mb-4">
-          <Label htmlFor="fullname">Full Name</Label>
+          <Label htmlFor="fullName">Full Name</Label>
           <Input
-            id="fullname"
-            {...register("fullname")}
-            placeholder="Enter your fullname"
+            id="fullName"
+            {...register("fullName")}
+            placeholder="Enter your fullName"
           />
-          <ErrorMsg msg={errors.fullname?.message} />
+          <ErrorMsg msg={errors.fullName?.message} />
         </LabelInputContainer>
 
         <LabelInputContainer className="mb-4">
