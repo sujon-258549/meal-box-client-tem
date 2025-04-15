@@ -52,26 +52,26 @@ export function MealProviderForm() {
     watch,
   } = useForm<MealProviderSchema>({
     resolver: zodResolver(mealProviderSchema),
-    // // defaultValues: {
-    // //   operatingHours: {
-    // //     open: "09:00",
-    // //     close: "21:00",
-    // //     daysOpen: [
-    // //       "Monday",
-    // //       "Tuesday",
-    // //       "Wednesday",
-    // //       "Thursday",
-    // //       "Friday",
-    // //       "Saturday",
-    // //     ],
-    // //   },
-    // //   paymentMethods: ["Cash"],
-    // //   productCategories: [],
+    // defaultValues: {
+    //   operatingHours: {
+    //     open: "09:00",
+    //     close: "21:00",
+    //     daysOpen: [
+    //       "Monday",
+    //       "Tuesday",
+    //       "Wednesday",
+    //       "Thursday",
+    //       "Friday",
+    //       "Saturday",
+    //     ],
+    //   },
+    //   paymentMethods: ["Cash"],
+    //   productCategories: [],
     // },
   });
 
   const submit: SubmitHandler<FieldValues> = async (data) => {
-    console.log("hellow");
+    console.log(data);
   };
 
   const toggleDay = (day: string) => {
@@ -217,7 +217,7 @@ export function MealProviderForm() {
             </div>
           </div>
 
-          <div>
+          {/* <div>
             <Label className="pb-3.5">Days Open*</Label>
             <div className="flex flex-wrap gap-2">
               {DAYS_OF_WEEK.map((day) => (
@@ -241,11 +241,11 @@ export function MealProviderForm() {
                 {errors.operatingHours.daysOpen.message}
               </p>
             )}
-          </div>
+          </div> */}
         </div>
 
         {/* Product Categories */}
-        <div className="space-y-4">
+        {/* <div className="space-y-4">
           <div className="my-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
           <Label>Product Categories*</Label>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
@@ -265,10 +265,10 @@ export function MealProviderForm() {
               {errors.productCategories.message}
             </p>
           )}
-        </div>
+        </div> */}
 
         {/* Payment Methods */}
-        <div className="space-y-4">
+        {/* <div className="space-y-4">
           <div className="my-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
           <Label className="pb-3.5">Payment Methods*</Label>
           <div className="flex flex-wrap gap-4">
@@ -288,7 +288,7 @@ export function MealProviderForm() {
               {errors.paymentMethods.message}
             </p>
           )}
-        </div>
+        </div> */}
 
         {/* Optional Fields */}
         <div className="space-y-4">
@@ -372,7 +372,7 @@ export function MealProviderForm() {
           </div>
         </div>
 
-        <Button type="submit" className="w-full" disabled={isSubmitting}>
+        <Button type="submit" className="w-full">
           {isSubmitting ? <LoadingButton /> : "Register Shop"}
         </Button>
       </form>
