@@ -10,9 +10,9 @@ export const mealProviderSchema = z.object({
     .number({ invalid_type_error: "Established year must be a number" })
     .min(1900, "Year must be valid")
     .max(new Date().getFullYear(), "Year cannot be in the future"),
-  productCategories: z
-    .array(z.string().min(1))
-    .min(1, "At least one product category is required"),
+  //   productCategories: z
+  //     .array(z.string().min(1))
+  //     .min(1, "At least one product category is required"),
   socialMediaLinks: z
     .object({
       facebook: z.string().optional(),

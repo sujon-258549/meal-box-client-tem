@@ -98,8 +98,19 @@ export function CreateMealProviderForm() {
     // const toastId = toast.loading("User Creating...............", {
     const modifiedData = {
       shopName: data.shopName,
+      shopAddress: data.shopAddress,
+      phoneNumber: data.phoneNumber,
+      website: data.website,
+      ownerName: data.ownerName,
+      establishedYear: Number(data.establishedYear),
+      productCategories: data.productCategories,
+      socialMediaLinks: data.socialMediaLinks,
+      operatingHours: data.operatingHours,
+      paymentMethods: data.paymentMethods,
+      customerServiceContact: data.customerServiceContact,
     };
-    console.log(data);
+
+    console.log(modifiedData, files);
     try {
       //   const formData = new FormData();
       //   formData.append("data", JSON.stringify(modifiedData));
@@ -359,6 +370,7 @@ export function CreateMealProviderForm() {
                   // @ts-expect-error name
                   {...register(`productCategories?.${index}.name`)}
                   placeholder="Enter product category name"
+                  required
                 />
                 {errors.customerServiceContact && (
                   <p className="text-red-500 text-sm">
@@ -368,11 +380,6 @@ export function CreateMealProviderForm() {
               </div>
             ))}
           </div>
-          {errors.productCategories?.root && (
-            <p className="text-red-500 text-sm">
-              {errors.productCategories.root.message}
-            </p>
-          )}
           <div>
             <Label className="pb-3.5">Customer Service Contact</Label>
             <Input
