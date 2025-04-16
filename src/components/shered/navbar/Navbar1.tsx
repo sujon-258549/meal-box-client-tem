@@ -1,4 +1,4 @@
-import { LogIn, Menu } from "lucide-react";
+import { LogIn, LucideArrowLeftToLine, Menu } from "lucide-react";
 
 import {
   Accordion,
@@ -131,16 +131,21 @@ const Navbar1 = ({
               </div>
             </div>
             {/* </Link> */}
-
-            <Button>
-              <a className="flex gap-1.5 items-center " href={auth.login.url}>
-                {auth.login.title}
-                <span className="">
-                  {" "}
-                  <LogIn />
-                </span>
-              </a>
-            </Button>
+            {/* login logout */}
+            <div>
+              <Button>
+                <a className="flex gap-1.5 items-center " href={auth.login.url}>
+                  {auth.login.title}
+                  <span className="">
+                    {" "}
+                    <LogIn />
+                  </span>
+                </a>
+              </Button>
+              <Button>
+                Logout <LucideArrowLeftToLine />
+              </Button>
+            </div>
             {/* Profile Dropdown */}
             <DropdownMenu>
               <DropdownMenuTrigger>
@@ -154,7 +159,7 @@ const Navbar1 = ({
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>
                   {" "}
-                  <Link href={"user/dashboard"}>Dashboard</Link>
+                  <Link href={"/dashboard"}>Dashboard</Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>Profile</DropdownMenuItem>
                 <DropdownMenuItem>My Shop</DropdownMenuItem>
@@ -163,8 +168,8 @@ const Navbar1 = ({
                 <DropdownMenuItem>
                   <Button className="bg-red-500 text-white">
                     {" "}
-                    <span className="flex gap-1.5">
-                      Log out <LogIn />
+                    <span className="flex gap-1.5 items-center">
+                      Log out <LogIn className="text-white" />
                     </span>
                   </Button>
                 </DropdownMenuItem>
@@ -214,9 +219,10 @@ const Navbar1 = ({
                   </Accordion>
 
                   <div className="flex flex-col gap-3">
-                    <Button asChild variant="outline">
+                    <Button>
                       <a href={auth.login.url}>{auth.login.title}</a>
                     </Button>
+                    <Button>Logout</Button>
                   </div>
                 </div>
               </SheetContent>
