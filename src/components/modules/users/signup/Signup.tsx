@@ -20,11 +20,10 @@ import { toast } from "sonner";
 type RegistrationSchema = z.infer<typeof registrationSchema>;
 
 export function SignupForm() {
-
   const form = useForm<RegistrationSchema>({
     resolver: zodResolver(registrationSchema),
   });
-  
+
   const {
     formState: { isSubmitting },
   } = form;
@@ -34,7 +33,7 @@ export function SignupForm() {
     formState: { errors },
     setValue, // Use setValue for manual setting of the radio group value
   } = form;
-  const fullname = form.watch("fullName");
+  const fullName = form.watch("fullName");
   const email = form.watch("email");
   const phoneNumber = form.watch("phoneNumber");
   const secondaryPhone = form.watch("secondaryPhone");
@@ -70,8 +69,8 @@ export function SignupForm() {
       fullName: data.fullName,
       email: data.email,
       password: data.password,
-      phoneNumber: Number(data.phoneNumber),
-      secondaryPhone: Number(data.secondaryPhone),
+      phoneNumber: data.phoneNumber,
+      secondaryPhone: data.secondaryPhone,
       dateOfBirth: data.dateOfBirth,
       address: {
         village: data.address?.village || "",
@@ -122,9 +121,9 @@ export function SignupForm() {
         <LabelInputContainer className="mb-4">
           <Label htmlFor="fullName">Full Name</Label>
           <Input
-            id="fullname"
+            id="fullName"
             {...register("fullName")}
-            placeholder="Enter your fullname"
+            placeholder="Enter your fullName"
           />
           <ErrorMsg msg={errors.fullName?.message} />
         </LabelInputContainer>

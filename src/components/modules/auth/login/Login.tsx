@@ -13,6 +13,7 @@ import { loginSchema } from "./login.zodValidactionSchema";
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/ui/Loading/Loader";
 import { loginUser } from "@/services/Auth/authServices";
+import { toast } from "sonner";
 
 // import { toast } from "sonner";
 
@@ -47,14 +48,12 @@ export function LoginForm() {
     };
     console.log(userData);
     try {
-      //   const result = "";
-      //   if (result?.success) {
-      //     toast.success(result?.message, { id: toastId, duration: 2000 });
-      //     router.push("/");
-      //   } else {
-      //     toast.error(result?.message, { id: toastId, duration: 2000 });
-      //   }
       const result = await loginUser(userData);
+      if (result.success) {
+        toast.success(result?.message || "User Registration successful");
+      } else {
+        toast.error(result?.message || "User Registration failed");
+      }
       console.log(result);
     } catch (error: any) {
       return Error(error);
@@ -80,16 +79,16 @@ export function LoginForm() {
           </div>
         </div>
 
-      <form className="my-8" onSubmit={handleSubmit(submit)}>
-        <LabelInputContainer className="mb-4">
-          <Label htmlFor="email">Email Address</Label>
-          <Input
-            id="email"
-            {...register("emailOrPhone")}
-            placeholder="projectmayhem@gmail.com"
-          />
-          <ErrorMsg msg={errors.emailOrPhone?.message} />
-        </LabelInputContainer>
+        <form className="my-8" onSubmit={handleSubmit(submit)}>
+          <LabelInputContainer className="mb-4">
+            <Label htmlFor="email">Email Address</Label>
+            <Input
+              id="email"
+              {...register("emailOrPhone")}
+              placeholder="projectmayhem@gmail.com"
+            />
+            <ErrorMsg msg={errors.emailOrPhone?.message} />
+          </LabelInputContainer>
 
           <LabelInputContainer className="mb-8">
             <Label htmlFor="password"> Password</Label>
