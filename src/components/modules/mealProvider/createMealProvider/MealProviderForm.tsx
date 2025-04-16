@@ -1,15 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // MealProviderForm.tsx
 "use client";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { mealProviderSchema } from "./mealProviderValidaction";
+import { mealProviderSchema } from "./mealProviderValidaction"; // Fix typo in file name
 import { z } from "zod";
 import LoadingButton from "@/components/ui/Loading/Loader";
+import { mealProviderCreate } from "@/services/Provider/providerSurvices";
 
 type MealProviderSchema = z.infer<typeof mealProviderSchema>;
 
@@ -44,34 +46,30 @@ const PRODUCT_CATEGORIES = [
 const PAYMENT_METHODS = ["Cash", "Credit Card", "Debit Card", "Mobile Payment"];
 
 export function MealProviderForm() {
+  const form = useForm<MealProviderSchema>({
+    resolver: zodResolver(mealProviderSchema),
+  });
+
   const {
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
     setValue,
     watch,
-  } = useForm<MealProviderSchema>({
-    resolver: zodResolver(mealProviderSchema),
-    // defaultValues: {
-    //   operatingHours: {
-    //     open: "09:00",
-    //     close: "21:00",
-    //     daysOpen: [
-    //       "Monday",
-    //       "Tuesday",
-    //       "Wednesday",
-    //       "Thursday",
-    //       "Friday",
-    //       "Saturday",
-    //     ],
-    //   },
-    //   paymentMethods: ["Cash"],
-    //   productCategories: [],
-    // },
-  });
+  } = form;
 
   const submit: SubmitHandler<FieldValues> = async (data) => {
     console.log(data);
+
+    try {
+      const result = await mealProviderCreate(data);
+      if (result.success) {
+        console.log("meal provider create", result);
+        return result.data;
+      }
+    } catch (error: any) {
+      console.log(error?.message);
+    }
   };
 
   const toggleDay = (day: string) => {
@@ -123,8 +121,11 @@ export function MealProviderForm() {
         {/* Basic Shop Info */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-5">
           <div>
-            <Label className="pb-3.5">Shop Name*</Label>
+            <Label className="pb-3.5" htmlFor="shopName">
+              Shop Name*
+            </Label>
             <Input
+              id="shopName"
               placeholder="Enter your Shop name"
               {...register("shopName")}
               type="text"
@@ -135,8 +136,11 @@ export function MealProviderForm() {
           </div>
 
           <div>
-            <Label className="pb-3.5">Owner Name*</Label>
+            <Label className="pb-3.5" htmlFor="ownerName">
+              Owner Name*
+            </Label>
             <Input
+              id="ownerName"
               {...register("ownerName")}
               placeholder="Enter your Owner Name"
               type="text"
@@ -147,7 +151,7 @@ export function MealProviderForm() {
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <Label className="pb-3.5">Shop Address*</Label>
           <Textarea
             {...register("shopAddress")}
@@ -156,12 +160,15 @@ export function MealProviderForm() {
           {errors.shopAddress && (
             <p className="text-red-500 text-sm">{errors.shopAddress.message}</p>
           )}
-        </div>
+        </div> */}
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <Label className="pb-3.5">Phone Number*</Label>
+            <Label className="pb-3.5" htmlFor="phoneNumber">
+              Phone Number*
+            </Label>
             <Input
+              id="phoneNumber"
               {...register("phoneNumber")}
               placeholder="Enter your phone Number"
             />
@@ -173,7 +180,9 @@ export function MealProviderForm() {
           </div>
 
           <div>
-            <Label className="pb-3.5">Established Year*</Label>
+            <Label className="pb-3.5" htmlFor="establishedYear">
+              Established Year*
+            </Label>
             <Input
               type="number"
               placeholder="Enter establishment year"

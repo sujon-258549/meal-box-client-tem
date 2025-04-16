@@ -12,6 +12,7 @@ import { z } from "zod";
 import { loginSchema } from "./login.zodValidactionSchema";
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/ui/Loading/Loader";
+import { loginUser } from "@/services/Auth/authServices";
 
 // import { toast } from "sonner";
 
@@ -29,7 +30,7 @@ export function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = form;
-  const email = form.watch("email");
+  const email = form.watch("emailOrPhone");
   const password = form.watch("password");
 
   const isDisabled = !email || !password;
@@ -41,7 +42,7 @@ export function LoginForm() {
     //   duration: 2000,
     // });
     const userData = {
-      email: data.email,
+      emailOrPhone: data.emailOrPhone,
       password: data.password,
     };
     console.log(userData);
@@ -53,6 +54,8 @@ export function LoginForm() {
       //   } else {
       //     toast.error(result?.message, { id: toastId, duration: 2000 });
       //   }
+      const result = await loginUser(userData);
+      console.log(result);
     } catch (error: any) {
       return Error(error);
     }
@@ -78,13 +81,13 @@ export function LoginForm() {
 
       <form className="my-8" onSubmit={handleSubmit(submit)}>
         <LabelInputContainer className="mb-4">
-          <Label htmlFor="email">Email Address</Label>
+          <Label htmlFor="emailOrPhone">Email Or Phone</Label>
           <Input
-            id="email"
-            {...register("email")}
+            id="emailOrPhone"
+            {...register("emailOrPhone")}
             placeholder="projectmayhem@gmail.com"
           />
-          <ErrorMsg msg={errors.email?.message} />
+          <ErrorMsg msg={errors.emailOrPhone?.message} />
         </LabelInputContainer>
 
         <LabelInputContainer className="mb-8">

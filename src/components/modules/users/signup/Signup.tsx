@@ -24,6 +24,7 @@ export function SignupForm() {
   const form = useForm<RegistrationSchema>({
     resolver: zodResolver(registrationSchema),
   });
+  
   const {
     formState: { isSubmitting },
   } = form;

@@ -35,8 +35,12 @@ export const loginUser = async (loginInfo: FieldValues) => {
       },
       body: JSON.stringify(loginInfo),
     });
-    const result = res.json()
-    // if(result)
+    const result = await res.json();
+    console.log(result);
+    if (result.success) {
+      (await cookies()).set("access-token", result?.data?.accessToken);
+    }
+    return result;
   } catch (error: any) {
     return Error(error);
   }

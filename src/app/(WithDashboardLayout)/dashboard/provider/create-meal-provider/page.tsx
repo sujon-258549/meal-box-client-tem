@@ -1,6 +1,7 @@
 import { MealProviderForm } from "@/components/modules/mealProvider/createMealProvider/MealProviderForm";
+import React from "react";
 
-const CreateMealProvider = () => {
+const CreateMealProviderPage = () => {
   return (
     <div>
       <MealProviderForm />
@@ -8,4 +9,4 @@ const CreateMealProvider = () => {
   );
 };
 
-export default CreateMealProvider;
+export default CreateMealProviderPage;
