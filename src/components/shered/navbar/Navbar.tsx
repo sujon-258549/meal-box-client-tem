@@ -1,9 +1,17 @@
 "use client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
-import { BookAudio, LogIn } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import Link from "next/link";
 import React, { useState } from "react";
-
+import { GiMeal } from "react-icons/gi";
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -69,19 +77,61 @@ const Navbar = () => {
           </ul>
         </div>
 
+        {/* meal provider */}
+
         {/* Login/Signup + Menu Toggle */}
         <div className="flex max-lg:ml-auto space-x-4">
-          <Button>
-            Login <LogIn />{" "}
-          </Button>
-          <Button>
-            Sign up <BookAudio />{" "}
-          </Button>
-          <Avatar>
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>SN</AvatarFallback>
-          </Avatar>
-
+          {/* <Link href={"/create-meal-provider"}> */}
+          <div className="">
+            <div className="flex flex-col items-center gap-2">
+              <div className="group relative">
+                <span>
+                  {" "}
+                  <Button
+                    variant="outline"
+                    className="rounded-full flex items-center gap-1"
+                  >
+                    C M Provider
+                    <GiMeal className="text-2xl" />
+                  </Button>
+                </span>
+                <div className="bg-zinc-800 p-2 rounded-md group-hover:flex hidden absolute -bottom-2 translate-y-full left-1/2 -translate-x-1/2">
+                  <span className="text-white whitespace-nowrap">
+                    Create meal Provider
+                  </span>
+                  <div className="bg-inherit rotate-45 p-1 absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* </Link> */}
+          {/* Profile Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Avatar className="border-none">
+                <AvatarImage src="https://github.com/shadcn.png" />
+                <AvatarFallback>SN</AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="mt-3.5  text-black w-[200px]">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                {" "}
+                <Link href={"user/dashboard"}>Dashboard</Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>Profile</DropdownMenuItem>
+              <DropdownMenuItem>My Shop</DropdownMenuItem>
+              <DropdownMenuItem>My Order</DropdownMenuItem>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <Button className="bg-red-500 text-white">
+                  {" "}
+                  <span>Log out</span>
+                </Button>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           {/* Menu Open Button */}
           <button onClick={handleToggleMenu} className="lg:hidden">
             <svg className="w-7 h-7" fill="#000" viewBox="0 0 20 20">

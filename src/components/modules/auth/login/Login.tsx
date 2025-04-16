@@ -62,7 +62,7 @@ export function LoginForm() {
     <div className="mx-5">
       <div
         style={{ boxShadow: "2px 2px 20px" }}
-        className=" my-10  shadow-input mx-auto w-full max-w-2xl rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black"
+        className=" my-10  shadow-input mx-auto w-full max-w-xl rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black"
       >
         <div className="flex gap-2.5 items-center">
           <img className="w-20" src="./mealbox.png" alt="" />
