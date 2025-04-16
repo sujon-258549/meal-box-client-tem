@@ -34,7 +34,6 @@ const Error = ({ error, reset }: ErrorProps) => {
                 </Link>
 
                 <Button onClick={() => reset()} className="ml-3 bg-red-600">
-                  {" "}
                   Try Again
                 </Button>
               </div>
