@@ -21,6 +21,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { CircleFadingPlus } from "lucide-react";
 import { useState } from "react";
 import { FileUpload } from "@/components/ui/file-upload";
+import { createProvider } from "@/services/Provider/providerSurvices";
+import { toast } from "sonner";
 
 // import { toast } from "sonner";
 
@@ -113,18 +115,26 @@ export function CreateMealProviderForm() {
 
     console.log(modifiedData, files);
     try {
-      //   const formData = new FormData();
-      //   formData.append("data", JSON.stringify(modifiedData));
-      //   for (const file of files) {
-      //     formData.append("file", file);
-      //   }
-      //   const result = "";
-      //   if (result?.success) {
-      //     toast.success(result?.message, { id: toastId, duration: 2000 });
-      //     router.push("/");
-      //   } else {
-      //     toast.error(result?.message, { id: toastId, duration: 2000 });
-      //   }
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(modifiedData));
+      for (const file of files) {
+        formData.append("file", file);
+      }
+      // console.log(formData.values());
+      const result = await createProvider(formData);
+      console.log(result);
+      if (result?.success) {
+        toast.success(result?.message);
+        // router.push("/");
+      } else {
+        toast.error(result?.message);
+      }
+      // const result = await createProvider(modifiedData);
+      // if (result.success) {
+      //   toast.success(result?.message || "Meal Provider creation successful");
+      // } else {
+      //   toast.error(result?.message || "Meal Provider creation Failed");
+      // }
     } catch (error: any) {
       return Error(error);
     }

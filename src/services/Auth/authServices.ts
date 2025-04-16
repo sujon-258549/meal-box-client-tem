@@ -2,14 +2,15 @@
 
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
+import { jwtDecode } from "jwt-decode";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const signupUser = async (userData: FieldValues) => {
-  console.log(process.env.NEXT_pUBLIC_API_URL);
+  console.log(process.env.NEXT_PUBLIC_API_URL);
   console.log(userData);
   try {
     const res = await fetch(
-      `${process.env.NEXT_pUBLIC_API_URL}/users/create-user`,
+      `${process.env.NEXT_PUBLIC_API_URL}/users/create-user`,
       //   "http://localhost:5000/users/create-user",
       {
         method: "POST",
@@ -28,7 +29,8 @@ export const signupUser = async (userData: FieldValues) => {
 
 export const loginUser = async (loginInfo: FieldValues) => {
   try {
-    const res = await fetch(`${process.env.NEXT_pUBLIC_API_URL}/auth/login`, {
+    
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -43,5 +45,18 @@ export const loginUser = async (loginInfo: FieldValues) => {
     return result;
   } catch (error: any) {
     return Error(error);
+  }
+};
+
+export const getCurrentUser = async () => {
+  const accessToken = (await cookies()).get("access-token")!.value;
+  console.log(accessToken);
+  let decodedData = null;
+
+  if (accessToken) {
+    decodedData = await jwtDecode(accessToken);
+    return decodedData;
+  } else {
+    return null;
   }
 };

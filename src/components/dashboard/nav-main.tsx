@@ -18,6 +18,7 @@ import {
   SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import Link from "next/link";
+import Image from "next/image";
 export function NavMain({
   items,
 }: {
@@ -36,7 +37,14 @@ export function NavMain({
     <SidebarGroup>
       <a href="#">
         <div className="flex gap-2.5 items-end">
-          <img src="logo.png" className="w-8" alt="Meal Box Logo" />
+          {/* <img src="logo.png" className="w-8" alt="Meal Box Logo" /> */}
+          <Image
+            src="/logo.png"
+            alt="Meal Box Logo"
+            width={32}
+            height={32}
+            className="w-8"
+          />
           <div className="flex flex-col gap-0.5 leading-none">
             <span className="font-bold text-2xl text-gray-800">MealBox</span>
           </div>

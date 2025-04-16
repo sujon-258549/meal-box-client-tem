@@ -2,7 +2,7 @@
 export const createMenu = async (payload: any, userId: any) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_pUBLIC_API_URL}/menu/create-menu`,
+      `${process.env.NEXT_PUBLIC_API_URL}/menu/create-menu`,
       {
         method: "POST",
         headers: {
@@ -19,7 +19,7 @@ export const createMenu = async (payload: any, userId: any) => {
 };
 export const allMenus = async () => {
   try {
-    const res = await fetch(`${process.env.NEXT_pUBLIC_API_URL}/menu/`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -34,7 +34,7 @@ export const allMenus = async () => {
 export const getSingleMenu = async (menuId: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_pUBLIC_API_URL}/menu/${menuId}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/menu/${menuId}`,
       {
         method: "GET",
         headers: {
@@ -50,7 +50,7 @@ export const getSingleMenu = async (menuId: string) => {
 };
 export const getMyMenu = async (id: string) => {
   try {
-    const res = await fetch(`${process.env.NEXT_pUBLIC_API_URL}/menu/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -65,7 +65,7 @@ export const getMyMenu = async (id: string) => {
 
 export const updateMyMenu = async (payload: any, id: string) => {
   try {
-    const res = await fetch(`${process.env.NEXT_pUBLIC_API_URL}/menu/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
