@@ -3,8 +3,6 @@ import { z } from "zod";
 export const mealProviderSchema = z.object({
   shopName: z.string().min(1, "Shop name is required"),
   shopAddress: z.string().min(1, "Shop address is required"),
-  authorShopId: z.string().min(1, "Author Shop ID is required"),
-  shopLogo: z.string().url("Invalid logo URL").optional(),
   phoneNumber: z.string().min(1, "Phone number is required"),
   website: z.string().url("Invalid website URL").optional(),
   ownerName: z.string().min(1, "Owner name is required"),
@@ -12,9 +10,9 @@ export const mealProviderSchema = z.object({
     .number({ invalid_type_error: "Established year must be a number" })
     .min(1900, "Year must be valid")
     .max(new Date().getFullYear(), "Year cannot be in the future"),
-  productCategories: z
-    .array(z.string().min(1))
-    .min(1, "At least one product category is required"),
+  //   productCategories: z
+  //     .array(z.string().min(1))
+  //     .min(1, "At least one product category is required"),
   socialMediaLinks: z
     .object({
       facebook: z.string().optional(),

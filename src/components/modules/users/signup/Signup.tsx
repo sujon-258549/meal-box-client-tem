@@ -34,10 +34,7 @@ export function SignupForm() {
     formState: { errors },
     setValue, // Use setValue for manual setting of the radio group value
   } = form;
-
-
-
-  const fullName = form.watch("fullName");
+  const fullname = form.watch("fullName");
   const email = form.watch("email");
   const phoneNumber = form.watch("phoneNumber");
   const secondaryPhone = form.watch("secondaryPhone");
@@ -125,7 +122,7 @@ export function SignupForm() {
         <LabelInputContainer className="mb-4">
           <Label htmlFor="fullName">Full Name</Label>
           <Input
-            id="fullName"
+            id="fullname"
             {...register("fullName")}
             placeholder="Enter your fullname"
           />

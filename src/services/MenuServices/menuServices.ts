@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const createMenu = async (payload, userId) => {
+export const createMenu = async (payload: any, userId: any) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_pUBLIC_API_URL}/menu/create-menu`,
@@ -8,6 +8,7 @@ export const createMenu = async (payload, userId) => {
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify(payload, userId),
       }
     );
 
@@ -62,7 +63,7 @@ export const getMyMenu = async (id: string) => {
   }
 };
 
-export const updateMyMenu = async (payload, id: string) => {
+export const updateMyMenu = async (payload: any, id: string) => {
   try {
     const res = await fetch(`${process.env.NEXT_pUBLIC_API_URL}/menu/${id}`, {
       method: "PUT",
