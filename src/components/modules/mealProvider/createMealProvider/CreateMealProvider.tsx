@@ -1,117 +1,118 @@
-/* eslint-disable @next/next/no-img-element */
-
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import {
-  FieldValues,
-  SubmitHandler,
-  useFieldArray,
-  useForm,
-} from "react-hook-form";
-import { Button } from "@/components/ui/button";
+import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import LoadingButton from "@/components/ui/Loading/Loader";
-import { mealProviderSchema } from "./mealProviderValidaction";
+import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
-import { CircleFadingPlus } from "lucide-react";
-import { useState } from "react";
+import { Checkbox } from "@/components/ui/checkbox";
 import { FileUpload } from "@/components/ui/file-upload";
-import { createProvider } from "@/services/Provider/providerSurvices";
+import { useState } from "react";
+import { CircleFadingPlus } from "lucide-react";
+import { mealProviderSchema } from "./mealProviderValidaction";
 import { toast } from "sonner";
+import { createProvider } from "@/services/Provider/providerSurvices";
 import { useRouter } from "next/navigation";
 
-type loginSchema = z.infer<typeof mealProviderSchema>;
 const DAYS_OF_WEEK = [
-  "Sunday",
   "Monday",
   "Tuesday",
   "Wednesday",
   "Thursday",
   "Friday",
   "Saturday",
-];
-const PAYMENT_METHODS = ["Cash", "Credit Card", "Debit Card", "Mobile Payment"];
-export function CreateMealProviderForm() {
+  "Sunday",
+] as const;
+
+const PAYMENT_METHODS = ["Cash", "Card", "Mobile Payment"] as const;
+
+// Define Zod schema
+
+// Infer the type from the schema
+type FormValues = z.infer<typeof mealProviderSchema>;
+
+const CreateMealProviderForm = () => {
   const router = useRouter();
-  const form = useForm<loginSchema>({
+  const [files, setFiles] = useState<File[]>([]);
+  const form = useForm<FormValues>({
     resolver: zodResolver(mealProviderSchema),
     defaultValues: {
-      // @ts-expect-error value
+      shopName: "",
+      shopAddress: "",
+      phoneNumber: "",
+      website: "",
+      ownerName: "",
+      establishedYear: new Date().getFullYear(),
       productCategories: [{ value: "" }],
+      socialMediaLinks: {
+        facebook: "",
+        instagram: "",
+        twitter: "",
+        linkedin: "",
+      },
       operatingHours: {
         open: "",
         close: "",
         daysOpen: [],
       },
+      paymentMethods: [],
+      customerServiceContact: "",
     },
   });
-  //   file upload
-  const [files, setFiles] = useState<File[]>([]);
-  const handleFileUpload = (files: File[]) => {
-    setFiles(files);
-  };
+
   const {
-    formState: { isSubmitting },
-  } = form;
-  const {
-    register,
-    handleSubmit,
-    watch,
-    setValue,
-    formState: { errors },
-  } = form;
-  const toggleDay = (day: string) => {
-    const currentDays = watch("operatingHours.daysOpen");
-    setValue(
-      "operatingHours.daysOpen",
-      currentDays.includes(day)
-        ? currentDays.filter((d) => d !== day)
-        : [...currentDays, day]
-    );
-  };
-  const togglePaymentMethod = (method: string) => {
-    const currentMethods = watch("paymentMethods") || [];
-    setValue(
-      "paymentMethods",
-      currentMethods.includes(method)
-        ? currentMethods.filter((m) => m !== method)
-        : [...currentMethods, method]
-    );
+    append: appendProductCategory,
+    fields: productCategories,
+    remove: removeProductCategory,
+  } = useFieldArray({
+    control: form.control,
+    name: "productCategories",
+  });
+
+  const addProductCategory = () => {
+    appendProductCategory({ value: "" });
   };
 
-  //   mutiple add
-  const { append: appendproductCategories, fields: productCategories } =
-    useFieldArray({
-      control: form.control,
-      // @ts-expect-error value
-      name: "productCategories",
-    });
-  const addAppendColor = () => {
-    appendproductCategories({
-      value: "",
-    });
-  };
-
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    const productCategories = data.productCategories.map(
+      (product) => product.value
+    );
     const modifiedData = {
-      shopName: data.shopName,
-      shopAddress: data.shopAddress,
-      phoneNumber: data.phoneNumber,
-      website: data.website,
-      ownerName: data.ownerName,
-      establishedYear: Number(data.establishedYear),
-      productCategories: data.productCategories,
-      socialMediaLinks: data.socialMediaLinks,
-      operatingHours: data.operatingHours,
-      paymentMethods: data.paymentMethods,
-      customerServiceContact: data.customerServiceContact,
+      ...data,
+      productCategories,
     };
-
+    console.log({ modifiedData, files });
+    // try {
+    //   const formData = new FormData();
+    //   formData.append("data", JSON.stringify(modifiedData));
+    //   for (const file of image) {
+    //     formData.append("images", file);
+    //   }
+    //   const result = await createProduct(formData);
+    //   if (result?.success) {
+    //     toast.success(result?.message, { id: toastId, duration: 2000 });
+    //     router.push("/user/shop/products");
+    //     // Redirect or perform other actions on success
+    //   } else {
+    //     toast.error(result?.message, { id: toastId, duration: 2000 });
+    //   }
+    // } catch (error: any) {
+    //   toast.error("An error occurred while crating product.", {
+    //     id: toastId,
+    //     duration: 2000,
+    //   });
+    //   console.error(error);
+    // }
     try {
       const formData = new FormData();
       formData.append("data", JSON.stringify(modifiedData));
@@ -132,298 +133,413 @@ export function CreateMealProviderForm() {
     }
   };
 
+  const handleFileUpload = (uploadedFiles: File[]) => {
+    setFiles(uploadedFiles);
+  };
+
   return (
-    <div className="mx-5">
-      <div
-        style={{ boxShadow: "2px 2px 20px" }}
-        className=" my-10 shadow-input mx-auto w-full max-w-2xl rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black"
-      >
-        <div className="flex gap-2.5 items-center">
-          <img className="w-20" src="mealbox.png" alt="" />
-          <div>
-            <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">
-              Create Your Mealbox Account
-            </h2>
-            <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-300 max-w-md">
-              Please enter your credentials to access your account and start
-              enjoying delicious meals delivered to your doorstep.
-            </p>
-          </div>
-        </div>
-
-        {/* <form className="my-8" onSubmit={handleSubmit(submit)}> */}
-        <form className="my-8" onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-5">
+    <section className="px-5 py-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="border rounded-lg p-6 shadow-md">
+          <div className="flex gap-2.5 items-center pb-5">
+            <img className="w-20" src="/mealbox.png" alt="" />
             <div>
-              <Label className="pb-3.5">Shop Name*</Label>
-              <Input
-                placeholder="Enter your Shop name"
-                {...register("shopName")}
-                type="text"
-              />
-              {errors.shopName && (
-                <p className="text-red-500 text-sm">
-                  {errors.shopName.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <Label className="pb-3.5">Owner Name*</Label>
-              <Input
-                {...register("ownerName")}
-                placeholder="Enter your Owner Name"
-                type="text"
-              />
-              {errors.ownerName && (
-                <p className="text-red-500 text-sm">
-                  {errors.ownerName.message}
-                </p>
-              )}
-            </div>
-          </div>
-          <div className="mt-4">
-            <Label className="pb-3.5">Shop Address*</Label>
-            <Textarea
-              {...register("shopAddress")}
-              placeholder="Enter your address"
-            />
-            {errors.shopAddress && (
-              <p className="text-red-500 text-sm">
-                {errors.shopAddress.message}
+              <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">
+                Create Your Mealbox Account
+              </h2>
+              <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-300 max-w-md">
+                Please enter your credentials to access your account and start
+                enjoying delicious meals delivered to your doorstep.
               </p>
-            )}
-          </div>
-          <div className="grid mt-4 grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <Label className="pb-3.5">Phone Number*</Label>
-              <Input
-                {...register("phoneNumber")}
-                placeholder="Enter your phone Number"
-              />
-              {errors.phoneNumber && (
-                <p className="text-red-500 text-sm">
-                  {errors.phoneNumber.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <Label className="pb-3.5">Established Year*</Label>
-              <Input
-                type="number"
-                placeholder="Enter establishment year"
-                {...register("establishedYear", { valueAsNumber: true })}
-                min={1900}
-                max={new Date().getFullYear()}
-              />
-              {errors.establishedYear && (
-                <p className="text-red-500 text-sm">
-                  {errors.establishedYear.message}
-                </p>
-              )}
             </div>
           </div>
 
-          <div className="space-y-4">
-            <div className="my-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
-            <h2 className="text-xl font-semibold">Operating Hours</h2>
-            <div className="my-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <Label className="pb-3.5">Opening Time*</Label>
-                <Input type="time" {...register("operatingHours.open")} />
-                {errors.operatingHours?.open && (
-                  <p className="text-red-500 text-sm">
-                    {errors.operatingHours.open.message}
-                  </p>
-                )}
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              {/* Shop Information */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField
+                  control={form.control}
+                  name="shopName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Shop Name*</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="text"
+                          placeholder="Enter shop name"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="ownerName"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Owner Name*</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="text"
+                          placeholder="Enter owner name"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
 
-              <div>
-                <Label className="pb-3.5">Closing Time*</Label>
-                <Input type="time" {...register("operatingHours.close")} />
-                {errors.operatingHours?.close && (
-                  <p className="text-red-500 text-sm">
-                    {errors.operatingHours.close.message}
-                  </p>
+              <FormField
+                control={form.control}
+                name="shopAddress"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Shop Address*</FormLabel>
+                    <FormControl>
+                      <Textarea {...field} placeholder="Enter shop address" />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
-              </div>
-            </div>
+              />
 
-            <div>
-              <Label className="pb-3.5">Days Open*</Label>
-              <div className="flex flex-wrap gap-2">
-                {DAYS_OF_WEEK.map((day) => (
-                  <Button
-                    key={day}
-                    type="button"
-                    variant={
-                      watch("operatingHours.daysOpen").includes(day)
-                        ? "default"
-                        : "outline"
-                    }
-                    onClick={() => toggleDay(day)}
-                    className="h-8 px-3"
-                  >
-                    {day.substring(0, 3)}
-                  </Button>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField
+                  control={form.control}
+                  name="phoneNumber"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone Number*</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="tel"
+                          placeholder="Enter phone number"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="customerServiceContact"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Customer Service Contact*</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          type="tel"
+                          placeholder="Enter contact number"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <FormField
+                  control={form.control}
+                  name="website"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Website</FormLabel>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          placeholder="https://example.com"
+                          type="url"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="establishedYear"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Established Year*</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          {...field}
+                          onChange={(e) =>
+                            field.onChange(parseInt(e.target.value))
+                          }
+                          placeholder="Enter year"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+
+              {/* Social Media Links */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Social Media Links</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="socialMediaLinks.facebook"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Facebook</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            type="url"
+                            placeholder="https://facebook.com/yourpage"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="socialMediaLinks.instagram"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Instagram</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="https://instagram.com/yourprofile"
+                            type="url"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="socialMediaLinks.twitter"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Twitter</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="https://twitter.com/yourprofile"
+                            type="url"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="socialMediaLinks.linkedin"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>LinkedIn</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...field}
+                            placeholder="https://linkedin.com/company/yourcompany"
+                            type="url"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+
+              {/* Operating Hours */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Operating Hours*</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="operatingHours.open"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Opening Time</FormLabel>
+                        <FormControl>
+                          <Input type="time" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="operatingHours.close"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Closing Time</FormLabel>
+                        <FormControl>
+                          <Input type="time" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div>
+                  <FormLabel>Days Open*</FormLabel>
+                  <div className="flex flex-wrap gap-2 mt-2">
+                    {DAYS_OF_WEEK.map((day) => (
+                      <FormField
+                        key={day}
+                        control={form.control}
+                        name="operatingHours.daysOpen"
+                        render={({ field }) => {
+                          return (
+                            <FormItem
+                              key={day}
+                              className="flex items-center space-x-2"
+                            >
+                              <FormControl>
+                                <Checkbox
+                                  checked={field.value?.includes(day)}
+                                  onCheckedChange={(checked) => {
+                                    return checked
+                                      ? field.onChange([...field.value, day])
+                                      : field.onChange(
+                                          field.value?.filter(
+                                            (value) => value !== day
+                                          )
+                                        );
+                                  }}
+                                />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                {day}
+                              </FormLabel>
+                            </FormItem>
+                          );
+                        }}
+                      />
+                    ))}
+                  </div>
+                  <FormMessage>
+                    {form.formState.errors.operatingHours?.daysOpen?.message}
+                  </FormMessage>
+                </div>
+              </div>
+
+              {/* Payment Methods */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Payment Methods*</h3>
+                <div className="flex flex-wrap gap-4">
+                  {PAYMENT_METHODS.map((method) => (
+                    <FormField
+                      key={method}
+                      control={form.control}
+                      name="paymentMethods"
+                      render={({ field }) => {
+                        return (
+                          <FormItem
+                            key={method}
+                            className="flex items-center space-x-2"
+                          >
+                            <FormControl>
+                              <Checkbox
+                                checked={field.value?.includes(method)}
+                                onCheckedChange={(checked) => {
+                                  return checked
+                                    ? field.onChange([...field.value, method])
+                                    : field.onChange(
+                                        field.value?.filter(
+                                          (value) => value !== method
+                                        )
+                                      );
+                                }}
+                              />
+                            </FormControl>
+                            <FormLabel className="font-normal">
+                              {method}
+                            </FormLabel>
+                          </FormItem>
+                        );
+                      }}
+                    />
+                  ))}
+                </div>
+                <FormMessage>
+                  {form.formState.errors.paymentMethods?.message}
+                </FormMessage>
+              </div>
+
+              {/* Product Categories */}
+              <div className="flex justify-between">
+                <h2 className="text-xl md:text-2xl font-bold">
+                  Product Categories
+                </h2>
+                <Button
+                  type="button"
+                  onClick={addProductCategory}
+                  variant={"outline"}
+                >
+                  <CircleFadingPlus />
+                </Button>
+              </div>
+              <div className="-mt-2 mb-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
+
+              <div className="space-y-3">
+                {productCategories.map((field, index) => (
+                  <div key={field.id} className="flex items-center gap-2">
+                    <FormField
+                      control={form.control}
+                      name={`productCategories.${index}.value`}
+                      render={({ field }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel>Category {index + 1}</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="Enter category name"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    {index > 0 && (
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        onClick={() => removeProductCategory(index)}
+                        className="mt-7"
+                      >
+                        Remove
+                      </Button>
+                    )}
+                  </div>
                 ))}
               </div>
-              {errors.operatingHours?.daysOpen && (
-                <p className="text-red-500 text-sm">
-                  {errors.operatingHours.daysOpen.message}
-                </p>
-              )}
-            </div>
-          </div>
-          {/* Payment Methods */}
-          <div className="my-6">
-            <Label className="pb-2">Payment Methods*</Label>
-            <div className="flex flex-wrap gap-4 mt-2">
-              {PAYMENT_METHODS.map((method) => {
-                const paymentMethods = watch("paymentMethods") || [];
-                return (
-                  <div key={method} className="flex items-center space-x-2">
-                    <Checkbox
-                      id={`payment-${method}`}
-                      checked={paymentMethods.includes(method)}
-                      onCheckedChange={() => togglePaymentMethod(method)}
-                    />
-                    <Label htmlFor={`payment-${method}`}>{method}</Label>
-                  </div>
-                );
-              })}
-            </div>
-            <ErrorMsg msg={errors.paymentMethods?.message} />
-          </div>
-          <div className="space-y-4">
-            <div>
-              <Label className="pb-3.5">Website</Label>
-              <Input
-                {...register("website")}
-                placeholder="https://"
-                type="url"
-              />
-              {errors.website && (
-                <p className="text-red-500 text-sm">{errors.website.message}</p>
-              )}
-            </div>
 
-            <div>
-              <Label className="pb-3.5">Facebook URL</Label>
-              <Input
-                {...register("socialMediaLinks.facebook")}
-                placeholder="https://facebook.com/yourpage"
-                type="url"
-              />
-              {errors.socialMediaLinks?.facebook && (
-                <p className="text-red-500 text-sm">
-                  {errors.socialMediaLinks.facebook.message}
-                </p>
-              )}
-            </div>
+              {/* Shop Logo Upload */}
+              <div className="w-full my-5 max-w-4xl mx-auto min-h-10 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
+                <FileUpload onChange={handleFileUpload} />
+              </div>
 
-            <div>
-              <Label className="pb-3.5">Instagram URL</Label>
-              <Input
-                {...register("socialMediaLinks.instagram")}
-                placeholder="https://instagram.com/yourprofile"
-                type="url"
-              />
-              {errors.socialMediaLinks?.instagram && (
-                <p className="text-red-500 text-sm">
-                  {errors.socialMediaLinks.instagram.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <Label className="pb-3.5">Twitter URL</Label>
-              <Input
-                {...register("socialMediaLinks.twitter")}
-                placeholder="https://twitter.com/yourprofile"
-                type="url"
-              />
-              {errors.socialMediaLinks?.twitter && (
-                <p className="text-red-500 text-sm">
-                  {errors.socialMediaLinks.twitter.message}
-                </p>
-              )}
-            </div>
-
-            <div>
-              <Label className="pb-3.5">LinkedIn URL</Label>
-              <Input
-                {...register("socialMediaLinks.linkedin")}
-                placeholder="https://linkedin.com/company/yourcompany"
-                type="url"
-              />
-              {errors.socialMediaLinks?.linkedin && (
-                <p className="text-red-500 text-sm">
-                  {errors.socialMediaLinks.linkedin.message}
-                </p>
-              )}
-            </div>
-            <div className="my-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
-            <div className="flex justify-between">
-              <h2 className="text-xl  md:text-2xl font-bold">
-                Product Categories
-              </h2>
-              <Button
-                type="button"
-                onClick={addAppendColor}
-                variant={"outline"}
-              >
-                <CircleFadingPlus />
+              <Button type="submit" className="w-full" size="lg">
+                Create Meal Provider
               </Button>
-            </div>
-            <div className="-mt-2 mb-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
-
-            <div className="space-y-3">
-              {productCategories.map((field, index) => (
-                <div key={field.id} className="">
-                  <Input
-                    // @ts-expect-error name
-                    {...register(`productCategories?.${index}.name`)}
-                    placeholder="Enter product category name"
-                    required
-                  />
-                  {errors.customerServiceContact && (
-                    <p className="text-red-500 text-sm">
-                      {errors.customerServiceContact.message}
-                    </p>
-                  )}
-                </div>
-              ))}
-            </div>
-            <div>
-              <Label className="pb-3.5">Customer Service Contact</Label>
-              <Input
-                {...register("customerServiceContact")}
-                placeholder="Enter customer service number"
-                type="number"
-              />
-              {errors.customerServiceContact && (
-                <p className="text-red-500 text-sm">
-                  {errors.customerServiceContact.message}
-                </p>
-              )}
-            </div>
-          </div>
-          <div className="w-full my-5 max-w-4xl mx-auto min-h-10 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
-            <FileUpload onChange={handleFileUpload} />
-          </div>
-          <Button className="w-full" type="submit">
-            {isSubmitting ? <LoadingButton /> : "Create Provider"}
-          </Button>
-        </form>
+            </form>
+          </Form>
+        </div>
       </div>
-    </div>
+    </section>
   );
-}
+};
 
-// Component to show errors
-const ErrorMsg = ({ msg }: { msg?: string }) =>
-  msg ? <p className="text-red-500 text-sm mt-1">{msg}</p> : null;
+export default CreateMealProviderForm;

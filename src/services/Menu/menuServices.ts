@@ -22,3 +22,18 @@ export const createMenuByProvider = async (data: FieldValues) => {
     throw new Error(error);
   }
 };
+
+export const getAllMenus = async () => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu`, {
+      method: "GET",
+      headers: {
+        "Content-type": "application/json",
+        // Authorization: (await cookies()).get("access-token")!.value,
+      },
+    });
+    return res.json();
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
