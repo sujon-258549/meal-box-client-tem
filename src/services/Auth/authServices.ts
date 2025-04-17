@@ -45,6 +45,7 @@ export const loginUser = async (loginInfo: FieldValues) => {
     console.log(result);
     if (result.success) {
       (await cookies()).set("access-token", result?.data?.accessToken);
+      (await cookies()).set("refresh-token", result?.data?.refreshToken);
     }
     return result;
   } catch (error: any) {
@@ -62,5 +63,24 @@ export const getCurrentUser = async () => {
     return decodedData;
   } else {
     return null;
+  }
+};
+
+export const getNewToken = async () => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_API}/auth/refresh-token`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: (await cookies()).get("refresh-token")!.value,
+        },
+      }
+    );
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
   }
 };

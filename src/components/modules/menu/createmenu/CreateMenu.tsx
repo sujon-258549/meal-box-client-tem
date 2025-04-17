@@ -9,8 +9,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { weeklyMenuSchema } from "../menu.zodValidationSchema";
 import Image from "next/image";
-import { createMenuByProvider } from "@/services/Menu/menuServices";
-import { toast } from "sonner";
 
 const days = [
   "Saturday",
@@ -47,20 +45,22 @@ export default function MenuAddForm() {
     name: "meals",
   });
 
+  //   const router = useRouter();
   const onSubmit = async (data: WeeklyMenuType) => {
-    console.log("Submitted Menu:", data);
-
-    try {
-      const result = await createMenuByProvider(data);
-      console.log(result);
-      if (result.success) {
-        toast.success(result?.message || "Menu created");
-      } else {
-        toast.error(result?.message || "Menu creation Failed");
-      }
-    } catch (error: any) {
-      return Error(error);
-    }
+    console.log(data);
+    // const toastId = toast.loading("Meal Creating......", { duration: 2000 });
+    // try {
+    // const result = await createMenuByProvider(data);
+    //   console.log(result);
+    //   if (result?.success) {
+    //     toast.success(result?.message, { id: toastId, duration: 2000 });
+    //     router.push("/dashboard/menu/my-menu");
+    //   } else {
+    //     toast.error(result?.message, { id: toastId, duration: 2000 });
+    //   }
+    // } catch (error: any) {
+    //   return Error(error);
+    // }
   };
 
   return (
