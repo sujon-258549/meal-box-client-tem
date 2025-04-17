@@ -1,28 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
+import { isTokenExpired } from "@/lib/varifyToken";
 import { cookies } from "next/headers";
-
-// 1. Post or Update Meal Menus
-export const createMeal = async (data: FormData) => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/auth/create-mealProvider'`,
-      {
-        method: "POST",
-        headers: {
-          // "Content-Type": "application/json",
-          Authorization: (await cookies()).get("access-token")!.value,
-        },
-        body: data,
-      }
-    );
-
-    return res.json();
-  } catch (error: any) {
-    return Error(error);
-  }
-};
+import { getNewToken } from "../Auth/authServices";
 
 export const updateMeal = async () => {};
 
@@ -37,10 +18,14 @@ export const respondToOrder = async () => {};
 export const getDeliveries = async () => {};
 
 export const createProvider = async (data: FormData) => {
-  console.log("root api", `${process.env.NEXT_PUBLIC_API_URL}`);
+  const cookyStore = await cookies();
+  let token = cookyStore.get("access-token")!.value;
+  if (!token || (await isTokenExpired(token))) {
+    const { data } = await getNewToken();
+    token = data.accessToken;
+    cookyStore.set("access-token", token);
+  }
   try {
-    const token = (await cookies()).get("access-token")!.value;
-    console.log("ftoken", token);
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/meal-provider/create-mealProvider`,
       {
@@ -52,7 +37,6 @@ export const createProvider = async (data: FormData) => {
         body: data,
       }
     );
-    console.log("From service file", res);
     return res.json();
   } catch (error: any) {
     return Error(error);

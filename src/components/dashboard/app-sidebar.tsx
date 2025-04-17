@@ -30,7 +30,7 @@ const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
-    avatar: "logo.png",
+    avatar: "/logo.png",
   },
   teams: [
     {
@@ -61,12 +61,8 @@ const data = {
           url: "/dashboard/menu/create-menu",
         },
         {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
+          title: "My menu",
+          url: "/dashboard/menu/my-menu",
         },
       ],
     },
