@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useForm, useFieldArray } from "react-hook-form";
@@ -7,6 +8,10 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { weeklyMenuSchema } from "../menu.zodValidationSchema";
+import { updateMyMenu } from "@/services/Menu/menuServices";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import { TMealPlan } from "@/types";
 
 const days = [
   "Saturday",
@@ -20,7 +25,7 @@ const days = [
 type MealTime = "morning" | "evening" | "night";
 type WeeklyMenuType = z.infer<typeof weeklyMenuSchema>;
 
-export default function UpdateMenu() {
+export default function UpdateMenu({ data }: { data: TMealPlan }) {
   const {
     control,
     register,
@@ -29,12 +34,26 @@ export default function UpdateMenu() {
   } = useForm<WeeklyMenuType>({
     resolver: zodResolver(weeklyMenuSchema),
     defaultValues: {
-      meals: days.map((day) => ({
-        day,
-        morning: { menu: "", price: 0 },
-        evening: { menu: "", price: 0 },
-        night: { menu: "", price: 0 },
-      })),
+      meals: days.map((day) => {
+        // Find the corresponding day data from the props
+        const dayData = data.meals.find((meal) => meal.day === day);
+
+        return {
+          day,
+          morning: {
+            menu: dayData?.morning?.menu || "",
+            price: dayData?.morning?.price || 0,
+          },
+          evening: {
+            menu: dayData?.evening?.menu || "",
+            price: dayData?.evening?.price || 0,
+          },
+          night: {
+            menu: dayData?.night?.menu || "",
+            price: dayData?.night?.price || 0,
+          },
+        };
+      }),
     },
   });
 
@@ -42,23 +61,41 @@ export default function UpdateMenu() {
     control,
     name: "meals",
   });
+  const router = useRouter();
+  const onSubmit = async (data: WeeklyMenuType) => {
+    const toastId = toast.loading("Update menu ...........", {
+      duration: 2000,
+    });
 
-  const onSubmit = (data: WeeklyMenuType) => {
-    console.log("Submitted Menu:", data);
+    try {
+      const result = await updateMyMenu(data);
+      if (result?.success) {
+        toast.success(result?.message, { id: toastId, duration: 2000 });
+        router.push("/dashboard/menu/my-menu");
+      } else {
+        toast.error(result?.message, { id: toastId, duration: 2000 });
+      }
+    } catch (error: any) {
+      toast.error("An error occurred while updating menu.", {
+        id: toastId,
+        duration: 2000,
+      });
+      console.error(error);
+    }
   };
 
   return (
     <div className="my-10 mx-5">
       <div className="max-w-2xl box-shadow  mx-auto border p-4 rounded-md shadow-sm">
         <div className="flex gap-2.5 items-center">
-          <img className="w-20" src="./mealbox.png" alt="Mealbox logo" />
+          <img className="w-20" src="/mealbox.png" alt="Mealbox logo" />
           <div>
             <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">
               Weekly Update Menu Submission
             </h2>
             <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-300 max-w-md">
-              Please fill out the meal plan for each day of the week. Include
-              menu items and pricing for morning, evening, and night meals.
+              Please update the meal plan for each day of the week. Include menu
+              items and pricing for morning, evening, and night meals.
             </p>
           </div>
         </div>
@@ -125,7 +162,7 @@ export default function UpdateMenu() {
           ))}
 
           <Button type="submit" className="w-full">
-            Submit Weekly Menu
+            Update Weekly Menu
           </Button>
         </form>
       </div>

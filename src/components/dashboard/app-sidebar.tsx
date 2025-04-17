@@ -64,6 +64,10 @@ const data = {
           title: "My menu",
           url: "/dashboard/menu/my-menu",
         },
+        {
+          title: "Update my menu",
+          url: "/dashboard/menu/update-menu",
+        },
       ],
     },
     {
@@ -132,6 +136,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>
+      <SidebarFooter></SidebarFooter>
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>

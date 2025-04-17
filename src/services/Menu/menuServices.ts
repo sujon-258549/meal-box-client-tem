@@ -70,13 +70,20 @@ export const getMyMenu = async () => {
   }
 };
 
-export const updateMyMenu = async (payload: any, id: string) => {
+export const updateMyMenu = async (payload: any) => {
+  const cookyStore = await cookies();
+  let token = cookyStore.get("access-token")!.value;
+  if (!token || (await isTokenExpired(token))) {
+    const { data } = await getNewToken();
+    token = data.accessToken;
+    cookyStore.set("access-token", token);
+  }
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu/${id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu/my-menu`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
-        Authorization: (await cookies()).get("access-token")!.value,
+        Authorization: token,
       },
       body: JSON.stringify(payload),
     });
