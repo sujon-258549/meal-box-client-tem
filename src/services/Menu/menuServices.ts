@@ -6,6 +6,7 @@ import { FieldValues } from "react-hook-form";
 
 export const createMenuByProvider = async (data: FieldValues) => {
   try {
+    // console.log((await cookies()).get("access-token")!.value);
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/menu/create-menu`,
       {

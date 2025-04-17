@@ -1,22 +1,22 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const createMenu = async (payload: any, userId: any) => {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/menu/create-menu`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload, userId),
-      }
-    );
+// export const createMenu = async (payload: any, userId: any) => {
+//   try {
+//     const res = await fetch(
+//       `${process.env.NEXT_PUBLIC_API_URL}/menu/create-menu`,
+//       {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//         body: JSON.stringify(payload, userId),
+//       }
+//     );
 
-    return res.json();
-  } catch (error: any) {
-    return Error(error);
-  }
-};
+//     return res.json();
+//   } catch (error: any) {
+//     return Error(error);
+//   }
+// };
 export const allMenus = async () => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu/`, {
