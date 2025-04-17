@@ -2,7 +2,7 @@ import * as z from "zod";
 
 export const registrationSchema = z
   .object({
-    fullname: z.string().min(1, "Full name is required"),
+    fullName: z.string().min(1, "Full name is required"),
     email: z.string().email("Invalid email address"),
     phoneNumber: z.string().min(11, "Phone must be at least 11 digits"),
     secondaryPhone: z.string().min(11, "Phone must be at least 11 digits"),
