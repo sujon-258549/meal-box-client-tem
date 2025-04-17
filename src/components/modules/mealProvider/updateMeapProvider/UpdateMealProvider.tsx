@@ -162,7 +162,7 @@ const UpdateMealProviderForm = () => {
             <img className="w-20" src="/mealbox.png" alt="" />
             <div>
               <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">
-                Create Your Mealbox Account
+                Update Your Mealbox Account
               </h2>
               <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-300 max-w-md">
                 Please enter your credentials to access your account and start
