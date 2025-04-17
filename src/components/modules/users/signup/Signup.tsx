@@ -14,14 +14,19 @@ import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import LoadingButton from "@/components/ui/Loading/Loader";
 import Link from "next/link";
-// import { toast } from "sonner";
+import { signupUser } from "@/services/Auth/authServices";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 type RegistrationSchema = z.infer<typeof registrationSchema>;
 
 export function SignupForm() {
+  const router = useRouter();
   const form = useForm<RegistrationSchema>({
     resolver: zodResolver(registrationSchema),
   });
+
   const {
     formState: { isSubmitting },
   } = form;
@@ -77,19 +82,20 @@ export function SignupForm() {
         post: data.address?.post || "",
         district: data.address?.district || "",
       },
-      gender: data.gender as "male" | "female" | "other", // make sure to cast properly
+      gender: data.gender as "male" | "female" | "other",
     };
     console.log(userData);
+
     try {
-      //   const result = "";
-      //   if (result?.success) {
-      //     toast.success(result?.message, { id: toastId, duration: 2000 });
-      //     router.push("/");
-      //   } else {
-      //     toast.error(result?.message, { id: toastId, duration: 2000 });
-      //   }
+      const result = await signupUser(userData);
+      if (result.success) {
+        toast.success(result?.message || "signup success");
+        router.push("/login");
+      } else {
+        toast.error(result?.message);
+      }
     } catch (error: any) {
-      return Error(error);
+      console.log(error);
     }
   };
 
@@ -98,8 +104,29 @@ export function SignupForm() {
       style={{ boxShadow: "2px 2px 20px" }}
       className="my-10 shadow-input mx-auto w-full max-w-2xl rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black"
     >
-      <div className="flex gap-2.5 items-center">
+      {/*img tag use here*/}
+      {/* <div className="flex gap-2.5 items-center">
         <img className="w-20" src="./mealbox.png" alt="" />
+        <div>
+          <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
+            Welcome to Mealbox Registration
+          </h2>
+          <p className="mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-300">
+            Please fill out the form below to create your Mealbox account and
+            get started with delicious meals delivered to your doorstep.
+          </p>
+        </div>
+      </div> */}
+
+      <div className="flex gap-2.5 items-center">
+        <Image
+          src="/mealbox.png" // Must be in the /public folder
+          alt="Mealbox logo"
+          width={80}
+          height={80}
+          className="w-20 h-auto"
+          priority // Optional: loads image faster
+        />
         <div>
           <h2 className="text-xl font-bold text-neutral-800 dark:text-neutral-200">
             Welcome to Mealbox Registration
@@ -277,8 +304,12 @@ export function SignupForm() {
           </span>
         </div>
 
-        <Button disabled={isDisabled} className="w-full" type="submit">
-          {isSubmitting ? <LoadingButton /> : "Sign up "}
+        <Button
+          disabled={isDisabled}
+          className="w-full cursor-pointer"
+          type="submit"
+        >
+          {isSubmitting ? <LoadingButton /> : "Sign up"}
         </Button>
       </form>
       <Divider />

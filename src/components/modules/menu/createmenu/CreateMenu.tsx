@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useForm, useFieldArray } from "react-hook-form";
@@ -7,6 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { weeklyMenuSchema } from "../menu.zodValidationSchema";
+import Image from "next/image";
+import { createMenuByProvider } from "@/services/Menu/menuServices";
+import { toast } from "sonner";
 
 const days = [
   "Saturday",
@@ -43,15 +47,34 @@ export default function MenuAddForm() {
     name: "meals",
   });
 
-  const onSubmit = (data: WeeklyMenuType) => {
+  const onSubmit = async (data: WeeklyMenuType) => {
     console.log("Submitted Menu:", data);
+
+    try {
+      const result = await createMenuByProvider(data);
+      console.log(result);
+      if (result.success) {
+        toast.success(result?.message || "Menu created");
+      } else {
+        toast.error(result?.message || "Menu creation Failed");
+      }
+    } catch (error: any) {
+      return Error(error);
+    }
   };
 
   return (
     <div className="my-10 mx-5">
       <div className="max-w-2xl box-shadow  mx-auto border p-4 rounded-md shadow-sm">
         <div className="flex gap-2.5 items-center">
-          <img className="w-20" src="/mealbox.png" alt="Mealbox logo" />
+          {/* <img className="w-20" src="/mealbox.png" alt="Mealbox logo" /> */}
+          <Image
+            src="/mealbox.png"
+            alt="Mealbox logo"
+            width={80}
+            height={80}
+            className="w-20"
+          />
           <div>
             <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">
               Weekly Menu Submission
@@ -124,7 +147,7 @@ export default function MenuAddForm() {
             </div>
           ))}
 
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full cursor-pointer">
             Submit Weekly Menu
           </Button>
         </form>

@@ -12,12 +12,17 @@ import { z } from "zod";
 import { loginSchema } from "./login.zodValidactionSchema";
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/ui/Loading/Loader";
+import { loginUser } from "@/services/Auth/authServices";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 // import { toast } from "sonner";
 
 type loginSchema = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
+  const router = useRouter();
   const form = useForm<loginSchema>({
     resolver: zodResolver(loginSchema),
   });
@@ -29,7 +34,7 @@ export function LoginForm() {
     handleSubmit,
     formState: { errors },
   } = form;
-  const email = form.watch("email");
+  const email = form.watch("emailOrPhone");
   const password = form.watch("password");
 
   const isDisabled = !email || !password;
@@ -41,18 +46,19 @@ export function LoginForm() {
     //   duration: 2000,
     // });
     const userData = {
-      email: data.email,
+      emailOrPhone: data.emailOrPhone,
       password: data.password,
     };
     console.log(userData);
     try {
-      //   const result = "";
-      //   if (result?.success) {
-      //     toast.success(result?.message, { id: toastId, duration: 2000 });
-      //     router.push("/");
-      //   } else {
-      //     toast.error(result?.message, { id: toastId, duration: 2000 });
-      //   }
+      const result = await loginUser(userData);
+      if (result.success) {
+        toast.success(result?.message || "User Registration successful");
+        router.push("/");
+      } else {
+        toast.error(result?.message || "User Registration failed");
+      }
+      console.log(result);
     } catch (error: any) {
       return Error(error);
     }
@@ -64,8 +70,27 @@ export function LoginForm() {
         style={{ boxShadow: "2px 2px 20px" }}
         className=" my-10  shadow-input mx-auto w-full max-w-xl rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black"
       >
+        {/* <div className="flex gap-2.5 items-center">
+          <img className="w-20" src="./mealbox.png" alt="" />
+          <div>
+            <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">
+              Login to Your Mealbox Account
+            </h2>
+            <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-300 max-w-md">
+              Please enter your credentials to access your account and start
+              enjoying delicious meals delivered to your doorstep.
+            </p>
+          </div>
+        </div> */}
         <div className="flex gap-2.5 items-center">
-          <img className="w-20" src="/mealbox.png" alt="" />
+          <Image
+            src="/mealbox.png" // assuming it's in the /public folder
+            alt="Mealbox logo"
+            width={80}
+            height={80}
+            className="w-20 h-auto"
+            priority
+          />
           <div>
             <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">
               Login to Your Mealbox Account
@@ -82,10 +107,10 @@ export function LoginForm() {
             <Label htmlFor="email">Email Address</Label>
             <Input
               id="email"
-              {...register("email")}
+              {...register("emailOrPhone")}
               placeholder="projectmayhem@gmail.com"
             />
-            <ErrorMsg msg={errors.email?.message} />
+            <ErrorMsg msg={errors.emailOrPhone?.message} />
           </LabelInputContainer>
 
           <LabelInputContainer className="mb-8">
@@ -106,8 +131,12 @@ export function LoginForm() {
             </span>
           </div>
 
-          <Button disabled={isDisabled} className="w-full" type="submit">
-            {isSubmitting ? <LoadingButton /> : "Sign up "}
+          <Button
+            disabled={isDisabled}
+            className="w-full cursor-pointer"
+            type="submit"
+          >
+            {isSubmitting ? <LoadingButton /> : "Login"}
           </Button>
         </form>
         <div className="my-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />

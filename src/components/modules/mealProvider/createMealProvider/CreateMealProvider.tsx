@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
@@ -19,6 +20,10 @@ import { FileUpload } from "@/components/ui/file-upload";
 import { useState } from "react";
 import { CircleFadingPlus } from "lucide-react";
 import { mealProviderSchema } from "./mealProviderValidaction";
+import { toast } from "sonner";
+import { createProvider } from "@/services/Provider/providerSurvices";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 const DAYS_OF_WEEK = [
   "Monday",
@@ -38,6 +43,7 @@ const PAYMENT_METHODS = ["Cash", "Card", "Mobile Payment"] as const;
 type FormValues = z.infer<typeof mealProviderSchema>;
 
 const CreateMealProviderForm = () => {
+  const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
   const form = useForm<FormValues>({
     resolver: zodResolver(mealProviderSchema),
@@ -86,28 +92,25 @@ const CreateMealProviderForm = () => {
       ...data,
       productCategories,
     };
-    console.log({ modifiedData, files });
-    // try {
-    //   const formData = new FormData();
-    //   formData.append("data", JSON.stringify(modifiedData));
-    //   for (const file of image) {
-    //     formData.append("images", file);
-    //   }
-    //   const result = await createProduct(formData);
-    //   if (result?.success) {
-    //     toast.success(result?.message, { id: toastId, duration: 2000 });
-    //     router.push("/user/shop/products");
-    //     // Redirect or perform other actions on success
-    //   } else {
-    //     toast.error(result?.message, { id: toastId, duration: 2000 });
-    //   }
-    // } catch (error: any) {
-    //   toast.error("An error occurred while crating product.", {
-    //     id: toastId,
-    //     duration: 2000,
-    //   });
-    //   console.error(error);
-    // }
+
+    try {
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(modifiedData));
+      for (const file of files) {
+        formData.append("file", file);
+      }
+
+      const result = await createProvider(formData);
+      console.log(result);
+      if (result?.success) {
+        toast.success(result?.message);
+        router.push("/dashboard");
+      } else {
+        toast.error(result?.message);
+      }
+    } catch (error: any) {
+      return Error(error);
+    }
   };
 
   const handleFileUpload = (uploadedFiles: File[]) => {
@@ -119,7 +122,14 @@ const CreateMealProviderForm = () => {
       <div className="max-w-4xl mx-auto">
         <div className="border rounded-lg p-6 shadow-md">
           <div className="flex gap-2.5 items-center pb-5">
-            <img className="w-20" src="/mealbox.png" alt="" />
+            <Image
+              src="/mealbox.png" // stored in the /public folder
+              alt="Mealbox Logo"
+              width={80}
+              height={80}
+              className="w-20 h-auto"
+              priority
+            />
             <div>
               <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">
                 Create Your Mealbox Account

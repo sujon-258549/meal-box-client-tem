@@ -1,7 +1,13 @@
 import React from "react";
 
 const HomePage = () => {
-  return <div></div>;
+
+  return (
+    <div>
+      <h1>Welcome to MealBox home page</h1>
+    </div>
+  );
+
 };
 
 export default HomePage;
