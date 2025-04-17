@@ -61,12 +61,8 @@ const data = {
           url: "/dashboard/menu/create-menu",
         },
         {
-          title: "Starred",
-          url: "#",
-        },
-        {
-          title: "Settings",
-          url: "#",
+          title: "My menu",
+          url: "/dashboard/menu/my-menu",
         },
       ],
     },
