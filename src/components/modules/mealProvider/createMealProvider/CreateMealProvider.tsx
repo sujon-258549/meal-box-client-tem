@@ -23,8 +23,7 @@ import { useState } from "react";
 import { FileUpload } from "@/components/ui/file-upload";
 import { createProvider } from "@/services/Provider/providerSurvices";
 import { toast } from "sonner";
-
-// import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 type loginSchema = z.infer<typeof mealProviderSchema>;
 const DAYS_OF_WEEK = [
@@ -38,6 +37,7 @@ const DAYS_OF_WEEK = [
 ];
 const PAYMENT_METHODS = ["Cash", "Credit Card", "Debit Card", "Mobile Payment"];
 export function CreateMealProviderForm() {
+  const router = useRouter();
   const form = useForm<loginSchema>({
     resolver: zodResolver(mealProviderSchema),
     defaultValues: {
@@ -98,7 +98,6 @@ export function CreateMealProviderForm() {
   };
 
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    // const toastId = toast.loading("User Creating...............", {
     const modifiedData = {
       shopName: data.shopName,
       shopAddress: data.shopAddress,
@@ -113,28 +112,21 @@ export function CreateMealProviderForm() {
       customerServiceContact: data.customerServiceContact,
     };
 
-    console.log(modifiedData, files);
     try {
       const formData = new FormData();
       formData.append("data", JSON.stringify(modifiedData));
       for (const file of files) {
         formData.append("file", file);
       }
-      // console.log(formData.values());
+
       const result = await createProvider(formData);
       console.log(result);
       if (result?.success) {
         toast.success(result?.message);
-        // router.push("/");
+        router.push("/dashboard");
       } else {
         toast.error(result?.message);
       }
-      // const result = await createProvider(modifiedData);
-      // if (result.success) {
-      //   toast.success(result?.message || "Meal Provider creation successful");
-      // } else {
-      //   toast.error(result?.message || "Meal Provider creation Failed");
-      // }
     } catch (error: any) {
       return Error(error);
     }
@@ -424,7 +416,7 @@ export function CreateMealProviderForm() {
             <FileUpload onChange={handleFileUpload} />
           </div>
           <Button className="w-full" type="submit">
-            {isSubmitting ? <LoadingButton /> : "Sign up "}
+            {isSubmitting ? <LoadingButton /> : "Create Provider"}
           </Button>
         </form>
       </div>

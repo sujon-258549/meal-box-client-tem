@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useForm, useFieldArray } from "react-hook-form";
@@ -8,6 +9,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { weeklyMenuSchema } from "../menu.zodValidationSchema";
 import Image from "next/image";
+import { createMenuByProvider } from "@/services/Menu/menuServices";
+import { toast } from "sonner";
 
 const days = [
   "Saturday",
@@ -44,8 +47,20 @@ export default function MenuAddForm() {
     name: "meals",
   });
 
-  const onSubmit = (data: WeeklyMenuType) => {
+  const onSubmit = async (data: WeeklyMenuType) => {
     console.log("Submitted Menu:", data);
+
+    try {
+      const result = await createMenuByProvider(data);
+      console.log(result);
+      if (result.success) {
+        toast.success(result?.message || "Menu created");
+      } else {
+        toast.error(result?.message || "Menu creation Failed");
+      }
+    } catch (error: any) {
+      return Error(error);
+    }
   };
 
   return (
@@ -132,7 +147,7 @@ export default function MenuAddForm() {
             </div>
           ))}
 
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="w-full cursor-pointer">
             Submit Weekly Menu
           </Button>
         </form>

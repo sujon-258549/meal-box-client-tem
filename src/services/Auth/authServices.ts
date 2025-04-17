@@ -11,7 +11,6 @@ export const signupUser = async (userData: FieldValues) => {
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/users/create-user`,
-      //   "http://localhost:5000/users/create-user",
       {
         method: "POST",
         headers: {
@@ -20,8 +19,14 @@ export const signupUser = async (userData: FieldValues) => {
         body: JSON.stringify(userData),
       }
     );
-    console.log(res);
-    return res.json();
+    // console.log(res);
+    // return res.json();
+    const result = await res.json();
+    console.log(result);
+    if (result.success) {
+      (await cookies()).set("access-token", result?.data?.accessToken);
+    }
+    return result;
   } catch (error: any) {
     return Error(error);
   }
@@ -29,7 +34,6 @@ export const signupUser = async (userData: FieldValues) => {
 
 export const loginUser = async (loginInfo: FieldValues) => {
   try {
-    
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
       method: "POST",
       headers: {
@@ -49,7 +53,7 @@ export const loginUser = async (loginInfo: FieldValues) => {
 };
 
 export const getCurrentUser = async () => {
-  const accessToken = (await cookies()).get("access-token")!.value;
+  const accessToken = (await cookies()).get("access-token")?.value;
   console.log(accessToken);
   let decodedData = null;
 
