@@ -25,11 +25,12 @@ import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 
 // This is sample data.
+
 const data = {
   user: {
     name: "shadcn",
     email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    avatar: "logo.png",
   },
   teams: [
     {
@@ -57,7 +58,7 @@ const data = {
       items: [
         {
           title: "Create Menu",
-          url: "/dashboard/create-menu",
+          url: "/dashboard/menu/create-menu",
         },
         {
           title: "Starred",
@@ -89,25 +90,17 @@ const data = {
       ],
     },
     {
-      title: "Documentation",
+      title: "Meal Provider",
       url: "#",
       icon: BookOpen,
       items: [
         {
-          title: "Introduction",
-          url: "#",
+          title: "My Meal Provider",
+          url: "/dashboard/meal-provider/my-meal-provider",
         },
         {
-          title: "Get Started",
-          url: "#",
-        },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
+          title: "Update Meal Provider",
+          url: "/dashboard/meal-provider/update-meal-provider",
         },
       ],
     },

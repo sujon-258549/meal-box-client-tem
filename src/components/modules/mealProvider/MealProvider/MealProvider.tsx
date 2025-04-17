@@ -1,0 +1,202 @@
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import React from "react";
+import {
+  FaFacebookF,
+  FaInstagram,
+  FaTwitter,
+  FaLinkedin,
+  FaPhoneAlt,
+  FaGlobe,
+  FaCalendarAlt,
+  FaUserTie,
+  FaStar,
+} from "react-icons/fa";
+
+const data = {
+  socialMediaLinks: {
+    facebook: "https://facebook.com/freshbites",
+    instagram: "https://instagram.com/freshbites",
+    twitter: "https://twitter.com/freshbites",
+    linkedin: "https://linkedin.com/company/freshbites",
+  },
+  operatingHours: {
+    open: "8:00 AM",
+    close: "10:00 PM",
+    daysOpen: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ],
+  },
+  shopName: "Fresh Bites Grocery",
+  shopAddress: "123 Green Road, Dhaka",
+  shopLogo:
+    "https://res.cloudinary.com/dkdibsanz/image/upload/v1744482318/Fresh%20Bites%20Grocery.png",
+  phoneNumber: "+8801712345678",
+  website: "https://freshbites.com",
+  ownerName: "Md. Sujon Mia",
+  establishedYear: 2015,
+  productCategories: ["Groceries", "Vegetables", "Snacks", "Beverages"],
+  rating: 4.7,
+  isActive: true,
+  paymentMethods: ["Cash", "Card", "Mobile Payment"],
+  customerServiceContact: "+8801512345678",
+};
+
+const ShopInfoCard = () => {
+  return (
+    <section className="mx-5 mb-5 box-shadow rounded-sm">
+      <div className="max-w-6xl mx-auto bg-white rounded-2xl  shadow-lg p-8 sm:p-10 md:p-12 mb-10">
+        <div className="flex items-center gap-5 mb-6">
+          <img
+            src={data.shopLogo}
+            alt="Shop Logo"
+            className="w-20 h-20 rounded-xl object-cover"
+          />
+          <div>
+            <h2 className="text-3xl font-bold text-gray-800">
+              {data.shopName}
+            </h2>
+            <p className="text-gray-500">{data.shopAddress}</p>
+          </div>
+        </div>
+        <div className="border-t-2 pb-4 -mt-3 border-gray-900"></div>
+        <div className="grid md:grid-cols-2 gap-10 text-gray-700">
+          <div className="space-y-5">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Owner</h3>
+              <div className="flex items-center gap-2">
+                <FaUserTie />
+                <span>{data.ownerName}</span>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Phone</h3>
+              <div className="flex items-center gap-2">
+                <FaPhoneAlt />
+                <span>{data.phoneNumber}</span>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Website</h3>
+              <div className="flex items-center gap-2">
+                <FaGlobe />
+                <a
+                  href={data.website}
+                  className="text-blue-600 hover:underline"
+                  target="_blank"
+                >
+                  {data.website}
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Customer Service
+              </h3>
+              <p>{data.customerServiceContact}</p>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Operating Hours
+              </h3>
+              <p>
+                {data.operatingHours.open} - {data.operatingHours.close}
+              </p>
+              <p>Days: {data.operatingHours.daysOpen.join(", ")}</p>
+            </div>
+          </div>
+
+          <div className="space-y-5">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Established
+              </h3>
+              <div className="flex items-center gap-2">
+                <FaCalendarAlt />
+                <span>{data.establishedYear}</span>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Product Categories
+              </h3>
+              <ul className="list-disc list-inside">
+                {data.productCategories.map((item, idx) => (
+                  <li key={idx}>{item}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Payment Methods
+              </h3>
+              <p>{data.paymentMethods.join(", ")}</p>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">Rating</h3>
+              <div className="flex items-center gap-2 text-yellow-500">
+                <FaStar />
+                <span>{data.rating}</span>
+              </div>
+            </div>
+
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Social Media
+              </h3>
+              <div className="flex gap-4 text-xl text-blue-600 mt-2">
+                <a
+                  href={data.socialMediaLinks.facebook}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <FaFacebookF className="hover:text-blue-800 transition" />
+                </a>
+                <a
+                  href={data.socialMediaLinks.instagram}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <FaInstagram className="hover:text-pink-600 transition" />
+                </a>
+                <a
+                  href={data.socialMediaLinks.twitter}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <FaTwitter className="hover:text-sky-500 transition" />
+                </a>
+                <a
+                  href={data.socialMediaLinks.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <FaLinkedin className="hover:text-blue-700 border transition" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <Link href={"/dashboard/meal-provider/update-meal-provider"}>
+          <div className=" pt-5 md:mt-10">
+            <Button className="w-full mx-auto">update</Button>
+          </div>
+        </Link>
+      </div>
+    </section>
+  );
+};
+
+export default ShopInfoCard;
