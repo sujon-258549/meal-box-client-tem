@@ -61,7 +61,7 @@ interface Navbar1Props {
 const Navbar1 = ({
   logo = {
     url: "/",
-    src: "logo.png",
+    src: "/logo.png",
     alt: "logo",
     title: "Meal Box",
   },

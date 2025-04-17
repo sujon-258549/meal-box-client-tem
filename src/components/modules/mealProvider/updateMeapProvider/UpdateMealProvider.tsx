@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
@@ -19,10 +18,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { FileUpload } from "@/components/ui/file-upload";
 import { useState } from "react";
 import { CircleFadingPlus } from "lucide-react";
-import { mealProviderSchema } from "./mealProviderValidaction";
-import { toast } from "sonner";
-import { createProvider } from "@/services/Provider/providerSurvices";
-import { useRouter } from "next/navigation";
+import { mealProviderSchema } from "../createMealProvider/mealProviderValidaction";
 
 const DAYS_OF_WEEK = [
   "Monday",
@@ -41,32 +37,71 @@ const PAYMENT_METHODS = ["Cash", "Card", "Mobile Payment"] as const;
 // Infer the type from the schema
 type FormValues = z.infer<typeof mealProviderSchema>;
 
-const CreateMealProviderForm = () => {
-  const router = useRouter();
+const defaultData = {
+  socialMediaLinks: {
+    facebook: "https://facebook.com/freshbites",
+    instagram: "https://instagram.com/freshbites",
+    twitter: "https://twitter.com/freshbites",
+    linkedin: "https://linkedin.com/company/freshbites",
+  },
+  operatingHours: {
+    open: "08:00",
+    close: "22:00",
+    daysOpen: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+    ],
+  },
+  shopName: "Fresh Bites Grocery",
+  shopAddress: "123 Green Road, Dhaka",
+  shopLogo:
+    "https://res.cloudinary.com/dkdibsanz/image/upload/v1744482318/Fresh%20Bites%20Grocery.png",
+  phoneNumber: "+8801712345678",
+  website: "https://freshbites.com",
+  ownerName: "Md. Sujon Mia",
+  establishedYear: 2015,
+  productCategories: ["Groceries", "Vegetables", "Snacks", "Beverages"],
+  paymentMethods: ["Cash", "Card", "Mobile Payment"],
+  customerServiceContact: "+8801512345678",
+};
+
+const UpdateMealProviderForm = () => {
   const [files, setFiles] = useState<File[]>([]);
   const form = useForm<FormValues>({
     resolver: zodResolver(mealProviderSchema),
     defaultValues: {
-      shopName: "",
-      shopAddress: "",
-      phoneNumber: "",
-      website: "",
-      ownerName: "",
-      establishedYear: new Date().getFullYear(),
-      productCategories: [{ value: "" }],
+      shopName: defaultData.shopName || "",
+      shopAddress: defaultData.shopAddress || "",
+      phoneNumber: defaultData.phoneNumber || "",
+      website: defaultData.website || "",
+      ownerName: defaultData.ownerName || "",
+      establishedYear: defaultData.establishedYear || new Date().getFullYear(),
+
+      productCategories: defaultData.productCategories?.map(
+        (product: string) => ({
+          value: product,
+        })
+      ) || [{ value: "" }],
+
       socialMediaLinks: {
-        facebook: "",
-        instagram: "",
-        twitter: "",
-        linkedin: "",
+        facebook: defaultData.socialMediaLinks.facebook || "",
+        instagram: defaultData.socialMediaLinks.instagram || "",
+        twitter: defaultData.socialMediaLinks.twitter || "",
+        linkedin: defaultData.socialMediaLinks.linkedin || "",
       },
+
       operatingHours: {
-        open: "",
-        close: "",
-        daysOpen: [],
+        open: defaultData.operatingHours.open || "",
+        close: defaultData.operatingHours.close || "",
+        daysOpen: defaultData.operatingHours.daysOpen || [],
       },
-      paymentMethods: [],
-      customerServiceContact: "",
+
+      paymentMethods: defaultData.paymentMethods || [],
+      customerServiceContact: defaultData.customerServiceContact || "",
     },
   });
 
@@ -113,24 +148,6 @@ const CreateMealProviderForm = () => {
     //   });
     //   console.error(error);
     // }
-    try {
-      const formData = new FormData();
-      formData.append("data", JSON.stringify(modifiedData));
-      for (const file of files) {
-        formData.append("file", file);
-      }
-
-      const result = await createProvider(formData);
-      console.log(result);
-      if (result?.success) {
-        toast.success(result?.message);
-        router.push("/dashboard");
-      } else {
-        toast.error(result?.message);
-      }
-    } catch (error: any) {
-      return Error(error);
-    }
   };
 
   const handleFileUpload = (uploadedFiles: File[]) => {
@@ -542,4 +559,4 @@ const CreateMealProviderForm = () => {
   );
 };
 
-export default CreateMealProviderForm;
+export default UpdateMealProviderForm;

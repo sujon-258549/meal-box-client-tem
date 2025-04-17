@@ -35,8 +35,9 @@ export function NavMain({
 }) {
   return (
     <SidebarGroup>
-      <a href="#">
+      <Link href="/">
         <div className="flex gap-2.5 items-end">
+<<<<<<< HEAD
           {/* <img src="logo.png" className="w-8" alt="Meal Box Logo" /> */}
           <Image
             src="/logo.png"
@@ -45,11 +46,14 @@ export function NavMain({
             height={32}
             className="w-8"
           />
+=======
+          <img src="/logo.png" className="w-8" alt="Meal Box Logo" />
+>>>>>>> sujon2
           <div className="flex flex-col gap-0.5 leading-none">
             <span className="font-bold text-2xl text-gray-800">MealBox</span>
           </div>
         </div>
-      </a>
+      </Link>
       <SidebarGroupLabel>Menu</SidebarGroupLabel>
       <SidebarMenu>
         {items.map((item) => (
