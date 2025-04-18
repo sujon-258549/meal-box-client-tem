@@ -7,11 +7,7 @@ import { jwtDecode } from "jwt-decode";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-const BASE_URL = process.env.NEXT_PUBLIC_BASE_API;
-console.log(BASE_URL);
 export const signupUser = async (userData: FieldValues) => {
-  console.log(process.env.NEXT_PUBLIC_API_URL);
-  console.log(userData);
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/users/create-user`,
@@ -37,7 +33,6 @@ export const signupUser = async (userData: FieldValues) => {
 };
 
 export const loginUser = async (loginInfo: FieldValues) => {
-  console.log(BASE_URL);
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
       method: "POST",
@@ -70,27 +65,28 @@ export const getCurrentUser = async () => {
     return null;
   }
 };
-export const getMe = async () => {
-  const cookyStore = await cookies();
-  let token = cookyStore.get("access-token")!.value;
-  if (!token || (await isTokenExpired(token))) {
-    const { data } = await getNewToken();
-    token = data.accessToken;
-    cookyStore.set("access-token", token);
-  }
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/me`, {
-      method: "GET",
-      headers: {
-        Authorization: token,
-      },
-    });
+// export const getMe = async () => {
+//   const cookyStore = await cookies();
+//   let token = cookyStore.get("access-token")!.value;
+//   if (!token || (await isTokenExpired(token))) {
+//     const { data } = await getNewToken();
+//     token = data.accessToken;
+//     cookyStore.set("access-token", token);
+//   }
+//   try {
+//     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
 
-    return res.json();
-  } catch (error: any) {
-    return Error(error);
-  }
-};
+//       method: "GET",
+//       headers: {
+//         Authorization: token,
+//       },
+//     });
+
+//     return res.json();
+//   } catch (error: any) {
+//     return Error(error);
+//   }
+// };
 
 export const updateProfile = async (payload: any) => {
   const cookyStore = await cookies();
@@ -177,13 +173,11 @@ export const getMe = async () => {
     token = data.accessToken;
     cookieStore.set("access-token", token);
   }
-  console.log(`${BASE_URL}`);
+
   try {
-    const res = await fetch(`${BASE_URL}/users/me`, {
-      // const res = await fetch("http://localhost:5000/users/me", {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
       method: "GET",
       headers: {
-        // "Content-Type": "application/json",
         Authorization: token,
       },
     });
@@ -195,4 +189,3 @@ export const getMe = async () => {
     return Error(error);
   }
 };
-// http://localhost:5000/users/me

@@ -41,72 +41,38 @@ const PAYMENT_METHODS = ["Cash", "Card", "Mobile Payment"] as const;
 // Infer the type from the schema
 type FormValues = z.infer<typeof mealProviderSchema>;
 
-const defaultData = {
-  socialMediaLinks: {
-    facebook: "https://facebook.com/freshbites",
-    instagram: "https://instagram.com/freshbites",
-    twitter: "https://twitter.com/freshbites",
-    linkedin: "https://linkedin.com/company/freshbites",
-  },
-  operatingHours: {
-    open: "08:00",
-    close: "22:00",
-    daysOpen: [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-    ],
-  },
-  shopName: "Fresh Bites Grocery",
-  shopAddress: "123 Green Road, Dhaka",
-  shopLogo:
-    "https://res.cloudinary.com/dkdibsanz/image/upload/v1744482318/Fresh%20Bites%20Grocery.png",
-  phoneNumber: "+8801712345678",
-  website: "https://freshbites.com",
-  ownerName: "Md. Sujon Mia",
-  establishedYear: 2015,
-  productCategories: ["Groceries", "Vegetables", "Snacks", "Beverages"],
-  paymentMethods: ["Cash", "Card", "Mobile Payment"],
-  customerServiceContact: "+8801512345678",
-};
-
-const UpdateMealProviderForm = () => {
+const UpdateMealProviderForm = ({ data }: { data: any }) => {
   const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
   const form = useForm<FormValues>({
     resolver: zodResolver(mealProviderSchema),
     defaultValues: {
-      shopName: defaultData.shopName || "",
-      shopAddress: defaultData.shopAddress || "",
-      phoneNumber: defaultData.phoneNumber || "",
-      website: defaultData.website || "",
-      ownerName: defaultData.ownerName || "",
-      establishedYear: defaultData.establishedYear || new Date().getFullYear(),
+      shopName: data.shopName || "",
+      shopAddress: data.shopAddress || "",
+      phoneNumber: data.phoneNumber || "",
+      website: data.website || "",
+      ownerName: data.ownerName || "",
+      establishedYear: data.establishedYear || new Date().getFullYear(),
 
-      productCategories: defaultData.productCategories?.map(
-        (product: string) => ({
-          value: product,
-        })
-      ) || [{ value: "" }],
+      productCategories: data.productCategories?.map((product: string) => ({
+        value: product,
+      })) || [{ value: "" }],
 
       socialMediaLinks: {
-        facebook: defaultData.socialMediaLinks.facebook || "",
-        instagram: defaultData.socialMediaLinks.instagram || "",
-        twitter: defaultData.socialMediaLinks.twitter || "",
-        linkedin: defaultData.socialMediaLinks.linkedin || "",
+        facebook: data.socialMediaLinks.facebook || "",
+        instagram: data.socialMediaLinks.instagram || "",
+        twitter: data.socialMediaLinks.twitter || "",
+        linkedin: data.socialMediaLinks.linkedin || "",
       },
 
       operatingHours: {
-        open: defaultData.operatingHours.open || "",
-        close: defaultData.operatingHours.close || "",
-        daysOpen: defaultData.operatingHours.daysOpen || [],
+        open: data.operatingHours.open || "",
+        close: data.operatingHours.close || "",
+        daysOpen: data.operatingHours.daysOpen || [],
       },
 
-      paymentMethods: defaultData.paymentMethods || [],
-      customerServiceContact: defaultData.customerServiceContact || "",
+      paymentMethods: data.paymentMethods || [],
+      customerServiceContact: data.customerServiceContact || "",
     },
   });
 
