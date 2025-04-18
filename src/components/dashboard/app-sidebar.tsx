@@ -75,16 +75,12 @@ const data = {
       icon: Bot,
       items: [
         {
-          title: "Create Order",
-          url: "/dashboard/order/create-order",
+          title: "My Orders",
+          url: "/dashboard/order/my-order",
         },
         {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
+          title: "Received Meal Provider Orders",
+          url: "/dashboard/order/meal-provider-order",
         },
       ],
     },

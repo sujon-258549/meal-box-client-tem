@@ -1,5 +1,4 @@
-
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 interface Address {
   village: string;
   district: string;
@@ -8,24 +7,18 @@ interface Address {
   postCode: string;
 }
 
-interface MealTime {
-  menu: string;
-  price: number;
-  _id?: string;
-}
-
-interface DayMenu {
-  day: 'Saturday' | 'Sunday' | 'Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday';
-  morning: MealTime;
-  evening: MealTime;
-  night: MealTime;
-  _id?: string;
-}
-
 interface OperatingHours {
   open: string;
   close: string;
-  daysOpen: ('Monday' | 'Tuesday' | 'Wednesday' | 'Thursday' | 'Friday' | 'Saturday' | 'Sunday')[];
+  daysOpen: (
+    | "Monday"
+    | "Tuesday"
+    | "Wednesday"
+    | "Thursday"
+    | "Friday"
+    | "Saturday"
+    | "Sunday"
+  )[];
 }
 
 interface SocialMediaLinks {
@@ -60,26 +53,63 @@ interface User {
   dateOfBirth: string;
   email: string;
   fullName: string;
-  gender: 'male' | 'female' | 'other';
+  gender: "male" | "female" | "other";
   isBlock: boolean;
   isDelete: boolean;
   isShop: boolean;
   password: string;
   phoneNumber: string;
-  role: 'mealProvider' | string; // Add other possible roles
+  role: "mealProvider" | string; // Add other possible roles
   secondaryPhone: string;
   updatedAt: string | Date;
   _id: string | string;
 }
-
-interface TOrderMenu {
-  author_id: User | string | string;
-  createdAt: string | Date;
-  meals: DayMenu[];
-  shopId: ShopInfo | string | string;
-  updatedAt: string | Date;
-  _id: string | string;
+interface Meal {
+  // Define meal properties based on your actual data structure
+  // Example properties (adjust according to your data):
+  name: string;
+  price: number;
+  quantity: number;
+  // ... other meal properties
 }
 
-// For arrays of your data
-export type TOrderMenuList = TOrderMenu[];
+interface Order {
+  author_id: string;
+  createdAt: string;
+  meals: Meal[];
+  shopId: string;
+  updatedAt: string;
+  __v: number;
+  _id: string;
+}
+
+interface OrderItem {
+  meals: Meal[];
+  _id: string;
+}
+
+interface Transaction {
+  [x: string]: any;
+  createdAt: string;
+  customerId: User;
+  orderId: Order;
+  orders: OrderItem[];
+  paymentStatus: string;
+  shopId: ShopInfo;
+  total_price: number;
+  transactionId: string;
+  updatedAt: string;
+  _id: string;
+}
+
+export interface Meta {
+  limit: number;
+  page: number;
+  total: number;
+  totalPage: number;
+}
+
+export interface TOrderGetInfo {
+  data: Transaction;
+  meta: Meta;
+}

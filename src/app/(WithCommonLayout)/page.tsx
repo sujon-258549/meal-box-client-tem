@@ -1,13 +1,15 @@
+import { SixCard } from "@/components/home/SixCard";
+import { getAllMenus } from "@/services/Menu/menuServices";
 import React from "react";
 
-const HomePage = () => {
+const HomePage = async () => {
+  const { data } = await getAllMenus();
 
   return (
-    <div>
-      <h1>Welcome to MealBox home page</h1>
+    <div className="max-w-5xl py-10 mx-auto px-5">
+      <SixCard data={data} />
     </div>
   );
-
 };
 
 export default HomePage;

@@ -1,10 +1,19 @@
-import { getMyMenu } from "@/services/Menu/menuServices";
+import MyOrder from "@/components/modules/order/myorder/MyOrder";
+import { getMyOrder } from "@/services/Order/orderServices";
 import React from "react";
 
-const MyMenuPage = () => {
-  const { data } = getMyMenu();
-  console.log(data);
-  return <div>MyMenuPage</div>;
+const MyOrderPage = async ({
+  searchParams,
+}: {
+  searchParams: Promise<{ page: string }>;
+}) => {
+  const { page } = await searchParams;
+  const data = await getMyOrder(page);
+  return (
+    <div>
+      <MyOrder orders={data} />
+    </div>
+  );
 };
 
-export default MyMenuPage;
+export default MyOrderPage;
