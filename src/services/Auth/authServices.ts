@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
-import { jwtDecode } from "jwt-decode";
+import { isTokenExpired } from "@/lib/varifyToken";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const signupUser = async (userData: FieldValues) => {
@@ -53,16 +53,91 @@ export const loginUser = async (loginInfo: FieldValues) => {
   }
 };
 
-export const getCurrentUser = async () => {
-  const accessToken = (await cookies()).get("access-token")?.value;
-  console.log(accessToken);
-  let decodedData = null;
+// export const getCurrentUser = async () => {
+//   const accessToken = (await cookies()).get("access-token")?.value;
+//   console.log(accessToken);
+//   let decodedData = null;
 
-  if (accessToken) {
-    decodedData = await jwtDecode(accessToken);
-    return decodedData;
-  } else {
-    return null;
+//   if (accessToken) {
+//     decodedData = await jwtDecode(accessToken);
+//     return decodedData;
+//   } else {
+//     return null;
+//   }
+// };
+export const getCurrentUser = async () => {
+  const cookyStore = await cookies();
+  let token = cookyStore.get("access-token")!.value;
+  if (!token || (await isTokenExpired(token))) {
+    const { data } = await getNewToken();
+    token = data.accessToken;
+    cookyStore.set("access-token", token);
+  }
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    });
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+
+export const updateProfile = async (payload: any) => {
+  const cookyStore = await cookies();
+  let token = cookyStore.get("access-token")!.value;
+  if (!token || (await isTokenExpired(token))) {
+    const { data } = await getNewToken();
+    token = data.accessToken;
+    cookyStore.set("access-token", token);
+  }
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/update-user`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+export const updatePassword = async (payload: any) => {
+  const cookyStore = await cookies();
+  let token = cookyStore.get("access-token")!.value;
+  if (!token || (await isTokenExpired(token))) {
+    const { data } = await getNewToken();
+    token = data.accessToken;
+    cookyStore.set("access-token", token);
+  }
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/change-password`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
   }
 };
 
@@ -74,7 +149,7 @@ export const getNewToken = async () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: (await cookies()).get("refresh-token")!.value,
+          Authorization: (await cookies()).get("refresh-Token")!.value,
         },
       }
     );
