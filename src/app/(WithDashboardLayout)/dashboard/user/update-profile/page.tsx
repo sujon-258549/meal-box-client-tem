@@ -1,9 +1,10 @@
 import UpdateProfile from "@/components/modules/user/UpdateProfileForm";
-import { getCurrentUser } from "@/services/Auth/authServices";
+import { getMe } from "@/services/Auth/authServices";
 import React from "react";
 
 const UpdateProfilePage = async () => {
-  const { data } = await getCurrentUser();
+  const { data } = await getMe();
+  console.log(data);
   return (
     <div>
       <UpdateProfile data={data}></UpdateProfile>
