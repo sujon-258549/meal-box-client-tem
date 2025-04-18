@@ -3,6 +3,7 @@
 import { cookies } from "next/headers";
 import { FieldValues } from "react-hook-form";
 import { isTokenExpired } from "@/lib/varifyToken";
+import { jwtDecode } from "jwt-decode";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export const signupUser = async (userData: FieldValues) => {
@@ -53,19 +54,19 @@ export const loginUser = async (loginInfo: FieldValues) => {
   }
 };
 
-// export const getCurrentUser = async () => {
-//   const accessToken = (await cookies()).get("access-token")?.value;
-//   console.log(accessToken);
-//   let decodedData = null;
-
-//   if (accessToken) {
-//     decodedData = await jwtDecode(accessToken);
-//     return decodedData;
-//   } else {
-//     return null;
-//   }
-// };
 export const getCurrentUser = async () => {
+  const accessToken = (await cookies()).get("access-token")?.value;
+  console.log(accessToken);
+  let decodedData = null;
+
+  if (accessToken) {
+    decodedData = await jwtDecode(accessToken);
+    return decodedData;
+  } else {
+    return null;
+  }
+};
+export const getMe = async () => {
   const cookyStore = await cookies();
   let token = cookyStore.get("access-token")!.value;
   if (!token || (await isTokenExpired(token))) {

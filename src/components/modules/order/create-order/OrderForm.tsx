@@ -45,6 +45,7 @@ export function WeeklyMenuDisplay({
 }: {
   orders?: TOrderMenuList[];
 }) {
+  console.log(orders);
   const form = useForm<FormData>();
   const allMeals = orders.flatMap((order) => order?.meals || []);
 
