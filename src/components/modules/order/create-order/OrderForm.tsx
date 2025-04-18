@@ -101,7 +101,8 @@ export function WeeklyMenuDisplay({
       console.log(result);
       if (result?.success) {
         toast.success(result?.message, { id: toastId, duration: 2000 });
-        router.push("/dashboard/menu/my-menu");
+
+        router.push(result?.data?.paymentUrl);
       } else {
         toast.error(result?.message, { id: toastId, duration: 2000 });
       }
