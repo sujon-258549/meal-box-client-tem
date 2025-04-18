@@ -17,6 +17,7 @@ export const respondToOrder = async () => {};
 // 3. Track Deliveries
 export const getDeliveries = async () => {};
 
+// Create meal provider
 export const createProvider = async (data: FormData) => {
   const cookyStore = await cookies();
   let token = cookyStore.get("access-token")!.value;
@@ -30,6 +31,34 @@ export const createProvider = async (data: FormData) => {
       `${process.env.NEXT_PUBLIC_API_URL}/meal-provider/create-mealProvider`,
       {
         method: "POST",
+        headers: {
+          Authorization: token,
+        },
+        credentials: "include",
+        body: data,
+      }
+    );
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+
+// Update meal Provider
+export const updateProvider = async (data: FormData) => {
+  const cookyStore = await cookies();
+  let token = cookyStore.get("access-token")!.value;
+  if (!token || (await isTokenExpired(token))) {
+    const { data } = await getNewToken();
+    token = data.accessToken;
+    cookyStore.set("access-token", token);
+  }
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/meal-provider/update-mealProvider`,
+      {
+        method: "PUT",
         headers: {
           Authorization: token,
         },

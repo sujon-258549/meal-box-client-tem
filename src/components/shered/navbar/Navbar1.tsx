@@ -1,4 +1,4 @@
-import { LogIn, LucideArrowLeftToLine, Menu } from "lucide-react";
+"use client";
 
 import {
   Accordion,
@@ -22,17 +22,12 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import Link from "next/link";
 import { GiMeal } from "react-icons/gi";
+import ProfileDropdown from "@/components/profileDropdown/ProfileDropdown";
+import { LogIn, Menu } from "lucide-react";
+import { useUser } from "@/context/UserContext";
 
 interface MenuItem {
   title: string;
@@ -81,6 +76,8 @@ const Navbar1 = ({
     login: { title: "Login", url: "/login" },
   },
 }: Navbar1Props) => {
+  const { user } = useUser();
+  console.log(user);
   return (
     <section className="box-shadow py-4">
       <div className="max-w-5xl mx-auto px-5 ">
@@ -106,75 +103,40 @@ const Navbar1 = ({
           </div>
           <div className="flex max-lg:ml-auto space-x-4">
             {/* <Link href={"/create-meal-provider"}> */}
-            <div className="">
-              <div className="flex flex-col items-center gap-2">
-                <div className="group relative">
-                  <span>
-                    {" "}
-                    <Link href={"/create-meal-provider"}>
-                      <Button
-                        variant="outline"
-                        className="rounded-full flex items-center gap-1"
-                      >
-                        C M Provider
-                        <GiMeal className="text-2xl" />
-                      </Button>
-                    </Link>
-                  </span>
-                  <div className="bg-zinc-800 p-2 rounded-md group-hover:flex hidden absolute -bottom-2 translate-y-full left-1/2 -translate-x-1/2">
-                    <span className="text-white whitespace-nowrap">
-                      Create meal Provider
-                    </span>
-                    <div className="bg-inherit rotate-45 p-1 absolute top-0 -translate-y-1/2 left-1/2 -translate-x-1/2"></div>
-                  </div>
-                </div>
+            <div className="flex flex-col items-center gap-2">
+              <div className="group relative">
+                {user && user.role === "customer" && (
+                  <Link href={"/create-meal-provider"}>
+                    <Button
+                      variant="outline"
+                      className="rounded-full flex items-center gap-1 cursor-pointer"
+                    >
+                      C M Provider
+                      <GiMeal className="text-2xl" />
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
-            {/* </Link> */}
-            {/* login logout */}
-            <div>
-              <Button>
-                <a className="flex gap-1.5 items-center " href={auth.login.url}>
-                  {auth.login.title}
-                  <span className="">
-                    {" "}
-                    <LogIn />
-                  </span>
-                </a>
-              </Button>
-              <Button>
-                Logout <LucideArrowLeftToLine />
-              </Button>
-            </div>
-            {/* Profile Dropdown */}
-            <DropdownMenu>
-              <DropdownMenuTrigger>
-                <Avatar className="border-none">
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>SN</AvatarFallback>
-                </Avatar>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="mt-3.5  text-black w-[200px]">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  {" "}
-                  <Link href={"/dashboard"}>Dashboard</Link>
-                </DropdownMenuItem>
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>My Shop</DropdownMenuItem>
-                <DropdownMenuItem>My Order</DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                  <Button className="bg-red-500 text-white">
-                    {" "}
-                    <span className="flex gap-1.5 items-center">
-                      Log out <LogIn className="text-white" />
+            {user ? (
+              <ProfileDropdown />
+            ) : (
+              <div>
+                {/*Change by ripon */}
+                <Button variant="default">
+                  <Link
+                    className="flex gap-1.5 items-center "
+                    href={auth.login.url}
+                  >
+                    {auth.login.title}
+                    <span className="">
+                      {" "}
+                      <LogIn />
                     </span>
-                  </Button>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  </Link>
+                </Button>
+              </div>
+            )}
             {/* Menu Open Button */}
             <button className="lg:hidden">
               <svg className="w-7 h-7" fill="#000" viewBox="0 0 20 20">

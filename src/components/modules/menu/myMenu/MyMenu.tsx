@@ -189,7 +189,6 @@ export function MyMenuCard({ data }: { data: TMealPlan }) {
                     <Progress
                       value={percentage}
                       className="h-2"
-                      // @ts-expect-error indicatorColor
                       indicatorColor="bg-gradient-to-r from-indigo-400 to-purple-500"
                     />
                   </div>

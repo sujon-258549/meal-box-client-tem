@@ -4,7 +4,6 @@ import React from "react";
 const UpdateMealProvider = () => {
   return (
     <div>
-      {" "}
       <UpdateMealProviderForm />
     </div>
   );
