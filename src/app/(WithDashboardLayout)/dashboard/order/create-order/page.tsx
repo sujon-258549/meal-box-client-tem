@@ -1,9 +1,12 @@
-import { CreateOrder } from "@/components/modules/order/create-order/CreateOrder";
+import { WeeklyMenuDisplay } from "@/components/modules/order/create-order/OrderForm";
+import { getAllMenus } from "@/services/Menu/menuServices";
 
-const CreateOrderPage = () => {
+const CreateOrderPage = async () => {
+  const { data } = await getAllMenus();
+  console.log(data);
   return (
     <div>
-      <CreateOrder></CreateOrder>
+      <WeeklyMenuDisplay orders={data}></WeeklyMenuDisplay>
     </div>
   );
 };

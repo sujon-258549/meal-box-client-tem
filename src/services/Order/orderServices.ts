@@ -1,3 +1,4 @@
+"use server";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { isTokenExpired } from "@/lib/varifyToken";
 import { cookies } from "next/headers";
@@ -5,7 +6,7 @@ import { FieldValues } from "react-hook-form";
 import { getNewToken } from "../Auth/authServices";
 
 // 1. Select & Customize Meal Plans
-export const createMenuByProvider = async (data: FieldValues, id: string) => {
+export const createOrder = async (data: FieldValues, id: string) => {
   const cookyStore = await cookies();
   let token = cookyStore.get("access-token")!.value;
   if (!token || (await isTokenExpired(token))) {
@@ -32,7 +33,7 @@ export const createMenuByProvider = async (data: FieldValues, id: string) => {
 };
 
 // get my order
-export const getMyMenu = async () => {
+export const getMyOrder = async () => {
   const cookyStore = await cookies();
   let token = cookyStore.get("access-token")!.value;
   if (!token || (await isTokenExpired(token))) {
