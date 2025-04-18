@@ -2,7 +2,7 @@
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { TOrderMenuList } from "@/types";
+import { WeeklyMealPlan } from "@/types";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -40,16 +40,12 @@ const dayColors = {
   Friday: "bg-red-50 border-red-200",
 };
 
-export function WeeklyMenuDisplay({
-  orders = [],
-}: {
-  orders?: TOrderMenuList[];
-}) {
+export function WeeklyMenuDisplay({ orders }: { orders: WeeklyMealPlan }) {
   console.log(orders);
   const form = useForm<FormData>();
 
-  const allMeals = orders.flatMap((order) => order?.meals || []);
-
+  const allMeals = orders?.meals;
+  console.log(allMeals, orders);
   const calculateTotal = () => {
     let total = 0;
     const formData = form.getValues();

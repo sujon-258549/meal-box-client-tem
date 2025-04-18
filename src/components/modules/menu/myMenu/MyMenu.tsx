@@ -42,7 +42,10 @@ export function MyMenuCard({ data }: { data: TMealPlan }) {
     );
   };
 
-  const weeklyTotal = meals.reduce((sum, meal) => sum + getTotalPrice(meal), 0);
+  const weeklyTotal = meals?.reduce(
+    (sum, meal) => sum + getTotalPrice(meal),
+    0
+  );
   const maxDailyTotal =
     Math.max(...meals.map((meal) => getTotalPrice(meal))) * 1.2;
 
@@ -94,7 +97,7 @@ export function MyMenuCard({ data }: { data: TMealPlan }) {
             <CardContent>
               <p className="text-xl font-bold text-amber-600">
                 {
-                  meals.reduce((max, meal) =>
+                  meals?.reduce((max, meal) =>
                     getTotalPrice(meal) > getTotalPrice(max) ? meal : max
                   ).day
                 }
@@ -111,13 +114,13 @@ export function MyMenuCard({ data }: { data: TMealPlan }) {
 
             return (
               <Card
-                key={meal._id}
+                key={meal?._id}
                 className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
               >
                 <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-4">
                   <CardHeader className="p-0">
                     <CardTitle className="text-white flex justify-between items-center">
-                      <span>{meal.day}</span>
+                      <span>{meal?.day}</span>
                       <Badge variant="secondary" className="px-3 py-1 text-sm">
                         ${total}
                       </Badge>
@@ -134,12 +137,12 @@ export function MyMenuCard({ data }: { data: TMealPlan }) {
                           Breakfast
                         </h3>
                         <p className="text-sm text-muted-foreground">
-                          {meal.morning?.menu || "Not specified"}
+                          {meal?.morning?.menu || "Not specified"}
                         </p>
                       </div>
-                      {meal.morning?.price && (
+                      {meal?.morning?.price && (
                         <Badge className="bg-green-100 text-green-800">
-                          ${meal.morning.price}
+                          ${meal?.morning.price}
                         </Badge>
                       )}
                     </div>
@@ -151,12 +154,12 @@ export function MyMenuCard({ data }: { data: TMealPlan }) {
                       <div>
                         <h3 className="font-medium text-indigo-800">Lunch</h3>
                         <p className="text-sm text-muted-foreground">
-                          {meal.evening?.menu || "Not specified"}
+                          {meal?.evening?.menu || "Not specified"}
                         </p>
                       </div>
                       {meal.evening?.price && (
                         <Badge className="bg-blue-100 text-blue-800">
-                          ${meal.evening.price}
+                          ${meal?.evening.price}
                         </Badge>
                       )}
                     </div>
@@ -168,12 +171,12 @@ export function MyMenuCard({ data }: { data: TMealPlan }) {
                       <div>
                         <h3 className="font-medium text-indigo-800">Dinner</h3>
                         <p className="text-sm text-muted-foreground">
-                          {meal.night?.menu || "Not specified"}
+                          {meal?.night?.menu || "Not specified"}
                         </p>
                       </div>
                       {meal.night?.price && (
                         <Badge className="bg-purple-100 text-purple-800">
-                          ${meal.night.price}
+                          ${meal?.night?.price}
                         </Badge>
                       )}
                     </div>
@@ -184,7 +187,7 @@ export function MyMenuCard({ data }: { data: TMealPlan }) {
                   <div className="w-full">
                     <div className="flex justify-between text-xs text-muted-foreground mb-1">
                       <span>Daily Total</span>
-                      <span>{Math.round(percentage)}% of max</span>
+                      <span>{Math?.round(percentage)}% of max</span>
                     </div>
                     <Progress
                       value={percentage}
@@ -216,9 +219,9 @@ export function MyMenuCard({ data }: { data: TMealPlan }) {
                 <div key={i} className="flex items-center gap-3">
                   <div className={`w-3 h-3 rounded-full ${item.color}`}></div>
                   <div>
-                    <p className="font-medium">{item.value}</p>
+                    <p className="font-medium">{item?.value}</p>
                     <p className="text-sm text-muted-foreground">
-                      {item.label}
+                      {item?.label}
                     </p>
                   </div>
                 </div>

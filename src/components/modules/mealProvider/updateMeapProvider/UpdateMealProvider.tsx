@@ -110,7 +110,7 @@ const UpdateMealProviderForm = ({ data }: { data: any }) => {
       console.log(result);
       if (result?.success) {
         toast.success(result?.message);
-        router.push("/dashboard");
+        router.push("/dashboard/meal-provider/my-meal-provider");
       } else {
         toast.error(result?.message);
       }
