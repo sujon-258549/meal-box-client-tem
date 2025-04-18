@@ -104,6 +104,7 @@ const CreateMealProviderForm = () => {
       console.log(result);
       if (result?.success) {
         toast.success(result?.message);
+
         router.push("/dashboard");
       } else {
         toast.error(result?.message);
@@ -517,7 +518,7 @@ const CreateMealProviderForm = () => {
                 <FileUpload onChange={handleFileUpload} />
               </div>
 
-              <Button type="submit" className="w-full" size="lg">
+              <Button type="submit" className="w-full cursor-pointer" size="lg">
                 Create Meal Provider
               </Button>
             </form>

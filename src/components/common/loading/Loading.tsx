@@ -1,9 +1,10 @@
-import "./loading.css";
+// import "./loading.css";
+import styles from "./loading.module.css";
 
 const Loading = () => {
   return (
     <div>
-      <div className="loading-container">
+      <div className={styles.loadingContainer}>
         <span></span>
         <span></span>
         <span></span>

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
@@ -19,6 +20,9 @@ import { FileUpload } from "@/components/ui/file-upload";
 import { useState } from "react";
 import { CircleFadingPlus } from "lucide-react";
 import { mealProviderSchema } from "../createMealProvider/mealProviderValidaction";
+import { toast } from "sonner";
+import { updateProvider } from "@/services/Provider/providerSurvices";
+import { useRouter } from "next/navigation";
 
 const DAYS_OF_WEEK = [
   "Monday",
@@ -70,6 +74,7 @@ const defaultData = {
 };
 
 const UpdateMealProviderForm = () => {
+  const router = useRouter();
   const [files, setFiles] = useState<File[]>([]);
   const form = useForm<FormValues>({
     resolver: zodResolver(mealProviderSchema),
@@ -127,27 +132,25 @@ const UpdateMealProviderForm = () => {
       productCategories,
     };
     console.log({ modifiedData, files });
-    // try {
-    //   const formData = new FormData();
-    //   formData.append("data", JSON.stringify(modifiedData));
-    //   for (const file of image) {
-    //     formData.append("images", file);
-    //   }
-    //   const result = await createProduct(formData);
-    //   if (result?.success) {
-    //     toast.success(result?.message, { id: toastId, duration: 2000 });
-    //     router.push("/user/shop/products");
-    //     // Redirect or perform other actions on success
-    //   } else {
-    //     toast.error(result?.message, { id: toastId, duration: 2000 });
-    //   }
-    // } catch (error: any) {
-    //   toast.error("An error occurred while crating product.", {
-    //     id: toastId,
-    //     duration: 2000,
-    //   });
-    //   console.error(error);
-    // }
+
+    try {
+      const formData = new FormData();
+      formData.append("data", JSON.stringify(modifiedData));
+      for (const file of files) {
+        formData.append("file", file);
+      }
+
+      const result = await updateProvider(formData);
+      console.log(result);
+      if (result?.success) {
+        toast.success(result?.message);
+        router.push("/dashboard");
+      } else {
+        toast.error(result?.message);
+      }
+    } catch (error: any) {
+      return Error(error);
+    }
   };
 
   const handleFileUpload = (uploadedFiles: File[]) => {
@@ -548,8 +551,8 @@ const UpdateMealProviderForm = () => {
                 <FileUpload onChange={handleFileUpload} />
               </div>
 
-              <Button type="submit" className="w-full" size="lg">
-                Create Meal Provider
+              <Button type="submit" className="w-full cursor-pointer" size="lg">
+                Update Meal Provider
               </Button>
             </form>
           </Form>
