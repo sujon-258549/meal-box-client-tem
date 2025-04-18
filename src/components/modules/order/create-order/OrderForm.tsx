@@ -47,6 +47,7 @@ export function WeeklyMenuDisplay({
 }) {
   console.log(orders);
   const form = useForm<FormData>();
+
   const allMeals = orders.flatMap((order) => order?.meals || []);
 
   const calculateTotal = () => {

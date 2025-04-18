@@ -75,10 +75,9 @@ export const getMe = async () => {
     cookyStore.set("access-token", token);
   }
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/me`, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
         Authorization: token,
       },
     });
