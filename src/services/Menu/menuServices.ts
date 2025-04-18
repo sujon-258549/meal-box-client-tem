@@ -3,10 +3,9 @@
 
 import { isTokenExpired } from "@/lib/varifyToken";
 import { cookies } from "next/headers";
-import { FieldValues } from "react-hook-form";
 import { getNewToken } from "../Auth/authServices";
 
-export const createMenuByProvider = async (data: FieldValues) => {
+export const createMenuByProvider = async (MenuData: FormData) => {
   const cookyStore = await cookies();
   let token = cookyStore.get("access-token")!.value;
   if (!token || (await isTokenExpired(token))) {
@@ -15,16 +14,14 @@ export const createMenuByProvider = async (data: FieldValues) => {
     cookyStore.set("access-token", token);
   }
   try {
-    // console.log((await cookies()).get("access-token")!.value);
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/menu/create-menu`,
       {
         method: "POST",
         headers: {
-          "Content-type": "application/json",
           Authorization: token,
         },
-        body: JSON.stringify(data),
+        body: MenuData,
       }
     );
     return res.json();

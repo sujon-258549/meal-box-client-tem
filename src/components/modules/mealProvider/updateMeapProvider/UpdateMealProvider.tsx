@@ -131,7 +131,7 @@ const UpdateMealProviderForm = () => {
       ...data,
       productCategories,
     };
-    console.log({ modifiedData, files });
+    console.log("from client", { modifiedData, files });
 
     try {
       const formData = new FormData();

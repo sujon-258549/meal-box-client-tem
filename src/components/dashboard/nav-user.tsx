@@ -21,6 +21,8 @@ import {
 import { IconPassword } from "@tabler/icons-react";
 import { GiRamProfile } from "react-icons/gi";
 import Link from "next/link";
+import { logout } from "@/services/Auth/authServices";
+import { useUser } from "@/context/UserContext";
 
 export function NavUser({
   user,
@@ -32,6 +34,14 @@ export function NavUser({
   };
 }) {
   const { isMobile } = useSidebar();
+
+  const { setIsLoading } = useUser();
+
+  const handleSidebarLogout = async () => {
+    await logout();
+    setIsLoading(true);
+    window.location.href = "/";
+  };
 
   return (
     <SidebarMenu>
@@ -113,7 +123,10 @@ export function NavUser({
               </Link>
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="cursor-pointer">
+            <DropdownMenuItem
+              onClick={handleSidebarLogout}
+              className="cursor-pointer"
+            >
               <LogOut className="mr-2 h-4 w-4" />
               <span>Log out</span>
             </DropdownMenuItem>

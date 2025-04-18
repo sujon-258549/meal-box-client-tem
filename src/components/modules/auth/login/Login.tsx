@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React, { useState } from "react";
@@ -16,8 +15,7 @@ import { loginUser } from "@/services/Auth/authServices";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-
-// import { toast } from "sonner";
+import Link from "next/link";
 
 type loginSchema = z.infer<typeof loginSchema>;
 
@@ -42,23 +40,22 @@ export function LoginForm() {
   const [showPassword, setShowPassword] = useState(false);
 
   const submit: SubmitHandler<FieldValues> = async (data) => {
-    // const toastId = toast.loading("User Creating...............", {
-    //   duration: 2000,
-    // });
+    const toastId = toast.loading("Logging in...");
     const userData = {
       emailOrPhone: data.emailOrPhone,
       password: data.password,
     };
-    console.log(userData);
+
     try {
       const result = await loginUser(userData);
       if (result.success) {
-        toast.success(result?.message || "User Registration successful");
+        toast.success(result.message || "Login successful", { id: toastId });
         router.push("/");
       } else {
-        toast.error(result?.message || "User Registration failed");
+        toast.error(result?.message || "Login failed. Please try again.", {
+          id: toastId,
+        });
       }
-      console.log(result);
     } catch (error: any) {
       return Error(error);
     }
@@ -70,21 +67,9 @@ export function LoginForm() {
         style={{ boxShadow: "2px 2px 20px" }}
         className=" my-10  shadow-input mx-auto w-full max-w-xl rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black"
       >
-        {/* <div className="flex gap-2.5 items-center">
-          <img className="w-20" src="./mealbox.png" alt="" />
-          <div>
-            <h2 className="text-2xl font-semibold text-neutral-800 dark:text-neutral-200">
-              Login to Your Mealbox Account
-            </h2>
-            <p className="mt-2 text-sm text-neutral-600 dark:text-neutral-300 max-w-md">
-              Please enter your credentials to access your account and start
-              enjoying delicious meals delivered to your doorstep.
-            </p>
-          </div>
-        </div> */}
         <div className="flex gap-2.5 items-center">
           <Image
-            src="/mealbox.png" // assuming it's in the /public folder
+            src="/mealbox.png"
             alt="Mealbox logo"
             width={80}
             height={80}
@@ -142,12 +127,12 @@ export function LoginForm() {
         <div className="my-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
         <p className="mt-4 text-sm text-center text-neutral-600 dark:text-neutral-300">
           Don t have an account?{" "}
-          <a
+          <Link
             href="/signup"
             className="text-blue-600 hover:underline dark:text-blue-400"
           >
             Register here
-          </a>
+          </Link>
         </p>
       </div>
     </div>
