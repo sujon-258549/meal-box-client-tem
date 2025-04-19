@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
@@ -30,9 +31,26 @@ export const createMenuByProvider = async (MenuData: FormData) => {
   }
 };
 
-export const getAllMenus = async () => {
+export const getAllMenus = async (page?: string) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu`, {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/menu?page=${page}&limit=3`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          // Authorization: (await cookies()).get("access-token")!.value,
+        },
+      }
+    );
+    return res.json();
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+export const getSixMenus = async () => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu?limit=6`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -93,6 +111,13 @@ export const updateMyMenu = async (payload: any) => {
 };
 
 export const getSingleMenu = async (menuId: string) => {
+  const cookyStore = await cookies();
+  let token = cookyStore.get("access-token")!.value;
+  if (!token || (await isTokenExpired(token))) {
+    const { data } = await getNewToken();
+    token = data.accessToken;
+    cookyStore.set("access-token", token);
+  }
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/menu/${menuId}`,
@@ -100,11 +125,12 @@ export const getSingleMenu = async (menuId: string) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: token,
         },
       }
     );
 
-    return res;
+    return res.json();
   } catch (error: any) {
     return Error(error);
   }

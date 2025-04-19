@@ -33,7 +33,7 @@ export const createOrder = async (data: FieldValues, id: string) => {
 };
 
 // get my order
-export const getMyOrder = async () => {
+export const getMyOrder = async (page?: string) => {
   const cookyStore = await cookies();
   let token = cookyStore.get("access-token")!.value;
   if (!token || (await isTokenExpired(token))) {
@@ -43,7 +43,7 @@ export const getMyOrder = async () => {
   }
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/order/my-order`,
+      `${process.env.NEXT_PUBLIC_API_URL}/order/my-order?page=${page}&limit=5`,
       {
         method: "GET",
         headers: {
@@ -59,7 +59,8 @@ export const getMyOrder = async () => {
   }
 };
 // get my order
-export const getMealProviderOrder = async () => {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const getMealProviderOrder = async (page: string) => {
   const cookyStore = await cookies();
   let token = cookyStore.get("access-token")!.value;
   if (!token || (await isTokenExpired(token))) {

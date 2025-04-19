@@ -34,7 +34,7 @@ export default function MenuAddForm() {
     control,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<WeeklyMenuType>({
     resolver: zodResolver(weeklyMenuSchema),
     defaultValues: {
@@ -184,7 +184,7 @@ export default function MenuAddForm() {
           </div>
 
           <Button type="submit" className="w-full cursor-pointer">
-            Submit Weekly Menu
+            {isSubmitting ? <LoadingButton /> : "Submit Weekly Menu"}
           </Button>
         </form>
       </div>

@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { TOrderMenuList } from "@/types";
+import { WeeklyMealPlan } from "@/types";
 import { useForm } from "react-hook-form";
 import {
   Form,
@@ -14,6 +15,9 @@ import {
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { createOrder } from "@/services/Order/orderServices";
+import OrderInstruction from "./OrderInstruction";
+import Image from "next/image";
+import LoadingButton from "@/components/ui/Loading/Loader";
 
 interface FormData {
   days: Record<
@@ -30,25 +34,26 @@ interface FormData {
   >;
 }
 
-const dayColors = {
-  Saturday: "bg-orange-50 border-orange-200",
-  Sunday: "bg-blue-50 border-blue-200",
-  Monday: "bg-green-50 border-green-200",
-  Tuesday: "bg-purple-50 border-purple-200",
-  Wednesday: "bg-pink-50 border-pink-200",
-  Thursday: "bg-yellow-50 border-yellow-200",
-  Friday: "bg-red-50 border-red-200",
-};
+// const dayColors = {
+//   Saturday:
+//     "bg-gradient-to-br from-amber-200 box-shadow via-yellow-100 to-amber-300 border-amber-400",
+//   Sunday:
+//     "bg-gradient-to-br from-blue-200 box-shadow via-cyan-100 to-blue-300 border-blue-400",
+//   Monday:
+//     "bg-gradient-to-br from-emerald-200 box-shadow via-green-100 to-emerald-300 border-emerald-400",
+//   Tuesday:
+//     "bg-gradient-to-br from-violet-200 box-shadow via-purple-100 to-violet-300 border-violet-400",
+//   Wednesday:
+//     "bg-gradient-to-br from-rose-200 box-shadow via-pink-100 to-rose-300 border-rose-400",
+//   Thursday:
+//     "bg-gradient-to-br from-indigo-200 box-shadow via-blue-100 to-indigo-300 border-indigo-400",
+//   Friday:
+//     "bg-gradient-to-br from-fuchsia-200 box-shadow via-pink-100 to-fuchsia-300 border-fuchsia-400",
+// };
 
-export function WeeklyMenuDisplay({
-  orders = [],
-}: {
-  orders?: TOrderMenuList[];
-}) {
-  console.log(orders);
+export function WeeklyMenuDisplay({ orders }: { orders: WeeklyMealPlan }) {
   const form = useForm<FormData>();
-  const allMeals = orders.flatMap((order) => order?.meals || []);
-
+  const allMeals = orders?.meals;
   const calculateTotal = () => {
     let total = 0;
     const formData = form.getValues();
@@ -131,18 +136,27 @@ export function WeeklyMenuDisplay({
           <h1 className="text-3xl font-bold text-center mb-8">
             Weekly Meal Menu
           </h1>
-
+          <div>
+            <OrderInstruction />
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {allMeals.map((day) => (
               <div
+                style={{ boxShadow: "10px 10px 15px", borderRadius: "10px" }}
+                className="p-4"
                 key={day._id}
-                className={`rounded-xl p-5 shadow-md ${
-                  dayColors[day.day as keyof typeof dayColors] || "bg-gray-50"
-                } border`}
+                // className={`rounded-xl p-5 shadow-md ${
+                //   dayColors[day.day as keyof typeof dayColors] || "bg-gray-50"
+                // } border`}
               >
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-bold">{day.day}</h2>
-                  <span className="font-bold">৳{calculateTotal()}</span>
+                  <Image
+                    src="/logo.png"
+                    width={25}
+                    height={25}
+                    alt="Picture of the author"
+                  />
                 </div>
 
                 {(["morning", "evening", "night"] as const).map((mealTime) => {
@@ -151,16 +165,17 @@ export function WeeklyMenuDisplay({
                   return (
                     <div
                       key={mealTime}
-                      className="mb-4 p-4 bg-white rounded-lg"
+                      className="mb-4 p-4 bg-[#424242] text-white rounded-lg"
                     >
                       <FormField
                         control={form.control}
                         name={`days.${day._id}.meals.${mealTime}.selected`}
                         defaultValue={false}
                         render={({ field }) => (
-                          <FormItem className="flex items-center gap-2 mb-2">
+                          <FormItem className="flex  items-center gap-2 mb-2">
                             <FormControl>
                               <Checkbox
+                                className="data-[state=checked]:bg-green-500 data-[state=checked]:text-white"
                                 checked={field.value}
                                 onCheckedChange={field.onChange}
                               />
@@ -180,11 +195,6 @@ export function WeeklyMenuDisplay({
                       <h4 className="text-lg font-medium">
                         {day[mealTime]?.menu}
                       </h4>
-                      {day[mealTime]?.description && (
-                        <p className="text-sm text-gray-600">
-                          {day[mealTime]?.description}
-                        </p>
-                      )}
 
                       <FormField
                         control={form.control}
@@ -198,7 +208,7 @@ export function WeeklyMenuDisplay({
                             <FormControl>
                               <Textarea
                                 placeholder="Any modifications?"
-                                className="min-h-[60px] text-sm"
+                                className="min-h-[60px] bg-[#42424280] text-sm placeholder:text-white text-white"
                                 disabled={
                                   !form.watch(
                                     `days.${day._id}.meals.${mealTime}.selected`
@@ -229,7 +239,11 @@ export function WeeklyMenuDisplay({
               </div>
             </div>
             <Button type="submit" className="w-full mt-4">
-              Confirm Order
+              {form.formState.isSubmitting ? (
+                <LoadingButton />
+              ) : (
+                "Confirm Order"
+              )}
             </Button>
           </div>
         </form>
