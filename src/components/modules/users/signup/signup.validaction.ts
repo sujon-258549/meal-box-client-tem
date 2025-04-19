@@ -4,8 +4,14 @@ export const registrationSchema = z
   .object({
     fullName: z.string().min(1, "Full name is required"),
     email: z.string().email("Invalid email address"),
-    phoneNumber: z.string().min(11, "Phone must be at least 11 digits"),
-    secondaryPhone: z.string().min(11, "Phone must be at least 11 digits"),
+    phoneNumber: z
+      .string()
+      .min(11, "Phone number is required")
+      .regex(/^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/, "Invalid phone number"),
+    secondaryPhone: z
+      .string()
+      .min(11, "Phone number is required")
+      .regex(/^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/, "Invalid phone number"),
     dateOfBirth: z.string().min(1, "Date of Birth is required"),
     gender: z.enum(["male", "female", "other"], {
       required_error: "Gender is required",

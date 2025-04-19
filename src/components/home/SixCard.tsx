@@ -19,7 +19,7 @@ export const SixCard = ({ data }: { data: any }) => {
         </h1>
         <div className="max-w-md mx-auto border-b-2 mt-4 mb-8 border-[#424242]"></div>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
         {data?.map((menu: any, index: number) => {
           // Calculate total for this specific menu
           const menuTotal =
@@ -83,7 +83,7 @@ export const SixCard = ({ data }: { data: any }) => {
                       <Link href={`/dashboard/order/details-menu/${menu._id}`}>
                         <Button className="w-full ">
                           <ShoppingCart className="w-4 h-4 mr-1" />
-                          Buy now
+                          Order now
                         </Button>
                       </Link>
                     </div>

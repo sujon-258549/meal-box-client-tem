@@ -24,6 +24,7 @@ import { toast } from "sonner";
 import { createProvider } from "@/services/Provider/providerSurvices";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import LoadingButton from "@/components/ui/Loading/Loader";
 
 const DAYS_OF_WEEK = [
   "Monday",
@@ -88,6 +89,7 @@ const CreateMealProviderForm = () => {
     const productCategories = data.productCategories.map(
       (product) => product.value
     );
+
     const modifiedData = {
       ...data,
       productCategories,
@@ -99,7 +101,7 @@ const CreateMealProviderForm = () => {
       for (const file of files) {
         formData.append("file", file);
       }
-
+      console.log({ formData });
       const result = await createProvider(formData);
       console.log(result);
       if (result?.success) {
@@ -113,6 +115,42 @@ const CreateMealProviderForm = () => {
       return Error(error);
     }
   };
+  //   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+  //     const productCategories = data.productCategories.map(
+  //       (product) => product.value
+  //     );
+
+  //     const modifiedData = {
+  //       ...data,
+  //       productCategories,
+  //     };
+
+  //     try {
+  //       const formData = new FormData();
+  //       formData.append("data", JSON.stringify(modifiedData));
+
+  //       for (const file of files) {
+  //         formData.append("file", file);
+  //       }
+
+  //       // Optional: Debugging formData
+  //       for (const [key, value] of formData.entries()) {
+  //         console.log(`${key}:`, value);
+  //       }
+
+  //       const result = await createProvider(formData);
+
+  //       if (result?.success) {
+  //         toast.success(result.message);
+  //         router.push("/dashboard");
+  //       } else {
+  //         toast.error(result.message || "Something went wrong");
+  //       }
+  //     } catch (error) {
+  //       console.error("Submission error:", error);
+  //       toast.error("Something went wrong while submitting the form.");
+  //     }
+  //   };
 
   const handleFileUpload = (uploadedFiles: File[]) => {
     setFiles(uploadedFiles);
@@ -519,7 +557,11 @@ const CreateMealProviderForm = () => {
               </div>
 
               <Button type="submit" className="w-full cursor-pointer" size="lg">
-                Create Meal Provider
+                {form.formState.isSubmitting ? (
+                  <LoadingButton />
+                ) : (
+                  "Create Meal Provider"
+                )}
               </Button>
             </form>
           </Form>

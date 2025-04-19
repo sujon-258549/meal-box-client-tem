@@ -22,6 +22,7 @@ import { TUser } from "@/types";
 import { toast } from "sonner";
 import { updateProfile } from "@/services/Auth/authServices";
 import { useRouter } from "next/navigation";
+import LoadingButton from "@/components/ui/Loading/Loader";
 
 // Define form values type based on TUser
 type FormValues = {
@@ -244,7 +245,7 @@ const UpdateProfileForm = ({ data }: { data: TUser }) => {
           </div>
 
           <Button type="submit" className="w-full">
-            Update Profile
+            {form.formState.isSubmitting ? <LoadingButton /> : "Update Profile"}
           </Button>
         </form>
       </Form>

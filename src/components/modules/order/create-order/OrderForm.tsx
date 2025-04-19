@@ -16,6 +16,8 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { createOrder } from "@/services/Order/orderServices";
 import OrderInstruction from "./OrderInstruction";
+import Image from "next/image";
+import LoadingButton from "@/components/ui/Loading/Loader";
 
 interface FormData {
   days: Record<
@@ -50,11 +52,8 @@ interface FormData {
 // };
 
 export function WeeklyMenuDisplay({ orders }: { orders: WeeklyMealPlan }) {
-  console.log(orders);
   const form = useForm<FormData>();
-
   const allMeals = orders?.meals;
-  console.log(allMeals, orders);
   const calculateTotal = () => {
     let total = 0;
     const formData = form.getValues();
@@ -152,7 +151,12 @@ export function WeeklyMenuDisplay({ orders }: { orders: WeeklyMealPlan }) {
               >
                 <div className="flex justify-between items-center mb-4">
                   <h2 className="text-xl font-bold">{day.day}</h2>
-                  <span className="font-bold">৳{calculateTotal()}</span>
+                  <Image
+                    src="/logo.png"
+                    width={25}
+                    height={25}
+                    alt="Picture of the author"
+                  />
                 </div>
 
                 {(["morning", "evening", "night"] as const).map((mealTime) => {
@@ -168,9 +172,10 @@ export function WeeklyMenuDisplay({ orders }: { orders: WeeklyMealPlan }) {
                         name={`days.${day._id}.meals.${mealTime}.selected`}
                         defaultValue={false}
                         render={({ field }) => (
-                          <FormItem className="flex items-center gap-2 mb-2">
+                          <FormItem className="flex  items-center gap-2 mb-2">
                             <FormControl>
                               <Checkbox
+                                className="data-[state=checked]:bg-green-500 data-[state=checked]:text-white"
                                 checked={field.value}
                                 onCheckedChange={field.onChange}
                               />
@@ -203,7 +208,7 @@ export function WeeklyMenuDisplay({ orders }: { orders: WeeklyMealPlan }) {
                             <FormControl>
                               <Textarea
                                 placeholder="Any modifications?"
-                                className="min-h-[60px] text-sm placeholder:text-white text-white"
+                                className="min-h-[60px] bg-[#42424280] text-sm placeholder:text-white text-white"
                                 disabled={
                                   !form.watch(
                                     `days.${day._id}.meals.${mealTime}.selected`
@@ -234,7 +239,11 @@ export function WeeklyMenuDisplay({ orders }: { orders: WeeklyMealPlan }) {
               </div>
             </div>
             <Button type="submit" className="w-full mt-4">
-              Confirm Order
+              {form.formState.isSubmitting ? (
+                <LoadingButton />
+              ) : (
+                "Confirm Order"
+              )}
             </Button>
           </div>
         </form>

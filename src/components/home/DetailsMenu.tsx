@@ -18,6 +18,9 @@ import {
 } from "react-icons/fa";
 import { IoMdTime } from "react-icons/io";
 import { MdPayment } from "react-icons/md";
+import Link from "next/link";
+import { Button } from "../ui/button";
+import { ShoppingCart } from "lucide-react";
 
 interface Address {
   village: string;
@@ -71,6 +74,7 @@ interface DayMenu {
 }
 
 interface MenuData {
+  _id: string;
   meals?: DayMenu[];
   menuImage?: string;
   shopId?: shopId;
@@ -190,6 +194,14 @@ const DetailsMenu: React.FC<{ menu?: MenuData }> = ({ menu }) => {
             </div>
           </div>
         ))}
+      </div>
+      <div className="flex flex-col gap-2 mt-10 max-w-[200px] mx-auto ">
+        <Link href={`/dashboard/order/details-menu/${menu._id}`}>
+          <Button className="w-full py-6">
+            <ShoppingCart className="w-4 h-4 mr-1" />
+            Order now
+          </Button>
+        </Link>
       </div>
       <div className="bg-white mt-10 box-shadow rounded-xl shadow-md overflow-hidden mb-10">
         <h2 className="text-2xl md:text-3xl text-center font-bold py-5 border-b-4 border-[#0c0101]">
@@ -359,6 +371,7 @@ const DetailsMenu: React.FC<{ menu?: MenuData }> = ({ menu }) => {
           </div>
         </div>
       </div>
+
       {/* Empty State */}
       {(!menu.meals || menu.meals.length === 0) && (
         <div className="text-center py-10 bg-gray-100 rounded-lg">

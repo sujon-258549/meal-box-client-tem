@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { weeklyMenuSchema } from "../menu.zodValidationSchema";
 import Image from "next/image";
+import LoadingButton from "@/components/ui/Loading/Loader";
 
 const days = [
   "Saturday",
@@ -27,7 +28,7 @@ export default function MenuAddForm() {
     control,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<WeeklyMenuType>({
     resolver: zodResolver(weeklyMenuSchema),
     defaultValues: {
@@ -148,7 +149,7 @@ export default function MenuAddForm() {
           ))}
 
           <Button type="submit" className="w-full cursor-pointer">
-            Submit Weekly Menu
+            {isSubmitting ? <LoadingButton /> : "Submit Weekly Menu"}
           </Button>
         </form>
       </div>

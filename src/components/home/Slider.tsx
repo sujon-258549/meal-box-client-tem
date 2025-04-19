@@ -15,6 +15,7 @@ import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { Button } from "../ui/button";
 import { DotIcon, View } from "lucide-react";
 import { FaFacebook, FaInstagram, FaLinkedin, FaTwitter } from "react-icons/fa";
+import Link from "next/link";
 
 // import required modules
 // import { Pagination } from 'swiper/modules';
@@ -48,7 +49,10 @@ export default function Slider({ sliderData }: { sliderData: any }) {
                   />
                 </div>
                 <div className="max-md:text-center">
-                  <ul className="list-disc pl-5 text-base text-gray-700 space-y-2">
+                  <h1 className="text-2xl md:text-4xl text-white mb-5 ml-1.5 font-bold">
+                    Our Features
+                  </h1>
+                  <ul className="list-disc pl-5 text-base text-white space-y-2">
                     <li>Delicious and high-quality food</li>
                     <li>Clean and comfortable dining environment</li>
                     <li>Fast and friendly customer service</li>
@@ -56,7 +60,7 @@ export default function Slider({ sliderData }: { sliderData: any }) {
                     <li>Online ordering and payment system</li>
                   </ul>
 
-                  <p className="text-gray-300 mt-6 text-sm leading-relaxed flex gap-3.5">
+                  <p className="text-white mt-6 text-sm leading-relaxed flex gap-3.5">
                     {menu?.shopId?.productCategories?.[0] && (
                       <span className="flex items-center gap-1">
                         <DotIcon />
@@ -144,12 +148,11 @@ export default function Slider({ sliderData }: { sliderData: any }) {
                       </a>
                     )}
                   </div>
-                  <Button
-                    type="button"
-                    className="px-5 py-2.5 mt-10 font-medium "
-                  >
-                    Details Menu <View />
-                  </Button>
+                  <Link href={`/details-menu/${menu._id}`}>
+                    <Button className="px-5 py-2.5 mt-10 font-medium ">
+                      Details Menu <View />
+                    </Button>
+                  </Link>
                 </div>
               </div>
             </div>

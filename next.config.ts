@@ -1,8 +1,29 @@
+// import type { NextConfig } from "next";
+
+// const nextConfig: NextConfig = {
+//   images: {
+//     domains: ["img.freepik.com", "res.cloudinary.com"],
+//     unoptimized: true,
+//   },
+// };
+
+// export default nextConfig;
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    domains: ["img.freepik.com", "res.cloudinary.com"], // Add all domains you need
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "**",
+      },
+    ],
+  },
+  experimental: {
+    serverActions: {
+      bodySizeLimit: "5mb",
+    },
   },
 };
 

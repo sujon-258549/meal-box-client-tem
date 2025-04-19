@@ -9,6 +9,7 @@ export const getProviderMeals = async () => {};
 
 // Create meal provider
 export const createProvider = async (data: FormData) => {
+  console.log("data created", data);
   const cookyStore = await cookies();
   let token = cookyStore.get("access-token")!.value;
   if (!token || (await isTokenExpired(token))) {

@@ -23,6 +23,7 @@ import { mealProviderSchema } from "../createMealProvider/mealProviderValidactio
 import { toast } from "sonner";
 import { updateProvider } from "@/services/Provider/providerSurvices";
 import { useRouter } from "next/navigation";
+import LoadingButton from "@/components/ui/Loading/Loader";
 
 const DAYS_OF_WEEK = [
   "Monday",
@@ -518,7 +519,11 @@ const UpdateMealProviderForm = ({ data }: { data: any }) => {
               </div>
 
               <Button type="submit" className="w-full cursor-pointer" size="lg">
-                Update Meal Provider
+                {form.formState.isSubmitting ? (
+                  <LoadingButton />
+                ) : (
+                  "Update Meal Provider"
+                )}
               </Button>
             </form>
           </Form>
