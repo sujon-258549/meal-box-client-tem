@@ -92,7 +92,7 @@ const CreateMealProviderForm = () => {
       ...data,
       productCategories,
     };
-
+    console.log(modifiedData);
     try {
       const formData = new FormData();
       formData.append("data", JSON.stringify(modifiedData));
@@ -100,9 +100,12 @@ const CreateMealProviderForm = () => {
         formData.append("file", file);
       }
 
+      console.log(formData);
+
       const result = await createProvider(formData);
-      console.log(result);
+
       if (result?.success) {
+        // setIsShop(true);
         toast.success(result?.message);
 
         router.push("/dashboard");

@@ -6,8 +6,6 @@ import { isTokenExpired } from "@/lib/varifyToken";
 import { jwtDecode } from "jwt-decode";
 
 export const signupUser = async (userData: FieldValues) => {
-  console.log(process.env.NEXT_PUBLIC_API_URL);
-  console.log(userData);
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/users/create-user`,
@@ -21,6 +19,7 @@ export const signupUser = async (userData: FieldValues) => {
     );
 
     const result = await res.json();
+    console.log(result);
     // console.log(result);
     // if (result.success) {
     //   (await cookies()).set("access-token", result?.data?.accessToken);
@@ -28,10 +27,12 @@ export const signupUser = async (userData: FieldValues) => {
     return result;
   } catch (error: any) {
     return Error(error);
+    // console.log("Here is error");
   }
 };
 
 export const loginUser = async (loginInfo: FieldValues) => {
+  console.log("abc", process.env.NEXT_PUBLIC_API_URL);
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
       method: "POST",
@@ -66,12 +67,12 @@ export const getCurrentUser = async () => {
 };
 
 export const updateProfile = async (payload: any) => {
-  const cookyStore = await cookies();
-  let token = cookyStore.get("access-token")!.value;
+  const cookieStore = await cookies();
+  let token = cookieStore.get("access-token")!.value;
   if (!token || (await isTokenExpired(token))) {
     const { data } = await getNewToken();
     token = data.accessToken;
-    cookyStore.set("access-token", token);
+    cookieStore.set("access-token", token);
   }
   try {
     const res = await fetch(
@@ -121,12 +122,14 @@ export const updatePassword = async (payload: any) => {
 
 export const getNewToken = async () => {
   try {
+    // const res = await fetch(
+    //   "http://localhost:5000/auth/refresh-token",
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh-token`,
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          // "Content-Type": "application/json",
           Authorization: (await cookies()).get("refresh-Token")!.value,
         },
       }

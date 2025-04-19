@@ -19,13 +19,15 @@ export const getDeliveries = async () => {};
 
 // Create meal provider
 export const createProvider = async (data: FormData) => {
-  const cookyStore = await cookies();
-  let token = cookyStore.get("access-token")!.value;
+  const cookieStore = await cookies();
+  let token = cookieStore.get("access-token")!.value;
   if (!token || (await isTokenExpired(token))) {
     const { data } = await getNewToken();
+    console.log("first", data);
     token = data.accessToken;
-    cookyStore.set("access-token", token);
+    cookieStore.set("access-token", token);
   }
+  console.log(data);
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/meal-provider/create-mealProvider`,
@@ -38,7 +40,17 @@ export const createProvider = async (data: FormData) => {
         body: data,
       }
     );
-    return res.json();
+    const result = await res.json();
+    console.log("provider", result);
+    if (result?.success) {
+      console.log("in the if block");
+      const { data } = await getNewToken();
+      console.log("AccessTokennnnnnnnnnnnnnnnn", data);
+
+      token = data.accessToken;
+      cookieStore.set("access-token", token);
+    }
+    return result;
   } catch (error: any) {
     return Error(error);
   }

@@ -19,6 +19,9 @@ const ProfileDropdown = () => {
   const handleLogout = () => {
     logout();
     setIsLoading(true);
+    // if (protectedRoutes.some((route) => pathname.match(route))) {
+    //   router.push("/");
+    // }
   };
   return (
     <>

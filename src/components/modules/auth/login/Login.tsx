@@ -11,16 +11,19 @@ import { z } from "zod";
 import { loginSchema } from "./login.zodValidactionSchema";
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/ui/Loading/Loader";
-import { loginUser } from "@/services/Auth/authServices";
+import { getCurrentUser, loginUser } from "@/services/Auth/authServices";
 import { toast } from "sonner";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { useUser } from "@/context/UserContext";
 
 type loginSchema = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
   const router = useRouter();
+  const { setIsLoading } = useUser();
+
   const form = useForm<loginSchema>({
     resolver: zodResolver(loginSchema),
   });
@@ -39,6 +42,9 @@ export function LoginForm() {
 
   const [showPassword, setShowPassword] = useState(false);
 
+  const searchParams = useSearchParams();
+  const redirect = searchParams.get("redirectPath");
+
   const submit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Logging in...");
     const userData = {
@@ -48,9 +54,15 @@ export function LoginForm() {
 
     try {
       const result = await loginUser(userData);
-      if (result.success) {
+      setIsLoading(true);
+      await getCurrentUser();
+      if (result?.success) {
         toast.success(result.message || "Login successful", { id: toastId });
-        router.push("/");
+        if (redirect) {
+          router.push(redirect);
+        } else {
+          router.push("/");
+        }
       } else {
         toast.error(result?.message || "Login failed. Please try again.", {
           id: toastId,
@@ -92,6 +104,7 @@ export function LoginForm() {
             <Label htmlFor="email">Email Address</Label>
             <Input
               id="email"
+              autoComplete="username"
               {...register("emailOrPhone")}
               placeholder="projectmayhem@gmail.com"
             />
@@ -102,6 +115,7 @@ export function LoginForm() {
             <Label htmlFor="password"> Password</Label>
             <Input
               id="password"
+              autoComplete="current-password"
               {...register("password")}
               placeholder="Enter your password"
               type={showPassword ? "text" : "password"}
