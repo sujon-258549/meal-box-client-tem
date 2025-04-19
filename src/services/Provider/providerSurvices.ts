@@ -64,9 +64,6 @@ export const getAllProvider = async () => {
       `${process.env.NEXT_PUBLIC_API_URL}/meal-provider`,
       {
         method: "GET",
-        headers: {
-          "Content-type": "application/json",
-        },
       }
     );
 

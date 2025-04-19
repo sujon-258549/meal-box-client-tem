@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
@@ -33,9 +34,26 @@ export const createMenuByProvider = async (data: FieldValues) => {
   }
 };
 
-export const getAllMenus = async () => {
+export const getAllMenus = async (page?: string) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu`, {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/menu?page=${page}&limit=3`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          // Authorization: (await cookies()).get("access-token")!.value,
+        },
+      }
+    );
+    return res.json();
+  } catch (error: any) {
+    throw new Error(error);
+  }
+};
+export const getSixMenus = async () => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu?limit=6`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",

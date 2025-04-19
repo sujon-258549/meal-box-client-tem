@@ -8,19 +8,18 @@ import { AlignLeft, ShoppingCart } from "lucide-react";
 
 import Link from "next/link";
 import { IconDetails } from "@tabler/icons-react";
+import Pagination from "@/components/ui/paginaciton";
 
-export const SixCard = ({ data }: { data: any }) => {
+export const AllMenuCard = ({ data }: { data: any }) => {
   console.log(data);
   return (
     <>
-      <div>
-        <h1 className="text-2xl md:text-4xl text-center pt-8  font-bold">
-          Menu Section
-        </h1>
-        <div className="max-w-md mx-auto border-b-2 mt-4 mb-8 border-[#424242]"></div>
-      </div>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-        {data?.map((menu: any, index: number) => {
+      <h1 className="text-2xl md:text-4xl text-center font-bold pb-5 border-b-2 border-[#424242]">
+        {" "}
+        All Menu Product
+      </h1>
+      <div className="grid grid-cols-1 pt-5 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        {data?.data?.map((menu: any, index: number) => {
           // Calculate total for this specific menu
           const menuTotal =
             menu.meals?.reduce(
@@ -94,12 +93,8 @@ export const SixCard = ({ data }: { data: any }) => {
           );
         })}
       </div>
-      <div className="flex justify-center py-10 md:py-20">
-        <Link href={"/dashboard/menu/all-menu"}>
-          <Button>
-            View All Menu <AlignLeft />
-          </Button>
-        </Link>
+      <div className="py-10">
+        <Pagination total={data?.meta?.totalPage} />
       </div>
     </>
   );
