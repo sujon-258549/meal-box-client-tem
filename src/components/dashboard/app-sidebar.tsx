@@ -10,7 +10,6 @@ import {
   GalleryVerticalEnd,
   Map,
   PieChart,
-  Settings2,
   SquareTerminal,
 } from "lucide-react";
 
@@ -76,16 +75,12 @@ const data = {
       icon: Bot,
       items: [
         {
-          title: "Genesis",
-          url: "#",
+          title: "My Orders",
+          url: "/dashboard/order/my-order",
         },
         {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
+          title: "Received Meal Provider Orders",
+          url: "/dashboard/order/meal-provider-order",
         },
       ],
     },
@@ -103,11 +98,6 @@ const data = {
           url: "/dashboard/meal-provider/update-meal-provider",
         },
       ],
-    },
-    {
-      title: "Settings",
-      url: "#",
-      icon: Settings2,
     },
   ],
   projects: [

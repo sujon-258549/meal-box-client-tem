@@ -1,12 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
 import { isTokenExpired } from "@/lib/varifyToken";
 import { cookies } from "next/headers";
-import { FieldValues } from "react-hook-form";
 import { getNewToken } from "../Auth/authServices";
 
-export const createMenuByProvider = async (data: FieldValues) => {
+export const createMenuByProvider = async (MenuData: FormData) => {
   const cookyStore = await cookies();
   let token = cookyStore.get("access-token")!.value;
   if (!token || (await isTokenExpired(token))) {
@@ -15,27 +13,42 @@ export const createMenuByProvider = async (data: FieldValues) => {
     cookyStore.set("access-token", token);
   }
   try {
-    // console.log((await cookies()).get("access-token")!.value);
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/menu/create-menu`,
       {
         method: "POST",
         headers: {
-          "Content-type": "application/json",
           Authorization: token,
         },
-        body: JSON.stringify(data),
+        body: MenuData,
       }
     );
     return res.json();
   } catch (error: any) {
-    throw new Error(error);
+    return Error(error);
   }
 };
 
-export const getAllMenus = async () => {
+export const getAllMenus = async (page?: string) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu`, {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/menu?page=${page}&limit=3`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          // Authorization: (await cookies()).get("access-token")!.value,
+        },
+      }
+    );
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+export const getSixMenus = async () => {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu?limit=6`, {
       method: "GET",
       headers: {
         "Content-type": "application/json",
@@ -44,7 +57,7 @@ export const getAllMenus = async () => {
     });
     return res.json();
   } catch (error: any) {
-    throw new Error(error);
+    return Error(error);
   }
 };
 
@@ -96,6 +109,13 @@ export const updateMyMenu = async (payload: any) => {
 };
 
 export const getSingleMenu = async (menuId: string) => {
+  const cookyStore = await cookies();
+  let token = cookyStore.get("access-token")!.value;
+  if (!token || (await isTokenExpired(token))) {
+    const { data } = await getNewToken();
+    token = data.accessToken;
+    cookyStore.set("access-token", token);
+  }
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/menu/${menuId}`,
@@ -103,11 +123,12 @@ export const getSingleMenu = async (menuId: string) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: token,
         },
       }
     );
 
-    return res;
+    return res.json();
   } catch (error: any) {
     return Error(error);
   }

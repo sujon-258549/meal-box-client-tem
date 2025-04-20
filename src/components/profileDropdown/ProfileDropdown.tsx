@@ -19,9 +19,12 @@ const ProfileDropdown = () => {
   const handleLogout = () => {
     logout();
     setIsLoading(true);
+    // if (protectedRoutes.some((route) => pathname.match(route))) {
+    //   router.push("/");
+    // }
   };
   return (
-    <>
+    <div>
       <DropdownMenu>
         <DropdownMenuTrigger
           className="cursor-pointer border-none focus:outline-none focus:ring-0 focus:border-none active:border-none"
@@ -32,15 +35,21 @@ const ProfileDropdown = () => {
             <AvatarFallback>SN</AvatarFallback>
           </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="mt-3.5  text-black w-[200px]">
+        <DropdownMenuContent className="mt-5  text-black w-[200px]">
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
             <Link href={"/dashboard"}>Dashboard</Link>
           </DropdownMenuItem>
-          <DropdownMenuItem>Profile</DropdownMenuItem>
-          <DropdownMenuItem>My Shop</DropdownMenuItem>
-          <DropdownMenuItem>My Order</DropdownMenuItem>
+          <Link href={"/dashboard/user/view-profile"}>
+            <DropdownMenuItem>Profile</DropdownMenuItem>
+          </Link>
+          <Link href={"/dashboard/meal-provider/my-meal-provider"}>
+            <DropdownMenuItem>My Shop</DropdownMenuItem>
+          </Link>
+          <Link href={"/dashboard/order/my-order"}>
+            <DropdownMenuItem>My Order</DropdownMenuItem>
+          </Link>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout}>
             <Button className="bg-purple-500 text-white w-full">
@@ -51,7 +60,7 @@ const ProfileDropdown = () => {
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenu>
-    </>
+    </div>
   );
 };
 

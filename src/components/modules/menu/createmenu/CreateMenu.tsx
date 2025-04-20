@@ -9,6 +9,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { weeklyMenuSchema } from "../menu.zodValidationSchema";
 import Image from "next/image";
+import { FileUpload } from "@/components/ui/file-upload";
+import { useState } from "react";
+import { createMenuByProvider } from "@/services/Menu/menuServices";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
+import LoadingButton from "@/components/ui/Loading/Loader";
 
 const days = [
   "Saturday",
@@ -23,11 +29,13 @@ type MealTime = "morning" | "evening" | "night";
 type WeeklyMenuType = z.infer<typeof weeklyMenuSchema>;
 
 export default function MenuAddForm() {
+  const router = useRouter();
+  const [files, setFiles] = useState<File[]>([]);
   const {
     control,
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<WeeklyMenuType>({
     resolver: zodResolver(weeklyMenuSchema),
     defaultValues: {
@@ -45,22 +53,48 @@ export default function MenuAddForm() {
     name: "meals",
   });
 
-  //   const router = useRouter();
+  const handleMenuFileUpload = (uploadedFiles: File[]) => {
+    setFiles(uploadedFiles);
+  };
+
   const onSubmit = async (data: WeeklyMenuType) => {
-    console.log(data);
-    // const toastId = toast.loading("Meal Creating......", { duration: 2000 });
-    // try {
-    // const result = await createMenuByProvider(data);
-    //   console.log(result);
-    //   if (result?.success) {
-    //     toast.success(result?.message, { id: toastId, duration: 2000 });
-    //     router.push("/dashboard/menu/my-menu");
-    //   } else {
-    //     toast.error(result?.message, { id: toastId, duration: 2000 });
-    //   }
-    // } catch (error: any) {
-    //   return Error(error);
-    // }
+    try {
+      const formData = new FormData();
+      const menuPayload = {
+        meals: data.meals.map((day) => ({
+          day: day.day,
+          morning: {
+            menu: day.morning.menu,
+            price: Number(day.morning.price),
+          },
+          evening: {
+            menu: day.evening.menu,
+            price: Number(day.evening.price),
+          },
+          night: {
+            menu: day.night.menu,
+            price: Number(day.night.price),
+          },
+        })),
+      };
+      formData.append("data", JSON.stringify(menuPayload));
+      if (files.length > 0) {
+        formData.append("file", files[0]);
+      } else {
+        throw new Error("Menu image is required");
+      }
+
+      const result = await createMenuByProvider(formData);
+      
+      if (result?.success) {
+        toast.success(result?.message);
+        router.push("/dashboard/menu/my-menu");
+      } else {
+        toast.error(result?.message);
+      }
+    } catch (error: any) {
+      return Error(error);
+    }
   };
 
   return (
@@ -146,9 +180,12 @@ export default function MenuAddForm() {
               )}
             </div>
           ))}
+          <div className="w-full my-5 max-w-4xl mx-auto min-h-10 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
+            <FileUpload onChange={handleMenuFileUpload} />
+          </div>
 
           <Button type="submit" className="w-full cursor-pointer">
-            Submit Weekly Menu
+            {isSubmitting ? <LoadingButton /> : "Submit Weekly Menu"}
           </Button>
         </form>
       </div>

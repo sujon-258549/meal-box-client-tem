@@ -11,6 +11,7 @@ import {
 import { TUser } from "@/types";
 
 const ViewProfile = ({ data }: { data: TUser }) => {
+  console.log(data);
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-US", {
       year: "numeric",
@@ -37,7 +38,7 @@ const ViewProfile = ({ data }: { data: TUser }) => {
           <div className="flex justify-between items-start mb-6">
             <div>
               <h1 className="text-2xl font-bold text-gray-900">
-                {data.fullName}
+                {data?.fullName}
               </h1>
               <div className="flex items-center mt-2">
                 <BadgeCheck

@@ -78,6 +78,7 @@ const Navbar1 = ({
 }: Navbar1Props) => {
   const { user } = useUser();
   console.log(user);
+
   return (
     <section className="box-shadow py-4">
       <div className="max-w-5xl mx-auto px-5 ">

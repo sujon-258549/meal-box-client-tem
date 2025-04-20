@@ -88,7 +88,7 @@ export function SignupForm() {
 
     try {
       const result = await signupUser(userData);
-      if (result.success) {
+      if (result?.success) {
         toast.success(result?.message || "signup success");
         router.push("/login");
       } else {
