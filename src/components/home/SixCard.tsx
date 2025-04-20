@@ -10,7 +10,6 @@ import Link from "next/link";
 import { IconDetails } from "@tabler/icons-react";
 
 export const SixCard = ({ data }: { data: any }) => {
-  console.log(data);
   return (
     <>
       <div>

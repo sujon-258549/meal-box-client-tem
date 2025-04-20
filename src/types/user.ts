@@ -8,6 +8,13 @@ export interface IUser {
   iat?: number;
   exp?: number;
 }
+export type UserPayload = {
+  id: string;
+  emailOrPhone: string;
+  role: "mealProvider" | string; // you can narrow or expand roles here
+  iat: number;
+  exp: number;
+};
 
 export type TAddress = {
   village: string;

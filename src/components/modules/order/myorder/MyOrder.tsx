@@ -10,12 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import {
-  ReactElement,
-  JSXElementConstructor,
-  ReactNode,
-  ReactPortal,
-} from "react";
+
 import SearchAndSort from "./SearchAndSort";
 
 const MyOrder = ({ orders }: { orders: any }) => {
@@ -38,150 +33,42 @@ const MyOrder = ({ orders }: { orders: any }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orders.data.map(
-            (
-              order: {
-                id: any;
-                shopId: {
-                  shopLogo: string | Blob | undefined;
-                  shopName:
-                    | string
-                    | number
-                    | bigint
-                    | boolean
-                    | ReactElement<unknown, string | JSXElementConstructor<any>>
-                    | Iterable<ReactNode>
-                    | ReactPortal
-                    | Promise<
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | ReactPortal
-                        | ReactElement<
-                            unknown,
-                            string | JSXElementConstructor<any>
-                          >
-                        | Iterable<ReactNode>
-                        | null
-                        | undefined
-                      >
-                    | null
-                    | undefined;
-                  customerServiceContact:
-                    | string
-                    | number
-                    | bigint
-                    | boolean
-                    | ReactElement<unknown, string | JSXElementConstructor<any>>
-                    | Iterable<ReactNode>
-                    | ReactPortal
-                    | Promise<
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | ReactPortal
-                        | ReactElement<
-                            unknown,
-                            string | JSXElementConstructor<any>
-                          >
-                        | Iterable<ReactNode>
-                        | null
-                        | undefined
-                      >
-                    | null
-                    | undefined;
-                };
-                authorId: {
-                  fullName:
-                    | string
-                    | number
-                    | bigint
-                    | boolean
-                    | ReactElement<unknown, string | JSXElementConstructor<any>>
-                    | Iterable<ReactNode>
-                    | ReactPortal
-                    | Promise<
-                        | string
-                        | number
-                        | bigint
-                        | boolean
-                        | ReactPortal
-                        | ReactElement<
-                            unknown,
-                            string | JSXElementConstructor<any>
-                          >
-                        | Iterable<ReactNode>
-                        | null
-                        | undefined
-                      >
-                    | null
-                    | undefined;
-                };
-                total_price: number;
-                paymentStatus:
-                  | string
-                  | number
-                  | bigint
-                  | boolean
-                  | ReactElement<unknown, string | JSXElementConstructor<any>>
-                  | Iterable<ReactNode>
-                  | Promise<
-                      | string
-                      | number
-                      | bigint
-                      | boolean
-                      | ReactPortal
-                      | ReactElement<
-                          unknown,
-                          string | JSXElementConstructor<any>
-                        >
-                      | Iterable<ReactNode>
-                      | null
-                      | undefined
-                    >
-                  | null
-                  | undefined;
-              },
-              index: any
-            ) => (
-              <TableRow key={order.id || `order-${index}`}>
-                <TableCell>
-                  {order?.shopId?.shopLogo && (
-                    <img
-                      src={order?.shopId?.shopLogo}
-                      alt={`${order.shopId.shopName} logo`}
-                      width={40}
-                      height={40}
-                      className="rounded-full"
-                    />
-                  )}
-                </TableCell>
-                <TableCell className="font-medium">
-                  {order.shopId.shopName}
-                </TableCell>
-                <TableCell>{order.authorId.fullName}</TableCell>
-                <TableCell>{order.shopId.customerServiceContact}</TableCell>
-                <TableCell>${order.total_price.toFixed(2)}</TableCell>
-                <TableCell>
-                  <span
-                    className={`px-2 py-1 rounded-md text-xs ${
-                      order.paymentStatus === "success"
-                        ? "bg-green-100 text-green-800"
-                        : order.paymentStatus === "pending"
-                        ? "bg-yellow-100 text-yellow-800"
-                        : order.paymentStatus === "processing"
-                        ? "bg-blue-100 text-blue-800"
-                        : "bg-red-100 text-red-800"
-                    }`}
-                  >
-                    {order.paymentStatus}
-                  </span>
-                </TableCell>
-              </TableRow>
-            )
-          )}
+          {orders?.data?.data?.map((order: any, index: any) => (
+            <TableRow key={order.id || `order-${index}`}>
+              <TableCell>
+                {order?.shopId?.shopLogo && (
+                  <img
+                    src={order?.shopId?.shopLogo}
+                    alt={`${order.shopId.shopName} logo`}
+                    width={40}
+                    height={40}
+                    className="rounded-full"
+                  />
+                )}
+              </TableCell>
+              <TableCell className="font-medium">
+                {order.shopId.shopName}
+              </TableCell>
+              <TableCell>{order.authorId.fullName}</TableCell>
+              <TableCell>{order.shopId.customerServiceContact}</TableCell>
+              <TableCell>${order.total_price.toFixed(2)}</TableCell>
+              <TableCell>
+                <span
+                  className={`px-2 py-1 rounded-md text-xs ${
+                    order.paymentStatus === "success"
+                      ? "bg-green-100 text-green-800"
+                      : order.paymentStatus === "pending"
+                      ? "bg-yellow-100 text-yellow-800"
+                      : order.paymentStatus === "processing"
+                      ? "bg-blue-100 text-blue-800"
+                      : "bg-red-100 text-red-800"
+                  }`}
+                >
+                  {order.paymentStatus}
+                </span>
+              </TableCell>
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
       <Pagination total={orders.meta.totalPage} />

@@ -23,7 +23,6 @@ type loginSchema = z.infer<typeof loginSchema>;
 export function LoginForm() {
   const router = useRouter();
   const { setIsLoading } = useUser();
-
   const form = useForm<loginSchema>({
     resolver: zodResolver(loginSchema),
   });
@@ -54,15 +53,15 @@ export function LoginForm() {
 
     try {
       const result = await loginUser(userData);
-      // await getCurrentUser();
+      setIsLoading(true);
       if (result?.success) {
         toast.success(result.message || "Login successful", { id: toastId });
+        sessionStorage.setItem("justLoggedIn", "true");
         if (redirect) {
           router.push(redirect);
         } else {
           router.push("/");
         }
-        setIsLoading(true);
       } else {
         toast.error(result?.message || "Login failed. Please try again.", {
           id: toastId,
