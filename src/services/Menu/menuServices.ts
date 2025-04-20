@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use server";
 
 import { isTokenExpired } from "@/lib/varifyToken";
@@ -27,7 +25,7 @@ export const createMenuByProvider = async (MenuData: FormData) => {
     );
     return res.json();
   } catch (error: any) {
-    throw new Error(error);
+    return Error(error);
   }
 };
 
@@ -45,7 +43,7 @@ export const getAllMenus = async (page?: string) => {
     );
     return res.json();
   } catch (error: any) {
-    throw new Error(error);
+    return Error(error);
   }
 };
 export const getSixMenus = async () => {
@@ -59,7 +57,7 @@ export const getSixMenus = async () => {
     });
     return res.json();
   } catch (error: any) {
-    throw new Error(error);
+    return Error(error);
   }
 };
 

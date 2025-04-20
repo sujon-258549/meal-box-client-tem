@@ -65,42 +65,14 @@ export const getCurrentUser = async () => {
     return null;
   }
 };
-export const getMe = async () => {
-  const cookyStore = await cookies();
-  let token = cookyStore.get("access-token")!.value;
-  if (!token || (await isTokenExpired(token))) {
-    const { data } = await getNewToken();
-    token = data.accessToken;
-    cookyStore.set("access-token", token);
-  }
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
 
-  const accessToken = (await cookies()).get("access-token")?.value;
-  console.log(accessToken);
-  let decodedData = null;
-
-
-  if (accessToken) {
-    decodedData = await jwtDecode(accessToken);
-    return decodedData;
-  } else {
-    return null;
-  }
-};
-// export const getCurrentUser = async () => {
-//   const cookieStore = await cookies();
-//   let token = cookieStore.get("access-token")!.value;
+// export const getMe = async () => {
+//   const cookyStore = await cookies();
+//   let token = cookyStore.get("access-token")!.value;
 //   if (!token || (await isTokenExpired(token))) {
 //     const { data } = await getNewToken();
 //     token = data.accessToken;
-//     cookieStore.set("access-token", token);
+//     cookyStore.set("access-token", token);
 //   }
 //   try {
 //     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
@@ -111,11 +83,20 @@ export const getMe = async () => {
 //       },
 //     });
 
-//     return res.json();
-//   } catch (error: any) {
-//     return Error(error);
+//   const accessToken = (await cookies()).get("access-token")?.value;
+//   console.log(accessToken);
+//   let decodedData = null;
+
+
+//   if (accessToken) {
+//     decodedData = await jwtDecode(accessToken);
+//     return decodedData;
+//   } else {
+//     return null;
 //   }
-// };
+// }catch(error:any){
+//   return Error(error)
+// }}
 
 export const updateProfile = async (payload: any) => {
   const cookieStore = await cookies();

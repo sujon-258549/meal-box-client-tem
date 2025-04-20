@@ -34,7 +34,6 @@ export default function Slider({ sliderData }: { sliderData: any }) {
           disableOnInteraction: false,
         }}
         loop={true}
-        // modules={[Pagination]}
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >

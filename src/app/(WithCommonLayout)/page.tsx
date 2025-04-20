@@ -11,7 +11,7 @@ const HomePage = async () => {
 
   return (
     <>
-      <div className="">
+      <div>
         <Slider sliderData={data} />
       </div>
       <div className="max-w-5xl py-10 mx-auto px-5">
