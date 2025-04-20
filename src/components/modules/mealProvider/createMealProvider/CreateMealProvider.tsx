@@ -86,27 +86,62 @@ const CreateMealProviderForm = () => {
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    const productCategories = data.productCategories.map(
-      (product) => product.value
-    );
+    const payloadData = {
+      shopName: data.shopName,
+      ownerName: data.ownerName,
+      shopAddress: data.shopAddress,
+      phoneNumber: data.phoneNumber,
+      customerServiceContact: data.customerServiceContact,
+      website: data.website,
+      establishedYear: Number(data.establishedYear),
+      socialMediaLinks: {
+        facebook: data.socialMediaLinks.facebook,
+        instagram: data.socialMediaLinks.instagram,
+        twitter: data.socialMediaLinks.twitter,
+        linkedin: data.socialMediaLinks.linkedin,
+      },
+      operatingHours: {
+        open: data.operatingHours.open,
+        close: data.operatingHours.close,
 
-    const modifiedData = {
-      ...data,
-      productCategories,
+        daysOpen: Array.isArray(data.operatingHours?.daysOpen)
+          ? data.operatingHours.daysOpen.map((item) =>
+              typeof item === "string"
+                ? item
+                : (item as { label?: string; value?: string }).label ||
+                  (item as { label?: string; value?: string }).value
+            )
+          : [],
+      },
+
+      paymentMethods: Array.isArray(data.paymentMethods)
+        ? data.paymentMethods.map((item) =>
+            typeof item === "string"
+              ? item
+              : (item as { label?: string; value?: string }).label ||
+                (item as { label?: string; value?: string }).value
+          )
+        : [],
+
+      productCategories: Array.isArray(data.productCategories)
+        ? data.productCategories.map((item) =>
+            typeof item === "string" ? item : item.value
+          )
+        : [],
     };
-    console.log(modifiedData);
+
+    console.log(JSON.stringify(payloadData));
     try {
       const formData = new FormData();
-      formData.append("data", JSON.stringify(modifiedData));
-      for (const file of files) {
-        formData.append("file", file);
+      formData.append("data", JSON.stringify(payloadData));
+      if (files.length > 0) {
+        formData.append("file", files[0]);
+      } else {
+        throw new Error("Provider image is required");
       }
-
-     
       const result = await createProvider(formData);
-
       if (result?.success) {
-        // setIsShop(true);
+        //  setIsShop(true);
         toast.success(result?.message);
 
         router.push("/dashboard");
@@ -117,42 +152,6 @@ const CreateMealProviderForm = () => {
       return Error(error);
     }
   };
-  //   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-  //     const productCategories = data.productCategories.map(
-  //       (product) => product.value
-  //     );
-
-  //     const modifiedData = {
-  //       ...data,
-  //       productCategories,
-  //     };
-
-  //     try {
-  //       const formData = new FormData();
-  //       formData.append("data", JSON.stringify(modifiedData));
-
-  //       for (const file of files) {
-  //         formData.append("file", file);
-  //       }
-
-  //       // Optional: Debugging formData
-  //       for (const [key, value] of formData.entries()) {
-  //         console.log(`${key}:`, value);
-  //       }
-
-  //       const result = await createProvider(formData);
-
-  //       if (result?.success) {
-  //         toast.success(result.message);
-  //         router.push("/dashboard");
-  //       } else {
-  //         toast.error(result.message || "Something went wrong");
-  //       }
-  //     } catch (error) {
-  //       console.error("Submission error:", error);
-  //       toast.error("Something went wrong while submitting the form.");
-  //     }
-  //   };
 
   const handleFileUpload = (uploadedFiles: File[]) => {
     setFiles(uploadedFiles);
@@ -164,7 +163,7 @@ const CreateMealProviderForm = () => {
         <div className="border rounded-lg p-6 shadow-md">
           <div className="flex gap-2.5 items-center pb-5">
             <Image
-              src="/mealbox.png" // stored in the /public folder
+              src="/mealbox.png"
               alt="Mealbox Logo"
               width={80}
               height={80}

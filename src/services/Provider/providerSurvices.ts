@@ -10,14 +10,15 @@ export const getProviderMeals = async () => {};
 // Create meal provider
 export const createProvider = async (data: FormData) => {
   const cookieStore = await cookies();
-  let token = cookieStore.get("access-token")!.value;
-
-  if (!token || (await isTokenExpired(token))) {
-    const { data } = await getNewToken();
-    console.log("first", data);
-    token = data.accessToken;
-    cookieStore.set("access-token", token);
-  }
+  const token = cookieStore.get("access-token")!.value;
+  // console.log("token from service", token);
+  // console.log(data);
+  // if (!token || (await isTokenExpired(token))) {
+  //   const cookie = await getNewToken();
+  //   console.log("cookie data", cookie);
+  //   token = cookie?.accessToken;
+  //   cookieStore.set("access-token", token);
+  // }
   console.log(data);
   try {
     const res = await fetch(
@@ -27,14 +28,15 @@ export const createProvider = async (data: FormData) => {
         headers: {
           Authorization: token,
         },
-        credentials: "include",
+        // credentials: "include",
         body: data,
       }
     );
     const result = await res.json();
-  
+
     return result;
   } catch (error: any) {
+    console.error(error);
     return Error(error);
   }
 };
