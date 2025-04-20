@@ -27,7 +27,7 @@ export type TUser = {
   dateOfBirth: string; // ISO format string; convert to Date if needed
   password: string;
   address: TAddress;
-  role: "admin" | "user" | "mealProvider"; // add more roles if needed
+  role: "customer" | "admin" | "mealProvider"; // add more roles if needed
   isShop: boolean;
   isBlock: boolean;
   isDelete: boolean;

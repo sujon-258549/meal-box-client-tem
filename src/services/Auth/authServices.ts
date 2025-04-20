@@ -5,7 +5,6 @@ import { FieldValues } from "react-hook-form";
 import { isTokenExpired } from "@/lib/varifyToken";
 import { jwtDecode } from "jwt-decode";
 
-
 export const signupUser = async (userData: FieldValues) => {
   try {
     const res = await fetch(
@@ -86,7 +85,6 @@ export const getCurrentUser = async () => {
 //   const accessToken = (await cookies()).get("access-token")?.value;
 //   console.log(accessToken);
 //   let decodedData = null;
-
 
 //   if (accessToken) {
 //     decodedData = await jwtDecode(accessToken);
@@ -176,6 +174,7 @@ export const getNewToken = async () => {
 
 export const logout = async () => {
   (await cookies()).delete("access-token");
+  (await cookies()).delete("refresh-token");
 };
 
 export const getMe = async () => {

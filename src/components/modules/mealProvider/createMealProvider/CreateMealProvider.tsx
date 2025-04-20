@@ -130,7 +130,7 @@ const CreateMealProviderForm = () => {
         : [],
     };
 
-    console.log(JSON.stringify(payloadData));
+    
     try {
       const formData = new FormData();
       formData.append("data", JSON.stringify(payloadData));

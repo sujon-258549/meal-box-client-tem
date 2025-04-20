@@ -42,6 +42,19 @@ export const middleware = async (request: NextRequest) => {
 
 export const config = {
   matcher: [
+    "/create-meal-provider",
+    "/dashboard",
+    "/dashboard/menu/create-menu",
+    "/dashboard/menu/my-menu",
+    "/dashboard/menu/update-menu",
+    "/dashboard/order/my-order",
+    "/dashboard/order/meal-provider-order",
+    "/dashboard/meal-provider/my-meal-provider",
+    "/dashboard/meal-provider/update-meal-provider",
+    "/dashboard/user/view-profile",
+    "/dashboard/user/update-profile",
+    "/dashboard/user/change-password",
+
     /*
      * Match all paths except:
      * - API routes
