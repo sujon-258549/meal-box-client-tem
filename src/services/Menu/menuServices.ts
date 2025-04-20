@@ -46,15 +46,17 @@ export const getAllMenus = async (page?: string) => {
     return Error(error);
   }
 };
+
 export const getSixMenus = async () => {
   try {
     const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu?limit=6`, {
       method: "GET",
-      headers: {
-        "Content-type": "application/json",
-        // Authorization: (await cookies()).get("access-token")!.value,
-      },
+      // headers: {
+      //   "Content-type": "application/json",
+      //   // Authorization: (await cookies()).get("access-token")!.value,
+      // },
     });
+    // console.log(res.json());
     return res.json();
   } catch (error: any) {
     return Error(error);

@@ -28,6 +28,7 @@ import { GiMeal } from "react-icons/gi";
 import ProfileDropdown from "@/components/profileDropdown/ProfileDropdown";
 import { LogIn, Menu } from "lucide-react";
 import { useUser } from "@/context/UserContext";
+import Image from "next/image";
 
 interface MenuItem {
   title: string;
@@ -76,8 +77,8 @@ const Navbar1 = ({
     login: { title: "Login", url: "/login" },
   },
 }: Navbar1Props) => {
-  const { user } = useUser();
-  console.log(user);
+  const { user, isLoading } = useUser();
+  console.log(user, isLoading);
 
   return (
     <section className="box-shadow py-4">
@@ -87,7 +88,15 @@ const Navbar1 = ({
           <div className="flex  items-center gap-6">
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
-              <img src={logo.src} className="max-h-8" alt={logo.alt} />
+              {/* <img src={logo.src} className="max-h-8" alt={logo.alt} /> */}
+              <Image
+                src={logo.src}
+                alt={logo.alt}
+                height={32}
+                width={32} // Equivalent to max-h-8 (32px)
+                className="h-8 w-auto" // Tailwind: set fixed height and auto width
+                priority // Optional: loads the image sooner
+              />
               <span className="text-lg font-semibold tracking-tighter">
                 {logo.title}
               </span>
@@ -106,7 +115,7 @@ const Navbar1 = ({
             {/* <Link href={"/create-meal-provider"}> */}
             <div className="flex flex-col items-center gap-2">
               <div className="group relative">
-                {user && user.role === "customer" && (
+                {user && user?.role === "customer" && (
                   <Link href={"/create-meal-provider"}>
                     <Button
                       variant="outline"

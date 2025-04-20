@@ -11,7 +11,7 @@ import { z } from "zod";
 import { loginSchema } from "./login.zodValidactionSchema";
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/ui/Loading/Loader";
-import { getCurrentUser, loginUser } from "@/services/Auth/authServices";
+import { loginUser } from "@/services/Auth/authServices";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
@@ -54,8 +54,7 @@ export function LoginForm() {
 
     try {
       const result = await loginUser(userData);
-      setIsLoading(true);
-      await getCurrentUser();
+      // await getCurrentUser();
       if (result?.success) {
         toast.success(result.message || "Login successful", { id: toastId });
         if (redirect) {
@@ -63,6 +62,7 @@ export function LoginForm() {
         } else {
           router.push("/");
         }
+        setIsLoading(true);
       } else {
         toast.error(result?.message || "Login failed. Please try again.", {
           id: toastId,

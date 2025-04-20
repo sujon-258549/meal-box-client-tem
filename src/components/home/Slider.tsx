@@ -37,7 +37,7 @@ export default function Slider({ sliderData }: { sliderData: any }) {
         modules={[Autoplay, Pagination, Navigation]}
         className="mySwiper"
       >
-        {sliderData.map((menu: any, index: string) => (
+        {sliderData?.map((menu: any, index: string) => (
           <SwiperSlide key={index}>
             <div className="bg-gradient-to-r from-gray-600 via-gray-800 to-gray-900 bg-gray-800 p-6">
               <div className="grid md:grid-cols-2 items-center gap-10 max-w-5xl max-md:max-w-md mx-auto">
