@@ -58,6 +58,28 @@ export const getMyOrder = async (page?: string) => {
     return Error(error);
   }
 };
+export const getSingleOrder = async (id: string) => {
+  const cookyStore = await cookies();
+  let token = cookyStore.get("access-token")!.value;
+  if (!token || (await isTokenExpired(token))) {
+    const { data } = await getNewToken();
+    token = data.accessToken;
+    cookyStore.set("access-token", token);
+  }
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/order/${id}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token,
+      },
+    });
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
 // get my order
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const getMealProviderOrder = async (page: string) => {
@@ -69,13 +91,16 @@ export const getMealProviderOrder = async (page: string) => {
     cookyStore.set("access-token", token);
   }
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/order`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/order?limit=5`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
 
     return res.json();
   } catch (error: any) {

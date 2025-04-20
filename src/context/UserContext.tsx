@@ -81,6 +81,7 @@ import {
 } from "react";
 
 type TUserProviderValue = {
+  [x: string]: string;
   user: TUser | null;
   isLoading: boolean;
   setUser: (user: TUser | null) => void;
