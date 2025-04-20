@@ -17,6 +17,7 @@ import {
   ReactPortal,
 } from "react";
 import SearchAndSort from "./SearchAndSort";
+import Image from "next/image";
 
 const MyOrder = ({ orders }: { orders: any }) => {
   console.log(orders);
@@ -38,7 +39,7 @@ const MyOrder = ({ orders }: { orders: any }) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {orders.data.map(
+          {orders.data?.map(
             (
               order: {
                 id: any;
@@ -149,12 +150,26 @@ const MyOrder = ({ orders }: { orders: any }) => {
               <TableRow key={order.id || `order-${index}`}>
                 <TableCell>
                   {order?.shopId?.shopLogo && (
-                    <img
-                      src={order?.shopId?.shopLogo}
-                      alt={`${order.shopId.shopName} logo`}
+                    // <img
+                    //   src={order?.shopId?.shopLogo}
+                    //   alt={`${order.shopId.shopName} logo`}
+                    //   width={40}
+                    //   height={40}
+                    //   className="rounded-full"
+                    // />
+                    <Image
+                      src={
+                        typeof order?.shopId?.shopLogo === "string"
+                          ? order?.shopId?.shopLogo
+                          : order?.shopId?.shopLogo
+                          ? URL.createObjectURL(order?.shopId?.shopLogo)
+                          : "/default-image.png" // Provide a default fallback image
+                      }
+                      alt={`${order?.shopId?.shopName || "Shop"} logo`}
                       width={40}
                       height={40}
                       className="rounded-full"
+                      unoptimized // if the image is from an external URL and not in next.config.js
                     />
                   )}
                 </TableCell>
@@ -184,7 +199,7 @@ const MyOrder = ({ orders }: { orders: any }) => {
           )}
         </TableBody>
       </Table>
-      <Pagination total={orders.meta.totalPage} />
+      <Pagination total={orders?.meta?.totalPage} />
     </div>
   );
 };
