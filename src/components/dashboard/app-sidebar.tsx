@@ -26,8 +26,7 @@ import { NavUser } from "./nav-user";
 import { useEffect, useState } from "react";
 import { getMe } from "@/services/Auth/authServices";
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const [user, setUser] = useState<any>();
-
+  const [userInfo, setUser] = useState<any>();
   useEffect(() => {
     // Simulated async function (replace with real getCurrentUser logic)
     const getUser = async () => {
@@ -39,8 +38,8 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   }, []);
   const data = {
     user: {
-      name: user?.data?.fullName || "",
-      email: user?.data?.email || "",
+      name: userInfo?.fullName || "",
+      email: userInfo?.email || "",
       avatar: "/logo.png",
     },
     teams: [
