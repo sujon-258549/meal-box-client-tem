@@ -31,6 +31,7 @@ export function NavUser({
     name: string;
     email: string;
     avatar: string;
+    role: "customer" | "mealProvider";
   };
 }) {
   const { isMobile } = useSidebar();
@@ -103,12 +104,15 @@ export function NavUser({
             </DropdownMenuGroup>
             <DropdownMenuSeparator />
             <DropdownMenuGroup>
-              <Link href={"/dashboard/meal-provider/my-meal-provider"}>
-                <DropdownMenuItem className="cursor-pointer">
-                  <BadgeCheck className="mr-2 h-4 w-4" />
-                  <span>My meal provider</span>
-                </DropdownMenuItem>
-              </Link>
+              {user?.role === "mealProvider" && (
+                <Link href={"/dashboard/meal-provider/my-meal-provider"}>
+                  <DropdownMenuItem className="cursor-pointer">
+                    <BadgeCheck className="mr-2 h-4 w-4" />
+                    <span>My meal provider</span>
+                  </DropdownMenuItem>
+                </Link>
+              )}
+
               <Link href={"/dashboard/user/update-profile"}>
                 <DropdownMenuItem className="cursor-pointer">
                   <GiRamProfile className="mr-2 h-4 w-4" />

@@ -4,7 +4,7 @@ export interface IUser {
   email: string;
   hasShop?: boolean;
   isActive?: boolean;
-  role: "customer" | "meal-provider" | "admin";
+  role?: "customer" | "meal-provider" | "admin" | undefined;
   iat?: number;
   exp?: number;
 }
@@ -37,6 +37,7 @@ export type TUser = {
   role: "customer" | "admin" | "mealProvider"; // add more roles if needed
   isShop: boolean;
   isBlock: boolean;
+  profileImage: string;
   isDelete: boolean;
   createdAt: string; // ISO string
   updatedAt: string; // ISO string

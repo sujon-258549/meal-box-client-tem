@@ -217,7 +217,7 @@ export function WeeklyMenuDisplay({ orders }: { orders: WeeklyMealPlan }) {
                 <p className="text-2xl font-bold">৳{calculateTotal()}</p>
               </div>
             </div>
-            <Button type="submit" className="w-full mt-4">
+            <Button type="submit" className="w-full mt-4 cursor-pointer">
               {form.formState.isSubmitting ? (
                 <LoadingButton />
               ) : (

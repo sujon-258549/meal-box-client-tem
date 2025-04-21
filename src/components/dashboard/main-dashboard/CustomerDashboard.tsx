@@ -36,13 +36,13 @@ export default function SimpleCustomerDashboard({
 
   return (
     <div className="p-6 space-y-6">
-      <div className="text-2xl font-bold">
+      <div className="text-2xl font-bold text-center py-5">
         Welcome back, {user?.data?.fullName} 👋
       </div>
 
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card>
+        <Card className="box-shadow">
           <CardHeader>
             <CardTitle>Total Orders</CardTitle>
           </CardHeader>
@@ -50,7 +50,7 @@ export default function SimpleCustomerDashboard({
             {data?.length}
           </CardContent>
         </Card>
-        <Card>
+        <Card className="box-shadow">
           <CardHeader>
             <CardTitle>Pending Orders</CardTitle>
           </CardHeader>
@@ -58,7 +58,7 @@ export default function SimpleCustomerDashboard({
             {pendingMeal.length}
           </CardContent>
         </Card>
-        <Card>
+        <Card className="box-shadow">
           <CardHeader>
             <CardTitle>Last Order</CardTitle>
           </CardHeader>
@@ -71,7 +71,7 @@ export default function SimpleCustomerDashboard({
       {/* Menu Card */}
 
       {/* Recent Orders Table */}
-      <Card>
+      <Card className="box-shadow">
         <CardHeader>
           <CardTitle>Recent Orders</CardTitle>
         </CardHeader>
@@ -105,7 +105,7 @@ export default function SimpleCustomerDashboard({
       </Card>
 
       {/* Profile Card */}
-      <Card className="mt-4">
+      <Card className="mt-4 box-shadow">
         <CardHeader>
           <CardTitle>Complete Your Profile</CardTitle>
         </CardHeader>

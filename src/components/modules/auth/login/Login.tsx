@@ -11,7 +11,7 @@ import { z } from "zod";
 import { loginSchema } from "./login.zodValidactionSchema";
 import { Input } from "@/components/ui/input";
 import LoadingButton from "@/components/ui/Loading/Loader";
-import { loginUser } from "@/services/Auth/authServices";
+import { forgetPassword, loginUser } from "@/services/Auth/authServices";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import Image from "next/image";
@@ -71,6 +71,19 @@ export function LoginForm() {
       return Error(error);
     }
   };
+  const handelForgetPassword = async () => {
+    if (email) {
+      const userEmail = {
+        email: email,
+      };
+      const result = await forgetPassword(userEmail);
+      if (result.success) {
+        toast.success(`${result.message} Please Check Email`);
+      } else {
+        toast.message("please input email");
+      }
+    }
+  };
 
   return (
     <div className="mx-5">
@@ -122,13 +135,21 @@ export function LoginForm() {
             <ErrorMsg msg={errors.password?.message} />
           </LabelInputContainer>
 
-          <div className="pb-5 -mt-2.5">
-            <Checkbox onClick={() => setShowPassword(!showPassword)} />
-            <span className="ml-2.5">
-              {showPassword ? "Hide Password" : "Show Password"}
-            </span>
+          <div className="flex justify-between items-center pb-5">
+            <div className="">
+              <Checkbox onClick={() => setShowPassword(!showPassword)} />
+              <span className="ml-2.5">
+                {showPassword ? "Hide Password" : "Show Password"}
+              </span>
+            </div>
+            <button
+              onClick={handelForgetPassword}
+              type="button"
+              className="text-blue-600 cursor-pointer"
+            >
+              Forget Password
+            </button>
           </div>
-
           <Button
             disabled={isDisabled}
             className="w-full cursor-pointer"

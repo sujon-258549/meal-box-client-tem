@@ -25,11 +25,9 @@ import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 import { useEffect, useState } from "react";
 import { getMe } from "@/services/Auth/authServices";
-import { useUser } from "@/context/UserContext";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const [userInfo, setUser] = useState<any>();
-  const { user } = useUser();
 
   useEffect(() => {
     const getUser = async () => {
@@ -42,7 +40,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   // 🔐 Conditionally render navigation menu
   const navMain = [
-    ...(user?.role === "mealProvider"
+    {
+      title: "Dashboard",
+      url: "/dashboard",
+      icon: PieChart,
+    },
+    ...(userInfo?.role === "mealProvider"
       ? [
           {
             title: "Menu",
@@ -90,7 +93,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           title: "My Orders",
           url: "/dashboard/order/my-order",
         },
-        ...(user?.role === "mealProvider"
+        ...(userInfo?.role === "mealProvider"
           ? [
               {
                 title: "Received Meal Provider Orders",
@@ -108,6 +111,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       name: userInfo?.fullName || "",
       email: userInfo?.email || "",
       avatar: "/logo.png",
+      role: userInfo?.role,
     },
     teams: [
       {
