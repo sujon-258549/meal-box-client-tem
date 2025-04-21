@@ -1,7 +1,7 @@
 "use client";
+
 import { getCurrentUser, getMe } from "@/services/Auth/authServices";
 import { IUser, TUser } from "@/types";
-
 import {
   createContext,
   Dispatch,
@@ -18,8 +18,10 @@ interface IUserProviderValues {
   setIsLoading: Dispatch<SetStateAction<boolean>>;
   isShop: boolean;
   setIsShop: Dispatch<SetStateAction<boolean>>;
+
   myInfo: TUser | null;
   setMyInfo: Dispatch<SetStateAction<null>>;
+
 }
 
 const UserContext = createContext<IUserProviderValues | undefined>(undefined);
@@ -28,6 +30,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isShop, setIsShop] = useState(false);
+
   const [myInfo, setMyInfo] = useState(null);
 
   const handleUser = async () => {
@@ -45,6 +48,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
 
   return (
     <UserContext.Provider
+
       value={{
         user,
         setUser,
@@ -55,15 +59,12 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
         myInfo,
         setMyInfo,
       }}
+
     >
       {children}
     </UserContext.Provider>
   );
 };
-
-// export const userProfileImage =()=>{
-
-// }
 
 export const useUser = () => {
   const context = useContext(UserContext);
