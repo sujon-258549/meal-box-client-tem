@@ -73,6 +73,7 @@ const MealProviderReceivedOrder = ({ orders }: { orders: any }) => {
               ))}
             </TableBody>
           </Table>
+          <Pagination total={orders.meta.totalPage} />
         </>
       ) : (
         <Card className="p-6 text-center my-4">
@@ -83,7 +84,6 @@ const MealProviderReceivedOrder = ({ orders }: { orders: any }) => {
           </p>
         </Card>
       )}
-      <Pagination total={orders.meta.totalPage} />
     </div>
   );
 };
