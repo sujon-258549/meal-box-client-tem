@@ -121,9 +121,9 @@ const OrderDetailsAllData = ({ order }: OrderDetailsProps) => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="flex flex-col md:flex-row gap-6">
+      <div className="flex flex-col lg:flex-row gap-6">
         {/* Main Content */}
-        <div className="md:w-2/3 space-y-6">
+        <div className="lg:w-2/3 space-y-6">
           {/* Order Summary Card */}
           <Card className="box-shadow">
             <CardHeader>
@@ -232,7 +232,7 @@ const OrderDetailsAllData = ({ order }: OrderDetailsProps) => {
             <CardHeader>
               <CardTitle>customer Information</CardTitle>
             </CardHeader>
-            <CardContent className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <CardContent className="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <div className="space-y-2">
                 <h4 className="font-medium">Personal Details</h4>
                 <div className="flex items-center gap-2">
@@ -263,7 +263,7 @@ const OrderDetailsAllData = ({ order }: OrderDetailsProps) => {
                 )}
               </div>
 
-              <div className="space-y-2 box-shadow">
+              <div className="space-y-2">
                 <h4 className="font-medium">Delivery Address</h4>
                 {order?.customerId?.address ? (
                   <>
@@ -299,9 +299,9 @@ const OrderDetailsAllData = ({ order }: OrderDetailsProps) => {
         </div>
 
         {/* Sidebar */}
-        <div className="md:w-1/3 space-y-6">
+        <div className="lg:w-1/3 space-y-6">
           {/* shopId Details Card */}
-          <Card>
+          <Card className="box-shadow">
             <CardHeader>
               <CardTitle>shop Details</CardTitle>
             </CardHeader>
@@ -455,7 +455,7 @@ const OrderDetailsAllData = ({ order }: OrderDetailsProps) => {
           </Card>
 
           {/* System Information Card */}
-          <Card>
+          <Card className="box-shadow">
             <CardHeader>
               <CardTitle>System Information</CardTitle>
             </CardHeader>
