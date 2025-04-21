@@ -52,7 +52,7 @@ const ProfileDropdown = () => {
           </Link>
           <DropdownMenuSeparator />
           <DropdownMenuItem onClick={handleLogout}>
-            <Button className="bg-purple-500 text-white w-full">
+            <Button className="bg-red-600 text-white w-full">
               <span className="flex gap-1.5 items-center">
                 Log out <LogIn className="text-white" />
               </span>

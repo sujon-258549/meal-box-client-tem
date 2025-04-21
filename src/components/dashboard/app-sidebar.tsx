@@ -25,10 +25,13 @@ import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 import { useEffect, useState } from "react";
 import { getMe } from "@/services/Auth/authServices";
+import { useUser } from "@/context/UserContext";
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const [userInfo, setUser] = useState<any>();
+  const { user } = useUser();
+
   useEffect(() => {
-    // Simulated async function (replace with real getCurrentUser logic)
     const getUser = async () => {
       const { data } = await getMe();
       setUser(data);
@@ -36,6 +39,70 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
     getUser();
   }, []);
+
+  // 🔐 Conditionally render navigation menu
+  const navMain = [
+    ...(user?.role === "mealProvider"
+      ? [
+          {
+            title: "Menu",
+            url: "#",
+            icon: SquareTerminal,
+            isActive: true,
+            items: [
+              {
+                title: "Create Menu",
+                url: "/dashboard/menu/create-menu",
+              },
+              {
+                title: "My menu",
+                url: "/dashboard/menu/my-menu",
+              },
+              {
+                title: "Update my menu",
+                url: "/dashboard/menu/update-menu",
+              },
+            ],
+          },
+          {
+            title: "Meal Provider",
+            url: "#",
+            icon: BookOpen,
+            items: [
+              {
+                title: "My Meal Provider",
+                url: "/dashboard/meal-provider/my-meal-provider",
+              },
+              {
+                title: "Update Meal Provider",
+                url: "/dashboard/meal-provider/update-meal-provider",
+              },
+            ],
+          },
+        ]
+      : []),
+    {
+      title: "Order",
+      url: "#",
+      icon: Bot,
+      items: [
+        {
+          title: "My Orders",
+          url: "/dashboard/order/my-order",
+        },
+        ...(user?.role === "mealProvider"
+          ? [
+              {
+                title: "Received Meal Provider Orders",
+                url: "/dashboard/order/meal-provider-order",
+              },
+            ]
+          : []),
+      ],
+    },
+  ];
+
+  // 🧠 All Sidebar Data
   const data = {
     user: {
       name: userInfo?.fullName || "",
@@ -59,58 +126,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         plan: "Free",
       },
     ],
-    navMain: [
-      {
-        title: "Menu",
-        url: "#",
-        icon: SquareTerminal,
-        isActive: true,
-        items: [
-          {
-            title: "Create Menu",
-            url: "/dashboard/menu/create-menu",
-          },
-          {
-            title: "My menu",
-            url: "/dashboard/menu/my-menu",
-          },
-          {
-            title: "Update my menu",
-            url: "/dashboard/menu/update-menu",
-          },
-        ],
-      },
-      {
-        title: "Order",
-        url: "#",
-        icon: Bot,
-        items: [
-          {
-            title: "My Orders",
-            url: "/dashboard/order/my-order",
-          },
-          {
-            title: "Received Meal Provider Orders",
-            url: "/dashboard/order/meal-provider-order",
-          },
-        ],
-      },
-      {
-        title: "Meal Provider",
-        url: "#",
-        icon: BookOpen,
-        items: [
-          {
-            title: "My Meal Provider",
-            url: "/dashboard/meal-provider/my-meal-provider",
-          },
-          {
-            title: "Update Meal Provider",
-            url: "/dashboard/meal-provider/update-meal-provider",
-          },
-        ],
-      },
-    ],
+    navMain,
     projects: [
       {
         name: "Design Engineering",
@@ -132,11 +148,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
 
   return (
     <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>{/* <TeamSwitcher teams={data.teams} /> */}</SidebarHeader>
+      <SidebarHeader>
+        {/* You can add a TeamSwitcher or App Logo here if needed */}
+      </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
       </SidebarContent>
-      <SidebarFooter></SidebarFooter>
+      <SidebarFooter />
       <SidebarFooter>
         <NavUser user={data.user} />
       </SidebarFooter>

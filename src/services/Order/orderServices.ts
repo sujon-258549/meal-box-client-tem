@@ -82,7 +82,7 @@ export const getSingleOrder = async (id: string) => {
 };
 // get my order
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export const getMealProviderOrder = async (page: string) => {
+export const getMealProviderOrder = async (page?: string, sort?: string) => {
   const cookyStore = await cookies();
   let token = cookyStore.get("access-token")!.value;
   if (!token || (await isTokenExpired(token))) {
@@ -92,7 +92,7 @@ export const getMealProviderOrder = async (page: string) => {
   }
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/order?limit=5`,
+      `${process.env.NEXT_PUBLIC_API_URL}/order?limit=5&page=${page}&sort=${sort}`,
       {
         method: "GET",
         headers: {
