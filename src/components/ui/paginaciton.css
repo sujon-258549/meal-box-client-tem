@@ -1,0 +1,12 @@
+.pagination .page-item a {
+  background-color: #424242 !important;
+  border: hidden !important;
+  color: white !important;
+}
+.pagination .active a {
+  background-color: #2c0775b5 !important;
+  border: hidden !important;
+
+  border-radius: 5px;
+  z-index: 999;
+}

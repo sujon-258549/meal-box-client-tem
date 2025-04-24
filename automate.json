@@ -1,0 +1,55 @@
+{
+    "automate": true,
+    "clear": false,
+    "setup": [],
+    "tasks": [
+        {
+            "task": "dev",
+            "tool": "cmd",
+            "markAsDone": false,
+            "done": false,
+            "exit": false,
+            "commands": [
+                {
+                    "command": "npm run dev"
+                }
+            ]
+        },
+        {
+            "task": "build",
+            "tool": "cmd",
+            "markAsDone": false,
+            "done": false,
+            "exit": false,
+            "commands": [
+                {
+                    "command": "npm run build"
+                }
+            ]
+        },
+        {
+            "task": "start",
+            "tool": "cmd",
+            "markAsDone": false,
+            "done": false,
+            "exit": false,
+            "commands": [
+                {
+                    "command": "npm run start"
+                }
+            ]
+        },
+        {
+            "task": "lint",
+            "tool": "cmd",
+            "markAsDone": false,
+            "done": false,
+            "exit": false,
+            "commands": [
+                {
+                    "command": "npm run lint"
+                }
+            ]
+        }
+    ]
+}
