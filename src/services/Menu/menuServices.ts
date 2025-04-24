@@ -95,14 +95,17 @@ export const updateMyMenu = async (payload: any) => {
     cookyStore.set("access-token", token);
   }
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu/my-menu`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-      body: JSON.stringify(payload),
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/menu/update-menu`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify(payload),
+      }
+    );
 
     return res.json();
   } catch (error: any) {

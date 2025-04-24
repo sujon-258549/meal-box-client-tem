@@ -10,7 +10,7 @@ import {
 } from "lucide-react";
 import { TUser } from "@/types";
 import Image from "next/image";
-import ChangeProfileImage from "./ChangeProfileImage";
+import ChangeProfileImage from "./UploadProfileImage";
 
 const ViewProfile = ({ data }: { data: TUser }) => {
   const formatDate = (dateString: string) => {
