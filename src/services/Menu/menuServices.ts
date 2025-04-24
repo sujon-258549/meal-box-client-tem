@@ -111,13 +111,6 @@ export const updateMyMenu = async (payload: any) => {
 };
 
 export const getSingleMenu = async (menuId: string) => {
-  const cookyStore = await cookies();
-  let token = cookyStore.get("access-token")!.value;
-  if (!token || (await isTokenExpired(token))) {
-    const { data } = await getNewToken();
-    token = data.accessToken;
-    cookyStore.set("access-token", token);
-  }
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/menu/${menuId}`,
@@ -125,7 +118,6 @@ export const getSingleMenu = async (menuId: string) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
-          Authorization: token,
         },
       }
     );

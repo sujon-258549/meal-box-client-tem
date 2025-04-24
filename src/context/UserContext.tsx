@@ -1,6 +1,6 @@
 "use client";
-import { getCurrentUser, getMe } from "@/services/Auth/authServices";
-import { IUser, TUser } from "@/types";
+import { getCurrentUser } from "@/services/Auth/authServices";
+import { IUser } from "@/types";
 
 import {
   createContext,
@@ -16,10 +16,6 @@ interface IUserProviderValues {
   isLoading: boolean;
   setUser: (user: IUser | null) => void;
   setIsLoading: Dispatch<SetStateAction<boolean>>;
-  isShop: boolean;
-  setIsShop: Dispatch<SetStateAction<boolean>>;
-  myInfo: TUser | null;
-  setMyInfo: Dispatch<SetStateAction<null>>;
 }
 
 const UserContext = createContext<IUserProviderValues | undefined>(undefined);
@@ -27,16 +23,13 @@ const UserContext = createContext<IUserProviderValues | undefined>(undefined);
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<IUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isShop, setIsShop] = useState(false);
-  const [myInfo, setMyInfo] = useState(null);
 
   const handleUser = async () => {
     const user = await getCurrentUser();
-    const myInfoData = await getMe();
+
     console.log(user);
     setUser(user);
     setIsLoading(false);
-    setMyInfo(myInfoData);
   };
 
   useEffect(() => {
@@ -50,10 +43,6 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
         setUser,
         isLoading,
         setIsLoading,
-        isShop,
-        setIsShop,
-        myInfo,
-        setMyInfo,
       }}
     >
       {children}
