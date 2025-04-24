@@ -85,7 +85,7 @@ const MyOrder = ({ orders }: { orders: any }) => {
         <Card className="p-6 text-center my-4">
           <h3 className="text-lg font-medium">No Orders Found</h3>
           <p className="text-muted-foreground mt-2">
-            You don,t have any orders yet. When you make an order, it will
+            You don't have any orders yet. When you make an order, it will
             appear here.
           </p>
         </Card>

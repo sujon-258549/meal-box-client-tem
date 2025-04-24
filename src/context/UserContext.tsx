@@ -50,10 +50,6 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-// export const userProfileImage =()=>{
-
-// }
-
 export const useUser = () => {
   const context = useContext(UserContext);
 
