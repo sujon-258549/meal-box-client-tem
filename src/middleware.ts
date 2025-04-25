@@ -9,6 +9,7 @@ const publicRoutes = [
   "/api/auth",
   "/dashboard/menu/all-menu",
   "/about-meal-provider",
+  "/success",
 ];
 const adminRoutes = [
   "/dashboard",

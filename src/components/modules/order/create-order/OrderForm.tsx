@@ -19,6 +19,7 @@ import { toast } from "sonner";
 import { createOrder } from "@/services/Order/orderServices";
 import OrderInstruction from "./OrderInstruction";
 import LoadingButton from "@/components/ui/Loading/Loader";
+import { useEffect, useState } from "react";
 
 interface FormData {
   days: Record<
@@ -42,6 +43,7 @@ export function WeeklyMenuDisplay({
   orders: WeeklyMealPlan;
   orderId: string;
 }) {
+  const [totalAmount, setUserTotalAmount] = useState<number>();
   const form = useForm<FormData>();
   const allMeals = orders?.meals;
   const calculateTotal = () => {
@@ -61,6 +63,9 @@ export function WeeklyMenuDisplay({
 
     return total;
   };
+  useEffect(() => {
+    return setUserTotalAmount(calculateTotal());
+  }, [form.watch(), allMeals]);
   const router = useRouter();
   const onSubmit = async (data: FormData) => {
     const orders = allMeals.map((day) => {
@@ -226,7 +231,20 @@ export function WeeklyMenuDisplay({
                 <p className="text-2xl font-bold">৳{calculateTotal()}</p>
               </div>
             </div>
-            <Button type="submit" className="w-full mt-4 cursor-pointer">
+            {/* <Button type="submit" className="w-full mt-4 cursor-pointer">
+              {form.formState.isSubmitting ? (
+                <LoadingButton />
+              ) : (
+                "Confirm Order"
+              )}
+            </Button> */}
+            <Button
+              type="submit"
+              disabled={
+                form.formState.isSubmitting || (totalAmount as number) <= 0
+              }
+              className="w-full mt-4 cursor-pointer"
+            >
               {form.formState.isSubmitting ? (
                 <LoadingButton />
               ) : (
