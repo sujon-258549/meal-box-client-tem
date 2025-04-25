@@ -27,7 +27,7 @@ interface ResetUiPageProps {
   };
 }
 
-const ResetUiPage: React.FC<ResetUiPageProps> = ({ searchParams }) => {
+const ResetUiPage = ({ searchParams }: ResetUiPageProps) => {
   if (!searchParams.token || !searchParams.email) {
     return <div>Invalid reset link</div>;
   }
