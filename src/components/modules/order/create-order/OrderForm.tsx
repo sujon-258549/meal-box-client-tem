@@ -35,7 +35,13 @@ interface FormData {
   >;
 }
 
-export function WeeklyMenuDisplay({ orders }: { orders: WeeklyMealPlan }) {
+export function WeeklyMenuDisplay({
+  orders,
+  orderId,
+}: {
+  orders: WeeklyMealPlan;
+  orderId: string;
+}) {
   const form = useForm<FormData>();
   const allMeals = orders?.meals;
   const calculateTotal = () => {
@@ -87,7 +93,7 @@ export function WeeklyMenuDisplay({ orders }: { orders: WeeklyMealPlan }) {
     console.log(orderData);
     const toastId = toast.loading("Order Creating......", { duration: 2000 });
     try {
-      const result = await createOrder(orderData, "68015a739d1380a629e1c48e");
+      const result = await createOrder(orderData, orderId);
       console.log(result);
       if (result?.success) {
         toast.success(result?.message, { id: toastId, duration: 2000 });

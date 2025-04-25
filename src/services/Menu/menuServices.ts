@@ -32,7 +32,7 @@ export const createMenuByProvider = async (MenuData: FormData) => {
 export const getAllMenus = async (page?: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/menu?page=${page}&limit=3`,
+      `${process.env.NEXT_PUBLIC_API_URL}/menu?page=${page}&limit=6`,
       {
         method: "GET",
         headers: {
@@ -121,6 +121,32 @@ export const getSingleMenu = async (menuId: string) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+
+export const menuDelete = async (id: string) => {
+  const cookyStore = await cookies();
+  let token = cookyStore.get("access-token")!.value;
+  if (!token || (await isTokenExpired(token))) {
+    const { data } = await getNewToken();
+    token = data.accessToken;
+    cookyStore.set("access-token", token);
+  }
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/menu/delete-menu/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
         },
       }
     );

@@ -84,25 +84,33 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           },
         ]
       : []),
-    {
-      title: "Order",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "My Orders",
-          url: "/dashboard/order/my-order",
-        },
-        ...(userInfo?.role === "mealProvider"
-          ? [
+
+    ...(userInfo?.role === "admin"
+      ? [
+          {
+            title: "Manage User",
+            url: "#",
+            icon: Bot,
+            items: [
               {
-                title: "Received Meal Provider Orders",
-                url: "/dashboard/order/meal-provider-order",
+                title: "User Block & Delete",
+                url: "/dashboard/admin/all-user-status-change",
               },
-            ]
-          : []),
-      ],
-    },
+            ],
+          },
+          {
+            title: "Manage Menu",
+            url: "#",
+            icon: Bot,
+            items: [
+              {
+                title: "Menu Delete",
+                url: "/dashboard/admin/delete-menu",
+              },
+            ],
+          },
+        ]
+      : []),
   ];
 
   // 🧠 All Sidebar Data

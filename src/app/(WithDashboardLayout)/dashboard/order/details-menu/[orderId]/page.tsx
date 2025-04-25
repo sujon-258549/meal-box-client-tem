@@ -16,7 +16,7 @@ const OrderDetails = async ({
   const { data } = await getSingleMenu(orderId);
   return (
     <div>
-      <WeeklyMenuDisplay orders={data}></WeeklyMenuDisplay>
+      <WeeklyMenuDisplay orderId={orderId} orders={data}></WeeklyMenuDisplay>
     </div>
   );
 };

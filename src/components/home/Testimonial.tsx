@@ -40,12 +40,14 @@ export const Testimonial = ({ mealProvider }: { mealProvider: any }) => {
 
   return (
     <div>
-      <div>
-        <h1 className="text-2xl md:text-4xl text-center  font-bold">
-          Testimonial Section
-        </h1>
-        <div className="max-w-md mx-auto border-b-2 mt-4  border-[#424242]"></div>
-      </div>
+      {mealProviderData.length > 0 && (
+        <div>
+          <h1 className="text-2xl md:text-4xl text-center  font-bold">
+            Testimonial Section
+          </h1>
+          <div className="max-w-md mx-auto border-b-2 mt-4  border-[#424242]"></div>
+        </div>
+      )}
       <Swiper
         pagination={{
           dynamicBullets: true,
