@@ -290,3 +290,29 @@ export const getAllUser = async () => {
     return Error(error);
   }
 };
+export const changeUserStatus = async (blockUserData: any) => {
+  const cookyStore = await cookies();
+  let token = cookyStore.get("access-token")!.value;
+  if (!token || (await isTokenExpired(token))) {
+    const { data } = await getNewToken();
+    token = data.accessToken;
+    cookyStore.set("access-token", token);
+  }
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users/change-user-status`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+        body: JSON.stringify(blockUserData),
+      }
+    );
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};

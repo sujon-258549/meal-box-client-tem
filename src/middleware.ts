@@ -9,7 +9,11 @@ const publicRoutes = [
   "/api/auth",
   "/dashboard/menu/all-menu",
 ];
-const adminRoutes = ["/dashboard"];
+const adminRoutes = [
+  "/dashboard",
+  "/dashboard/admin/all-user-status-change",
+  "/dashboard/admin/delete-menu",
+];
 const mealProviderRoutes = [
   "/dashboard/order/meal-provider-order",
   "/dashboard",
@@ -70,7 +74,7 @@ export const middleware = async (request: NextRequest) => {
     return NextResponse.redirect(new URL("/", request.url));
   }
   if (userInfo.role === "admin") {
-    if (adminRoutes.includes(pathname)) {
+    if (adminRoutes.includes(pathname) || profileRoutes.includes(pathname)) {
       return NextResponse.next();
     }
     return NextResponse.redirect(new URL("/", request.url));

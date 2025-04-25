@@ -93,7 +93,7 @@ export const SixCard = ({ data }: { data: any }) => {
           );
         })}
       </div>
-      {data.leading < 6 && (
+      {data?.leading < 6 && (
         <div className="flex justify-center pt-10 md:pt-20">
           <Link href={"/dashboard/menu/all-menu"}>
             <Button className="cursor-pointer">
