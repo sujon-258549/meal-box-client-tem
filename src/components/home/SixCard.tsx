@@ -12,12 +12,14 @@ import { IconDetails } from "@tabler/icons-react";
 export const SixCard = ({ data }: { data: any }) => {
   return (
     <>
-      <div>
-        <h1 className="text-2xl md:text-4xl text-center pt-6 md:pt-10 font-bold">
-          Menu
-        </h1>
-        <div className="max-w-md  mx-auto border-b-2 mt-4 mb-8 border-[#424242]"></div>
-      </div>
+      {data.length > 0 && (
+        <div>
+          <h1 className="text-2xl md:text-4xl text-center pt-6 md:pt-10 font-bold">
+            Menu
+          </h1>
+          <div className="max-w-md  mx-auto border-b-2 mt-4 mb-8 border-[#424242]"></div>
+        </div>
+      )}
       <div className="grid grid-cols-1 pt-8 md:pt-12 pb-10 md:pb-20 md:grid-cols-2 lg:grid-cols-3 gap-2">
         {data?.map((menu: any, index: number) => {
           // Calculate total for this specific menu

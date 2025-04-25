@@ -8,11 +8,13 @@ const publicRoutes = [
   "/signup",
   "/api/auth",
   "/dashboard/menu/all-menu",
+  "/about-meal-provider",
 ];
 const adminRoutes = [
   "/dashboard",
   "/dashboard/admin/all-user-status-change",
   "/dashboard/admin/delete-menu",
+  "/about-meal-provider",
 ];
 const mealProviderRoutes = [
   "/dashboard/order/meal-provider-order",
@@ -24,12 +26,14 @@ const mealProviderRoutes = [
   "/dashboard/meal-provider/update-meal-provider",
   "/dashboard/menu/all-menu",
   "/dashboard/order/my-order",
+  "/about-meal-provider",
 ];
 const customerRoutes = [
   "/create-meal-provider",
   "/dashboard",
   "/dashboard/order/my-order",
   "/dashboard/menu/all-menu",
+  "/about-meal-provider",
 ];
 const profileRoutes = [
   "/dashboard/user/view-profile",
