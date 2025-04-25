@@ -14,6 +14,8 @@ export const createOrder = async (data: FieldValues, id: string) => {
     token = data.accessToken;
     cookyStore.set("access-token", token);
   }
+  // console.log("order data", data);
+  console.log("order id", id);
   try {
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/order/create-order/${id}`,

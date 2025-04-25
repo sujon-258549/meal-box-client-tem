@@ -111,8 +111,11 @@ export default function SimpleCustomerDashboard({
         </CardHeader>
         <CardContent className="flex justify-between items-center">
           <span>You,re 90% done completing your profile</span>
-          <Link href={"/dashboard/user/update-profile"}></Link>
-          <Button variant="default">Update Profile</Button>
+          <Link href={"/dashboard/user/update-profile"}>
+            <Button variant="default" className="cursor-pointer">
+              Update Profile
+            </Button>
+          </Link>
         </CardContent>
       </Card>
     </div>

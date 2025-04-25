@@ -12,6 +12,7 @@ const DetailsMenuPage = async ({
   params: Promise<{ orderId: string }>;
 }) => {
   const { orderId } = await params;
+  console.log(orderId, "orderId");
 
   const { data } = await getSingleMenu(orderId);
   return (
