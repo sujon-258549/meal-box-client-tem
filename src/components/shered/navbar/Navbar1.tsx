@@ -30,6 +30,7 @@ import { LogIn, Menu } from "lucide-react";
 import { useUser } from "@/context/UserContext";
 import Image from "next/image";
 import { useEffect } from "react";
+import { logout } from "@/services/Auth/authServices";
 
 interface MenuItem {
   title: string;
@@ -66,8 +67,8 @@ const Navbar1 = ({
     { title: "Home", url: "/" },
 
     {
-      title: "Pricing",
-      url: "#",
+      title: "About",
+      url: "/about-meal-provider",
     },
     {
       title: "Blog",
@@ -78,7 +79,7 @@ const Navbar1 = ({
     login: { title: "Login", url: "/login" },
   },
 }: Navbar1Props) => {
-  const { user } = useUser();
+  const { user, setIsLoading } = useUser();
   useEffect(() => {
     const justLoggedIn = sessionStorage.getItem("justLoggedIn");
     if (justLoggedIn) {
@@ -87,6 +88,10 @@ const Navbar1 = ({
     }
   }, []);
 
+  const handleLogout = () => {
+    logout();
+    setIsLoading(true);
+  };
   return (
     <section className="box-shadow py-4">
       <div className="max-w-5xl mx-auto px-5 ">
@@ -148,7 +153,6 @@ const Navbar1 = ({
                   >
                     {auth.login.title}
                     <span className="">
-                      {" "}
                       <LogIn />
                     </span>
                   </Link>
@@ -206,10 +210,19 @@ const Navbar1 = ({
                   </Accordion>
 
                   <div className="flex flex-col gap-3">
-                    <Button>
-                      <a href={auth.login.url}>{auth.login.title}</a>
+                    <Link href={"/login"}>
+                      <Button>
+                        <a href={auth.login.url}>{auth.login.title}</a>
+                      </Button>
+                    </Link>
+                    <Button
+                      onClick={handleLogout}
+                      className="bg-red-600 text-white w-full"
+                    >
+                      <span className="flex gap-1.5 items-center">
+                        Log out <LogIn className="text-white" />
+                      </span>
                     </Button>
-                    <Button>Logout</Button>
                   </div>
                 </div>
               </SheetContent>
