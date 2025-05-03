@@ -9,6 +9,7 @@ import { AlignLeft, ShoppingCart } from "lucide-react";
 import Link from "next/link";
 import { IconDetails } from "@tabler/icons-react";
 import Pagination from "@/components/ui/paginaciton";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 export const AllMenuCard = ({ data }: { data: any }) => {
   console.log(data);
@@ -72,7 +73,7 @@ export const AllMenuCard = ({ data }: { data: any }) => {
                     <div className="flex flex-col gap-2 mt-4">
                       <Link href={`/details-menu/${menu._id}`}>
                         <Button className="w-full ">
-                          <IconDetails className="w-4 h-4 mr-1" />
+                          <FaExternalLinkAlt className="w-4 h-4 mr-1" />
                           Details
                         </Button>
                       </Link>

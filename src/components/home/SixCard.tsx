@@ -8,6 +8,7 @@ import { AlignLeft, ShoppingCart } from "lucide-react";
 
 import Link from "next/link";
 import { IconDetails } from "@tabler/icons-react";
+import { FaExternalLinkAlt } from "react-icons/fa";
 
 export const SixCard = ({ data }: { data: any }) => {
   return (
@@ -20,7 +21,7 @@ export const SixCard = ({ data }: { data: any }) => {
           <div className="max-w-md  mx-auto border-b-2 mt-4 mb-8 border-[#424242]"></div>
         </div>
       )}
-      <div className="grid grid-cols-1 pt-8 md:pt-12 pb-10 md:pb-20 md:grid-cols-2 lg:grid-cols-3 gap-2">
+      <div className="grid grid-cols-1 pt-8 md:pt-12 pb-10 md:pb-20 md:grid-cols-2 lg:grid-cols-3 gap-5">
         {data?.map((menu: any, index: number) => {
           // Calculate total for this specific menu
           const menuTotal =
@@ -36,7 +37,7 @@ export const SixCard = ({ data }: { data: any }) => {
           return (
             <div
               style={{
-                boxShadow: "10px 10px 15px rgba(0,0,0,0.1)",
+                boxShadow: "8px 8px 8px",
                 borderRadius: "10px",
               }}
               key={menu._id} // Better to use menu._id instead of index
@@ -70,11 +71,11 @@ export const SixCard = ({ data }: { data: any }) => {
                   </div>
 
                   {/* Button */}
-                  <div className=" mt-4">
+                  <div className=" mt-4 flex justify-between">
                     <div className="flex flex-col gap-2 mt-4">
                       <Link href={`/details-menu/${menu._id}`}>
-                        <Button className="w-full cursor-pointer">
-                          <IconDetails className="w-4 h-4 mr-1" />
+                        <Button className="w-full cursor-pointer px-2">
+                          <FaExternalLinkAlt className="w-4 h-4 mr-1" />
                           Details
                         </Button>
                       </Link>
@@ -95,11 +96,11 @@ export const SixCard = ({ data }: { data: any }) => {
           );
         })}
       </div>
-      {data?.leading < 6 && (
-        <div className="flex justify-center pt-10 md:pt-20">
+      {data?.length <= 6 && (
+        <div className="flex justify-center  mb-10 md:mb-16">
           <Link href={"/dashboard/menu/all-menu"}>
             <Button className="cursor-pointer">
-              View All Menu <AlignLeft />
+              View All Menu <FaExternalLinkAlt />
             </Button>
           </Link>
         </div>

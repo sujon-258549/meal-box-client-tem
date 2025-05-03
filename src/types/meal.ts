@@ -15,8 +15,10 @@ export type TDailyMeal = {
 };
 
 export type TMealPlan = {
+  shopId: any;
   _id: string;
   meals: TDailyMeal[];
+  menuImage: string;
   author_id: string;
   createdAt: string;
   updatedAt: string;
