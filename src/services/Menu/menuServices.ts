@@ -32,7 +32,7 @@ export const createMenuByProvider = async (MenuData: FormData) => {
 export const getAllMenus = async (page?: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/menu?page=${page}&limit=6`,
+      `${process.env.NEXT_PUBLIC_API_URL}/menu?page=${page}&limit=12`,
       {
         method: "GET",
         headers: {
@@ -49,7 +49,7 @@ export const getAllMenus = async (page?: string) => {
 
 export const getSixMenus = async () => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu?limit=6`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu?limit=8`, {
       method: "GET",
       // headers: {
       //   "Content-type": "application/json",

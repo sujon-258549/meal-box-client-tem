@@ -1,4 +1,5 @@
 import ImageGallery from "@/components/home/ImageGallery";
+import { MealBoxServices } from "@/components/home/MealBoxServices";
 import { SixCard } from "@/components/home/SixCard";
 import Slider from "@/components/home/Slider";
 import { Testimonial } from "@/components/home/Testimonial";
@@ -19,8 +20,8 @@ const HomePage = async () => {
       <div className="max-w-5xl py-10 mx-auto px-5">
         <SixCard data={data} />
         <ImageGallery menus={menus} />
+        <MealBoxServices />
         <Testimonial mealProvider={mealProvider} />
-        
       </div>
     </>
   );

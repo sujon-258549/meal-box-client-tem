@@ -56,7 +56,7 @@ export default function MenuAddForm() {
   const handleMenuFileUpload = (uploadedFiles: File[]) => {
     setFiles(uploadedFiles);
   };
-
+  console.log(files.length);
   const onSubmit = async (data: WeeklyMenuType) => {
     const toastId = toast.loading("Menu creating.......", { duration: 3000 });
     try {
@@ -184,7 +184,11 @@ export default function MenuAddForm() {
             <FileUpload onChange={handleMenuFileUpload} />
           </div>
 
-          <Button type="submit" className="w-full cursor-pointer">
+          <Button
+            type="submit"
+            disabled={!files.length}
+            className="w-full cursor-pointer"
+          >
             {isSubmitting ? <LoadingButton /> : "Submit Weekly Menu"}
           </Button>
         </form>

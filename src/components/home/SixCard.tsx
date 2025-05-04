@@ -11,6 +11,7 @@ import { IconDetails } from "@tabler/icons-react";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
 export const SixCard = ({ data }: { data: any }) => {
+  console.log();
   return (
     <>
       {data?.length > 0 && (
@@ -21,7 +22,7 @@ export const SixCard = ({ data }: { data: any }) => {
           <div className="max-w-md  mx-auto border-b-2 mt-4 mb-8 border-[#424242]"></div>
         </div>
       )}
-      <div className="grid grid-cols-1 pt-8 md:pt-12 pb-10 md:pb-20 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 pt-8 md:pt-12 pb-10 md:pb-20 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {data?.map((menu: any, index: number) => {
           // Calculate total for this specific menu
           const menuTotal =
@@ -44,7 +45,7 @@ export const SixCard = ({ data }: { data: any }) => {
             >
               <Card className="bg-[#130707] text-white max-w-sm w-full rounded-xl p-2">
                 {/* Image */}
-                <div className="bg-gray-600 w-full h-64 rounded-xl mb-4 overflow-hidden">
+                <div className="bg-gray-600 w-full h-40 rounded-xl  overflow-hidden">
                   <img
                     src={menu?.menuImage}
                     className="h-full w-full object-cover"
@@ -53,7 +54,7 @@ export const SixCard = ({ data }: { data: any }) => {
                 </div>
 
                 {/* Product Info */}
-                <div className="p-4 space-y-3">
+                <div className="px-2 pb-2 space-y">
                   <h2 className="text-lg font-semibold line-clamp-1">
                     {menu.shopId?.shopName || "Untitled Menu"}
                   </h2>
@@ -72,16 +73,15 @@ export const SixCard = ({ data }: { data: any }) => {
 
                   {/* Button */}
                   <div className=" mt-4 flex justify-between">
-                    <div className="flex flex-col gap-2 mt-4">
+                    <div className="flex flex-col gap-2">
                       <Link href={`/details-menu/${menu._id}`}>
                         <Button className="w-full cursor-pointer px-2">
                           <FaExternalLinkAlt className="w-4 h-4 mr-1" />
-                          Details
                         </Button>
                       </Link>
                     </div>
 
-                    <div className="flex flex-col gap-2 mt-4">
+                    <div className="flex flex-col gap-2">
                       <Link href={`/dashboard/order/details-menu/${menu._id}`}>
                         <Button className="w-full cursor-pointer">
                           <ShoppingCart className="w-4 h-4 mr-1" />
@@ -96,7 +96,7 @@ export const SixCard = ({ data }: { data: any }) => {
           );
         })}
       </div>
-      {data?.length <= 6 && (
+      {data.length >= 8 && (
         <div className="flex justify-center  mb-10 md:mb-16">
           <Link href={"/dashboard/menu/all-menu"}>
             <Button className="cursor-pointer">

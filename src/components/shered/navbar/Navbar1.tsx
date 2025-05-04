@@ -94,7 +94,7 @@ const Navbar1 = ({
   };
   return (
     <section className="box-shadow py-4">
-      <div className="max-w-5xl mx-auto px-5 ">
+      <div className="max-w-5xl mx-auto px-5 lg:px-0">
         {/* Desktop Menu */}
         <nav className="hidden justify-between lg:flex">
           <div className="flex  items-center gap-6">

@@ -10,6 +10,7 @@ const publicRoutes = [
   "/dashboard/menu/all-menu",
   "/about-meal-provider",
   "/success",
+  "/all-meal-plans-page",
 ];
 const adminRoutes = [
   "/dashboard",

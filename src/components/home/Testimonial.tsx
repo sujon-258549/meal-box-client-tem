@@ -62,7 +62,7 @@ export const Testimonial = ({ mealProvider }: { mealProvider: any }) => {
       >
         {mealProviderData.map((provider: any, index: number) => (
           <SwiperSlide key={index}>
-            <section className="bg-white dark:bg-gray-900">
+            <section className=" dark:bg-gray-900">
               <div className="max-w-screen-xl px-4 py-8 mx-auto text-center lg:py-16 lg:px-6">
                 <figure className="max-w-screen-md mx-auto">
                   {renderStars(provider.rating)}
