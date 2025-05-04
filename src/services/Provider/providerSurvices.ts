@@ -63,10 +63,10 @@ export const getMyProvider = async () => {
     return Error(error);
   }
 };
-export const getAllProvider = async () => {
+export const getAllProvider = async (page?: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/meal-provider`,
+      `${process.env.NEXT_PUBLIC_API_URL}/meal-provider?page=${page}`,
       {
         method: "GET",
       }

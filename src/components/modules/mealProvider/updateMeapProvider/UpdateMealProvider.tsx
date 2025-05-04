@@ -50,12 +50,16 @@ const UpdateMealProviderForm = ({ data }: { data: any }) => {
     defaultValues: {
       shopName: data.shopName || "",
       shopAddress: data.shopAddress || "",
+      description: data.description || "",
       phoneNumber: data.phoneNumber || "",
       website: data.website || "",
       ownerName: data.ownerName || "",
       establishedYear: data.establishedYear || new Date().getFullYear(),
 
       productCategories: data.productCategories?.map((product: string) => ({
+        value: product,
+      })) || [{ value: "" }],
+      shopFeatures: data.shopFeatures?.map((product: string) => ({
         value: product,
       })) || [{ value: "" }],
 
@@ -89,7 +93,18 @@ const UpdateMealProviderForm = ({ data }: { data: any }) => {
   const addProductCategory = () => {
     appendProductCategory({ value: "" });
   };
+  const {
+    append: appendShopFeatures,
+    fields: shopFeatures,
+    remove: removeShopFeatures,
+  } = useFieldArray({
+    control: form.control,
+    name: "shopFeatures",
+  });
 
+  const addShopFeatures = () => {
+    appendShopFeatures({ value: "" });
+  };
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     const toastId = toast.loading("Updata Meal Provider..........", {
       duration: 3000,
@@ -97,9 +112,11 @@ const UpdateMealProviderForm = ({ data }: { data: any }) => {
     const productCategories = data.productCategories.map(
       (product) => product.value
     );
+    const shopFeatures = data.shopFeatures.map((product) => product.value);
     const modifiedData = {
       ...data,
       productCategories,
+      shopFeatures,
     };
     console.log("from client", { modifiedData, files });
 
@@ -515,7 +532,66 @@ const UpdateMealProviderForm = ({ data }: { data: any }) => {
                   </div>
                 ))}
               </div>
-
+              {/* Product Feature */}
+              <div className="flex justify-between">
+                <h2 className="text-xl md:text-2xl font-bold">Shop Feature</h2>
+                <Button
+                  type="button"
+                  onClick={addShopFeatures}
+                  variant={"outline"}
+                >
+                  <CircleFadingPlus />
+                </Button>
+              </div>
+              <div className="space-y-3">
+                {shopFeatures.map((field, i) => (
+                  <div key={field.id} className="flex items-center gap-2">
+                    <FormField
+                      control={form.control}
+                      name={`shopFeatures.${i}.value`}
+                      render={({ field }) => (
+                        <FormItem className="flex-1">
+                          <FormLabel>Feature {i + 1}</FormLabel>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              placeholder="Enter your features"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    {i > 0 && (
+                      <Button
+                        type="button"
+                        variant="destructive"
+                        onClick={() => removeShopFeatures(i)}
+                        className="mt-7"
+                      >
+                        Remove
+                      </Button>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Description*</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        className="h-36"
+                        {...field}
+                        placeholder="Enter shop description"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
               {/* Shop Logo Upload */}
               <div className="w-full my-5 max-w-4xl mx-auto min-h-10 border border-dashed bg-white dark:bg-black border-neutral-200 dark:border-neutral-800 rounded-lg">
                 <FileUpload onChange={handleFileUpload} />

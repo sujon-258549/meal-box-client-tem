@@ -11,6 +11,10 @@ const publicRoutes = [
   "/about-meal-provider",
   "/success",
   "/all-meal-plans-page",
+  "/all-menu",
+  "/menu-about",
+  "/meal-box-services",
+  "/all-meal-provider",
 ];
 const adminRoutes = [
   "/dashboard",
@@ -61,6 +65,7 @@ export const middleware = async (request: NextRequest) => {
   if (
     publicRoutes.includes(pathname) ||
     pathname.startsWith("/details-menu/") ||
+    pathname.startsWith("/meal-plan-services-details/") ||
     pathname.startsWith("/reset-ui")
   ) {
     return NextResponse.next();

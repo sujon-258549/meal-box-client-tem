@@ -17,7 +17,7 @@ export const SixCard = ({ data }: { data: any }) => {
       {data?.length > 0 && (
         <div>
           <h1 className="text-2xl md:text-4xl text-center pt-6 md:pt-10 font-bold">
-            Menu
+            Meal Box menu
           </h1>
           <div className="max-w-md  mx-auto border-b-2 mt-4 mb-8 border-[#424242]"></div>
         </div>
@@ -37,15 +37,18 @@ export const SixCard = ({ data }: { data: any }) => {
 
           return (
             <div
-              style={{
-                boxShadow: "8px 8px 8px",
-                borderRadius: "10px",
-              }}
               key={menu._id} // Better to use menu._id instead of index
             >
-              <Card className="bg-[#130707] text-white max-w-sm w-full rounded-xl p-2">
+              <Card
+                style={{
+                  boxShadow: "8px 8px 18px",
+                  borderRadius: "10px",
+                }}
+                className="bg-[#130707] mx-auto text-white 
+                max-w-sm w-full rounded-xl p-2"
+              >
                 {/* Image */}
-                <div className="bg-gray-600 w-full h-40 rounded-xl  overflow-hidden">
+                <div className="bg-gray-600 w-full h-60 lg:h-40 rounded-xl  overflow-hidden">
                   <img
                     src={menu?.menuImage}
                     className="h-full w-full object-cover"
@@ -98,7 +101,7 @@ export const SixCard = ({ data }: { data: any }) => {
       </div>
       {data.length >= 8 && (
         <div className="flex justify-center  mb-10 md:mb-16">
-          <Link href={"/dashboard/menu/all-menu"}>
+          <Link href={"/all-menu"}>
             <Button className="cursor-pointer">
               View All Menu <FaExternalLinkAlt />
             </Button>

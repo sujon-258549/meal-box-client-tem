@@ -7,11 +7,10 @@ import { Button } from "@/components/ui/button";
 import { AlignLeft, ShoppingCart } from "lucide-react";
 
 import Link from "next/link";
-import { IconDetails } from "@tabler/icons-react";
 import Pagination from "@/components/ui/paginaciton";
 import { FaExternalLinkAlt } from "react-icons/fa";
 
-export const AllMenuCard = ({ data }: { data: any }) => {
+export const AllMenu = ({ data }: { data: any }) => {
   console.log(data);
   return (
     <>
@@ -19,7 +18,7 @@ export const AllMenuCard = ({ data }: { data: any }) => {
         {" "}
         All Menu Product
       </h1>
-      <div className="grid grid-cols-1 pt-5 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 pt-8 md:pt-12 pb-10 md:pb-20 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {data?.data?.map((menu: any, index: number) => {
           // Calculate total for this specific menu
           const menuTotal =
@@ -38,13 +37,13 @@ export const AllMenuCard = ({ data }: { data: any }) => {
             >
               <Card
                 style={{
-                  boxShadow: "10px 10px 15px rgba(0,0,0,0.1)",
+                  boxShadow: "8px 8px 8px",
                   borderRadius: "10px",
                 }}
                 className="bg-[#130707] text-white mx-auto max-w-sm w-full rounded-xl p-2"
               >
                 {/* Image */}
-                <div className="bg-gray-600 w-full h-64 rounded-xl mb-4 overflow-hidden">
+                <div className="bg-gray-600 w-full h-40 rounded-xl  overflow-hidden">
                   <img
                     src={menu?.menuImage}
                     className="h-full w-full object-cover"
@@ -53,7 +52,7 @@ export const AllMenuCard = ({ data }: { data: any }) => {
                 </div>
 
                 {/* Product Info */}
-                <div className="p-4 space-y-3">
+                <div className="px-2 pb-2 space-y">
                   <h2 className="text-lg font-semibold line-clamp-1">
                     {menu.shopId?.shopName || "Untitled Menu"}
                   </h2>
@@ -71,21 +70,20 @@ export const AllMenuCard = ({ data }: { data: any }) => {
                   </div>
 
                   {/* Button */}
-                  <div className=" mt-4">
-                    <div className="flex flex-col gap-2 mt-4">
+                  <div className=" mt-4 flex justify-between">
+                    <div className="flex flex-col gap-2">
                       <Link href={`/details-menu/${menu._id}`}>
-                        <Button className="w-full ">
+                        <Button className="w-full cursor-pointer px-2">
                           <FaExternalLinkAlt className="w-4 h-4 mr-1" />
-                          Details
                         </Button>
                       </Link>
                     </div>
 
-                    <div className="flex flex-col gap-2 mt-4">
+                    <div className="flex flex-col gap-2">
                       <Link href={`/dashboard/order/details-menu/${menu._id}`}>
-                        <Button className="w-full ">
+                        <Button className="w-full cursor-pointer">
                           <ShoppingCart className="w-4 h-4 mr-1" />
-                          Buy now
+                          Order now
                         </Button>
                       </Link>
                     </div>

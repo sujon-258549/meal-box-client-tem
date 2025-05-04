@@ -1,5 +1,5 @@
 "use client";
-
+import "./style.css";
 import {
   Accordion,
   AccordionContent,
@@ -9,11 +9,11 @@ import {
 import { Button } from "@/components/ui/button";
 import {
   NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
+  NavigationMenuItem,
   NavigationMenuTrigger,
+  NavigationMenuContent,
 } from "@/components/ui/navigation-menu";
 import {
   Sheet,
@@ -31,6 +31,7 @@ import { useUser } from "@/context/UserContext";
 import Image from "next/image";
 import { useEffect } from "react";
 import { logout } from "@/services/Auth/authServices";
+import { usePathname } from "next/navigation";
 
 interface MenuItem {
   title: string;
@@ -65,14 +66,32 @@ const Navbar1 = ({
   },
   menu = [
     { title: "Home", url: "/" },
-
     {
       title: "About",
       url: "/about-meal-provider",
+      items: [
+        {
+          title: "About Meal Provider",
+          url: "/about-meal-provider",
+        },
+        {
+          title: "About Menu ",
+
+          url: "/menu-about",
+        },
+      ],
     },
     {
-      title: "Blog",
-      url: "#",
+      title: "All menu",
+      url: "/all-menu",
+    },
+    {
+      title: "All Meal provider",
+      url: "/all-meal-provider",
+    },
+    {
+      title: "Meal Box Services",
+      url: "/meal-box-services",
     },
   ],
   auth = {
@@ -92,23 +111,23 @@ const Navbar1 = ({
     logout();
     setIsLoading(true);
   };
+  const pathname = usePathname();
+
   return (
-    <section className="box-shadow py-4">
-      <div className="max-w-5xl mx-auto px-5 lg:px-0">
+    <section className="box-shadow py-4 sticky top-0 z-50 bg-background">
+      <div className="max-w-5xl mx-auto sticky px-5 lg:px-0">
         {/* Desktop Menu */}
         <nav className="hidden justify-between lg:flex">
-          <div className="flex  items-center gap-6">
+          <div className="flex items-center gap-6">
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
-              {/* <img src={logo.src} className="max-h-8" alt={logo.alt} /> */}
-
               <Image
                 src={logo.src}
                 alt={logo.alt}
                 height={32}
-                width={32} // Equivalent to max-h-8 (32px)
-                className="h-8 w-auto" // Tailwind: set fixed height and auto width
-                priority // Optional: loads the image sooner
+                width={32}
+                className="h-8 w-auto"
+                priority
               />
               <span className="text-lg font-semibold tracking-tighter">
                 {logo.title}
@@ -119,13 +138,57 @@ const Navbar1 = ({
             <div className="flex items-center">
               <NavigationMenu>
                 <NavigationMenuList>
-                  {menu.map((item) => renderMenuItem(item))}
+                  {menu.map((item) => {
+                    const isActive =
+                      pathname === item.url ||
+                      pathname.startsWith(item.url + "/");
+
+                    if (item.items) {
+                      return (
+                        <NavigationMenuItem key={item.title}>
+                          <NavigationMenuTrigger
+                            className={`group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+                              isActive
+                                ? "text-white border bg-[#424242]"
+                                : "text-[#424242]"
+                            }`}
+                          >
+                            {item.title}
+                          </NavigationMenuTrigger>
+
+                          <NavigationMenuContent className="!w-[250px] sub-menu !max-w-none !pt-4 bg-white shadow-lg rounded-md">
+                            <div className="grid gap-2 p-2 ">
+                              {item.items.map((subItem) => (
+                                <SubMenuLink
+                                  key={subItem.title}
+                                  item={subItem}
+                                />
+                              ))}
+                            </div>
+                          </NavigationMenuContent>
+                        </NavigationMenuItem>
+                      );
+                    }
+
+                    return (
+                      <NavigationMenuLink
+                        key={item.title}
+                        href={item.url}
+                        className={`group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+                          isActive
+                            ? "text-white border bg-[#424242]"
+                            : "text-[#424242]"
+                        }`}
+                      >
+                        {item.title}
+                      </NavigationMenuLink>
+                    );
+                  })}
                 </NavigationMenuList>
               </NavigationMenu>
             </div>
           </div>
           <div className="flex max-lg:ml-auto space-x-4">
-            {/* <Link href={"/create-meal-provider"}> */}
             <div className="flex flex-col items-center gap-2">
               <div className="group relative">
                 {user && user?.role === "customer" && (
@@ -145,7 +208,6 @@ const Navbar1 = ({
               <ProfileDropdown />
             ) : (
               <div>
-                {/*Change by ripon */}
                 <Button variant="default">
                   <Link
                     className="flex gap-1.5 items-center "
@@ -159,16 +221,6 @@ const Navbar1 = ({
                 </Button>
               </div>
             )}
-            {/* Menu Open Button */}
-            <button className="lg:hidden">
-              <svg className="w-7 h-7" fill="#000" viewBox="0 0 20 20">
-                <path
-                  fillRule="evenodd"
-                  d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </button>
           </div>
         </nav>
 
@@ -177,7 +229,6 @@ const Navbar1 = ({
           <div className="flex items-center justify-between">
             {/* Logo */}
             <a href={logo.url} className="flex items-center gap-2">
-              {/* <img src={logo.src} className="max-h-8" alt={logo.alt} /> */}
               <Image
                 src={logo.src}
                 alt={logo.alt}
@@ -194,7 +245,7 @@ const Navbar1 = ({
               </SheetTrigger>
               <SheetContent className="overflow-y-auto">
                 <SheetHeader>
-                  <SheetTitle>
+                  <SheetTitle className="border-b-2 border-black pb-1">
                     <a href={logo.url} className="flex items-center gap-2">
                       <img src={logo.src} className="max-h-8" alt={logo.alt} />
                     </a>
@@ -206,23 +257,63 @@ const Navbar1 = ({
                     collapsible
                     className="flex w-full flex-col gap-4"
                   >
-                    {menu.map((item) => renderMobileMenuItem(item))}
+                    {menu.map((item) => {
+                      const isActive =
+                        pathname === item.url ||
+                        pathname.startsWith(item.url + "/");
+
+                      if (item.items) {
+                        return (
+                          <AccordionItem key={item.title} value={item.title}>
+                            <AccordionTrigger className="w-full text-left p-2 font-medium">
+                              {item.title}
+                            </AccordionTrigger>
+                            <AccordionContent className="pl-4  py-2">
+                              {item.items.map((subItem) => (
+                                <a
+                                  key={subItem.title}
+                                  href={subItem.url}
+                                  className="block p-2 hover:bg-gray-100 rounded transition-colors"
+                                >
+                                  {subItem.title}
+                                </a>
+                              ))}
+                            </AccordionContent>
+                          </AccordionItem>
+                        );
+                      }
+
+                      return (
+                        <a
+                          key={item.title}
+                          href={item.url}
+                          className={`group inline-flex h-10 w-max items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+                            isActive
+                              ? "text-white border bg-[#424242]"
+                              : "text-[#424242]"
+                          }`}
+                        >
+                          {item.title}
+                        </a>
+                      );
+                    })}
                   </Accordion>
 
                   <div className="flex flex-col gap-3">
-                    <Link href={"/login"}>
-                      <Button>
-                        <a href={auth.login.url}>{auth.login.title}</a>
+                    {!user ? (
+                      <Link href={auth.login.url} passHref>
+                        <Button className="w-full">{auth.login.title}</Button>
+                      </Link>
+                    ) : (
+                      <Button
+                        onClick={handleLogout}
+                        className="bg-red-600 text-white w-full"
+                      >
+                        <span className="flex gap-1.5 items-center">
+                          Log out <LogIn className="text-white" />
+                        </span>
                       </Button>
-                    </Link>
-                    <Button
-                      onClick={handleLogout}
-                      className="bg-red-600 text-white w-full"
-                    >
-                      <span className="flex gap-1.5 items-center">
-                        Log out <LogIn className="text-white" />
-                      </span>
-                    </Button>
+                    )}
                   </div>
                 </div>
               </SheetContent>
@@ -231,57 +322,6 @@ const Navbar1 = ({
         </div>
       </div>
     </section>
-  );
-};
-
-const renderMenuItem = (item: MenuItem) => {
-  if (item.items) {
-    return (
-      <NavigationMenuItem key={item.title}>
-        <NavigationMenuTrigger>{item.title}</NavigationMenuTrigger>
-        <NavigationMenuContent className="bg-popover text-popover-foreground">
-          {item.items.map((subItem) => (
-            <NavigationMenuLink asChild key={subItem.title} className="w-80">
-              <SubMenuLink item={subItem} />
-            </NavigationMenuLink>
-          ))}
-        </NavigationMenuContent>
-      </NavigationMenuItem>
-    );
-  }
-
-  return (
-    <NavigationMenuItem key={item.title}>
-      <NavigationMenuLink
-        href={item.url}
-        className="group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-muted hover:text-accent-foreground"
-      >
-        {item.title}
-      </NavigationMenuLink>
-    </NavigationMenuItem>
-  );
-};
-
-const renderMobileMenuItem = (item: MenuItem) => {
-  if (item.items) {
-    return (
-      <AccordionItem key={item.title} value={item.title} className="border-b-0">
-        <AccordionTrigger className="text-md py-0 font-semibold hover:no-underline">
-          {item.title}
-        </AccordionTrigger>
-        <AccordionContent className="mt-2">
-          {item.items.map((subItem) => (
-            <SubMenuLink key={subItem.title} item={subItem} />
-          ))}
-        </AccordionContent>
-      </AccordionItem>
-    );
-  }
-
-  return (
-    <a key={item.title} href={item.url} className="text-md font-semibold">
-      {item.title}
-    </a>
   );
 };
 

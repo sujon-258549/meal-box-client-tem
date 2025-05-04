@@ -32,7 +32,41 @@ export const createMenuByProvider = async (MenuData: FormData) => {
 export const getAllMenus = async (page?: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/menu?page=${page}&limit=12`,
+      `${process.env.NEXT_PUBLIC_API_URL}/menu?page=${page}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          // Authorization: (await cookies()).get("access-token")!.value,
+        },
+      }
+    );
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+export const getTenMenus = async () => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/menu?limit=10`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+          // Authorization: (await cookies()).get("access-token")!.value,
+        },
+      }
+    );
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+export const getAllMenusForServices = async (page?: string) => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/menu?page=${page}`,
       {
         method: "GET",
         headers: {

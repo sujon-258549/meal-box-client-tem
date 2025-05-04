@@ -3,6 +3,7 @@ import { z } from "zod";
 export const mealProviderSchema = z.object({
   shopName: z.string().min(1, "Shop name is required"),
   shopAddress: z.string().min(1, "Shop address is required"),
+  description: z.string().min(1, "Shop address is required"),
   phoneNumber: z
     .string()
     .min(1, "Phone number is required")
@@ -22,6 +23,13 @@ export const mealProviderSchema = z.object({
     .min(1900, "Year must be after 1900")
     .max(new Date().getFullYear(), "Year cannot be in the future"),
   productCategories: z
+    .array(
+      z.object({
+        value: z.string().min(1, "Category name is required"),
+      })
+    )
+    .min(1, "At least one product category is required"),
+  shopFeatures: z
     .array(
       z.object({
         value: z.string().min(1, "Category name is required"),

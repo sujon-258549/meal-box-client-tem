@@ -39,14 +39,14 @@ export default function Slider({ sliderData }: { sliderData: any }) {
         {sliderData?.map((menu: any, index: string) => (
           <SwiperSlide key={index}>
             <div className="bg-gradient-to-r from-gray-600 via-gray-800 to-gray-900 bg-gray-800 p-6">
-              <div className="grid md:grid-cols-2 items-center gap-10 max-w-5xl max-md:max-w-md mx-auto">
+              <div className="grid md:grid-cols-2 items-center gap-10 max-w-5xl  mx-auto">
                 <div className="h-screen md:h-[400px] lg:h-[500px]">
                   <img
                     src={menu.menuImage}
-                    className="w-full h-full rounded-md object-cover"
+                    className="w-full h-full rounded-md object-cover md:object-center"
                   />
                 </div>
-                <div className="max-md:text-center">
+                <div className="max-md:text-center md:block hidden">
                   <h1 className="text-2xl md:text-4xl text-white mb-5 ml-1.5 font-bold">
                     Our Features
                   </h1>

@@ -20,7 +20,8 @@ import { IoMdTime } from "react-icons/io";
 import { MdPayment } from "react-icons/md";
 import Link from "next/link";
 import { Button } from "../ui/button";
-import { ShoppingCart } from "lucide-react";
+import { ShoppingCart, UtensilsCrossed } from "lucide-react";
+import { Card, CardContent, CardHeader } from "../ui/card";
 
 interface Address {
   village: string;
@@ -82,7 +83,28 @@ interface MenuData {
 
 const DetailsMenu: React.FC<{ menu?: MenuData }> = ({ menu }) => {
   console.log(menu);
-  if (!menu) return <div className="text-center py-10">Loading menu...</div>;
+  if (!menu)
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <Card className="w-full max-w-md mx-auto  ">
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-center gap-2">
+              <UtensilsCrossed className="w-8 h-8 text-rose-500" />
+              <h3 className="text-lg font-semibold">No Meals Available</h3>
+            </div>
+          </CardHeader>
+          <CardContent className="flex flex-col items-center gap-3 text-center">
+            <p className="text-sm text-muted-foreground">
+              This provider hasn,t created any meal plans yet.
+            </p>
+            <div className="h-[1px] w-full bg-border my-2" />
+            <p className="text-xs text-muted-foreground">
+              Check back later or explore other providers
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    );
   console.log(menu);
   return (
     <div className="max-w-6xl mx-auto my-10 px-4 sm:px-6 lg:px-8">

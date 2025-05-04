@@ -53,7 +53,7 @@ export function MyMenuCard({ data }: { data: TMealPlan }) {
       <div className="container mx-auto pb-8 px-4">
         {/* Header */}
         <div className="mb-10 text-center">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-2">
+          <h1 className="text-4xl font-bold text-[#424242]  mb-2">
             Weekly Meal Plan
           </h1>
           <p className="text-muted-foreground">

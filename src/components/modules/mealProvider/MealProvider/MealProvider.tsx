@@ -17,6 +17,7 @@ import {
 import { IoLocation } from "react-icons/io5";
 
 const ShopInfoCard = ({ data }: { data: any }) => {
+  console.log(data);
   return (
     <section className="mx-5 mb-5 box-shadow rounded-md">
       <div className="bg-gradient-to-r from-[#424242] rounded-t-md to-[#424242d3] h-32 p-6 relative">
@@ -34,26 +35,7 @@ const ShopInfoCard = ({ data }: { data: any }) => {
           </div>
         </div>
       </div>
-      {/* <div className="bg-indigo-600">
-        <div className="flex  items-center gap-5 mb-6">
-          <Image
-            src={data?.shopLogo}
-            alt="Shop Logo"
-            width={150}
-            height={50}
-            style={{ width: "100px", height: "100px", borderRadius: "100%" }}
-            // OR with Tailwind:
-            // className="w-[150px] h-[50px]"
-          />
 
-          <div>
-            <h2 className="text-3xl font-bold text-gray-800">
-              {data?.shopName}
-            </h2>
-            <p className="text-gray-500">{data?.shopAddress}</p>
-          </div>
-        </div>
-      </div> */}
       <div className="max-w-6xl  mx-auto bg-white rounded-2xl  shadow-lg p-8 sm:p-10 md:p-12 mb-10">
         <div className="py-5 border-[#424242] border-b-2">
           <h1 className="text-2xl font-bold flex gap-2 items-center text-gray-900">
@@ -166,6 +148,16 @@ const ShopInfoCard = ({ data }: { data: any }) => {
                     <li key={idx}>{item}</li>
                   )
                 )}
+              </ul>
+            </div>
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900">
+                Our Features
+              </h3>
+              <ul className="list-disc list-inside">
+                {data?.shopFeatures.map((idx: string, item: string) => (
+                  <li key={item}>{idx}</li>
+                ))}
               </ul>
             </div>
 
