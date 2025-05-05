@@ -268,22 +268,17 @@ export const UploadImage = async (data: FormData) => {
   }
 };
 
-export const getAllUser = async () => {
-  const cookyStore = await cookies();
-  let token = cookyStore.get("access-token")!.value;
-  if (!token || (await isTokenExpired(token))) {
-    const { data } = await getNewToken();
-    token = data.accessToken;
-    cookyStore.set("access-token", token);
-  }
+export const getAllUser = async (page?: string, limit?: string) => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: token,
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users?page=${page}&limit=${limit}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
     return res.json();
   } catch (error: any) {

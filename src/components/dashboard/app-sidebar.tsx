@@ -7,6 +7,7 @@ import {
   BookOpen,
   Bot,
   Command,
+  Contact,
   Frame,
   GalleryVerticalEnd,
   Map,
@@ -25,6 +26,7 @@ import {
 import { NavMain } from "./nav-main";
 import { NavUser } from "./nav-user";
 import { getMe } from "@/services/Auth/authServices";
+import { BiLogoImdb } from "react-icons/bi";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const [userInfo, setUser] = useState<any>();
@@ -86,6 +88,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               },
             ],
           },
+          {
+            title: "Contact",
+            url: "/dashboard/meal-provider/contact-for-me",
+            icon: Contact,
+          },
         ]
       : []),
     ...(userInfo?.role === "admin"
@@ -113,6 +120,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {
                 title: "All Menu",
                 url: "/dashboard/menu/all-menu",
+              },
+            ],
+          },
+          {
+            title: "Blog",
+            url: "#",
+            icon: BiLogoImdb,
+            items: [
+              {
+                title: "Create Blog",
+                url: "/dashboard/admin/blog/create-blog",
+              },
+              {
+                title: "My blog",
+                url: "/dashboard/admin/blog/my-blog",
               },
             ],
           },

@@ -12,8 +12,8 @@ import Link from "next/link";
 export function MealBoxServices({ menuData }: { menuData: any }) {
   console.log(menuData);
   return (
-    <section className="py-16 bg-gradient-to-br from-gray-50 to-gray-100">
-      <div className="container px-4 mx-auto">
+    <section className="py-10 bg-gradient-to-br from-gray-50 to-gray-100">
+      <div className="">
         <div className="text-center mb-12">
           <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Meal Box Services
@@ -21,11 +21,11 @@ export function MealBoxServices({ menuData }: { menuData: any }) {
           <p className="mt-4 text-lg text-gray-600">
             Delicious, nutritious meals delivered to your door
           </p>
-          <div className="max-w-md  mx-auto border-b-2 mt-4 mb-8 md:mb-14 lg:mb-20 border-[#424242]"></div>
+          <div className="max-w-md  mx-auto border-b-2 mt-4 mb-8 md:mb-10 lg:mb-14 border-[#424242]"></div>
         </div>
 
-        <div className="grid gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-          {menuData?.data?.slice(0, 4).map((plan: any) => (
+        <div className="grid gap-2 grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
+          {menuData?.data?.slice(0, 5).map((plan: any) => (
             <Card
               style={{ padding: "5px" }}
               key={plan._id}

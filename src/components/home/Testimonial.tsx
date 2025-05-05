@@ -13,7 +13,7 @@ import {
 } from "react-icons/fa";
 
 export const Testimonial = ({ mealProvider }: { mealProvider: any }) => {
-  const mealProviderData = mealProvider?.data?.data || [];
+  const mealProviderData = mealProvider?.data;
 
   const renderStars = (rating: number) => {
     const validRating = Math.min(5, Math.max(0, Number(rating) || 0));

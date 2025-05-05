@@ -16,7 +16,7 @@ const page = async ({
   const data = await getAllMenus(page);
 
   return (
-    <div className="max-w-5xl py-10 mx-auto px-5">
+    <div className="">
       <AllMenu data={data} />
     </div>
   );

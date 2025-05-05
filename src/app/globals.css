@@ -124,3 +124,9 @@
 .box-shadow {
   box-shadow: 1px 1px 20px;
 }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}

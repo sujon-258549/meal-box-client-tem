@@ -83,13 +83,16 @@ export const getAllMenusForServices = async (page?: string) => {
 
 export const getSixMenus = async () => {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/menu?limit=8`, {
-      method: "GET",
-      // headers: {
-      //   "Content-type": "application/json",
-      //   // Authorization: (await cookies()).get("access-token")!.value,
-      // },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/menu?limit=10`,
+      {
+        method: "GET",
+        // headers: {
+        //   "Content-type": "application/json",
+        //   // Authorization: (await cookies()).get("access-token")!.value,
+        // },
+      }
+    );
     // console.log(res.json());
     return res.json();
   } catch (error: any) {

@@ -11,8 +11,8 @@ import {
 const Footer = () => {
   return (
     <div style={{ boxShadow: "1px 1px 10px" }}>
-      <footer className="bg-[#424242]  dark:bg-gray-900">
-        <div className="mx-auto w-full max-w-5xl p-4 py-6 lg:py-8">
+      <footer className="bg-[#424242] p-4 py-6 lg:py-8 dark:bg-gray-900">
+        <div className="mx-auto w-full container ">
           <div className="md:flex md:justify-between items-center">
             <div className="mb-6 md:mb-0">
               <a href="https://flowbite.com/" className="flex items-center">

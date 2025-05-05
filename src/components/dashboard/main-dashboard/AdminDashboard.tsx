@@ -11,8 +11,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Pagination from "@/components/ui/paginaciton";
 
 const AdminDashboard = ({ allUser }: { allUser: any }) => {
+  console.log("allUser............", allUser);
   const [allCustomers, setAllCustomers] = useState<TUser[]>([]);
   const [allMealProviders, setAllMealProviders] = useState<TUser[]>([]);
 
@@ -81,7 +83,7 @@ const AdminDashboard = ({ allUser }: { allUser: any }) => {
                           {index + 1}
                         </TableCell>
                         <TableCell>
-                          <div className="font-medium">{user.fullName}</div>
+                          <div className="font-medium">{user?.fullName}</div>
                           <div className="text-sm text-gray-500 sm:hidden">
                             {user.email}
                           </div>
@@ -119,7 +121,7 @@ const AdminDashboard = ({ allUser }: { allUser: any }) => {
                       <TableRow key={user._id}>
                         <TableCell>{index + 1}</TableCell>
                         <TableCell>
-                          <div className="font-medium">{user.name}</div>
+                          <div className="font-medium">{user.fullName}</div>
                           <div className="text-sm text-gray-500 sm:hidden">
                             {user.email}
                           </div>
@@ -136,6 +138,7 @@ const AdminDashboard = ({ allUser }: { allUser: any }) => {
                 </Table>
               </div>
             </TabsContent>
+            <Pagination total={allUser?.data?.meta?.totalPage} />
           </Tabs>
         </div>
       </main>

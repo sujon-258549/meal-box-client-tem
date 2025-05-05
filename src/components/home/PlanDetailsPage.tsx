@@ -9,8 +9,8 @@ const PlanDetailsPage = ({ planData }: { planData: any }) => {
   return (
     <div className="min-h-screen max-w-5xl mx-auto bg-gray-50">
       <Head>
-        <title>{planData.shopId.name} - Meal Plan</title>
-        <meta name="description" content={planData.shopId.description} />
+        <title>{planData?.shopId?.shopName} - Meal Plan</title>
+        <meta name="description" content={planData?.shopId?.description} />
       </Head>
 
       {/* Header */}
@@ -18,17 +18,19 @@ const PlanDetailsPage = ({ planData }: { planData: any }) => {
         <div className="container mx-auto px-4">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div>
-              <h1 className="text-3xl font-bold">{planData.shopId.name}</h1>
+              <h1 className="text-3xl font-bold">
+                {planData?.shopId?.shopName}
+              </h1>
               <p className="mt-2 opacity-90">Weekly Meal Plan</p>
             </div>
             <div className="mt-4 md:mt-0 flex items-center">
               <img
-                src={planData.author_id.profileImage}
-                alt={planData.author_id.fullName}
+                src={planData?.author_id?.profileImage}
+                alt={planData?.author_id?.fullName}
                 className="w-12 h-12 rounded-full mr-3 border-2 border-white"
               />
               <div>
-                <p className="font-medium">{planData.author_id.fullName}</p>
+                <p className="font-medium">{planData?.author_id?.fullName}</p>
                 <p className="text-sm opacity-80">Meal Provider</p>
               </div>
             </div>
@@ -51,7 +53,7 @@ const PlanDetailsPage = ({ planData }: { planData: any }) => {
                   Menu Preview
                 </h3>
                 <img
-                  src={planData.menuImage}
+                  src={planData?.menuImage}
                   alt="Menu Sample"
                   className="w-full h-32 object-cover rounded-lg mt-2"
                 />
@@ -60,10 +62,10 @@ const PlanDetailsPage = ({ planData }: { planData: any }) => {
 
             <div className="md:w-2/3">
               <h2 className="text-2xl font-bold text-[#424242] mb-4">
-                About {planData.shopId.name}
+                About {planData?.shopId?.shopName}
               </h2>
               <p className="text-gray-700 mb-6">
-                {planData.shopId.description}
+                {planData?.shopId?.description}
               </p>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -82,19 +84,19 @@ const PlanDetailsPage = ({ planData }: { planData: any }) => {
                       <span className="material-icons mr-2 text-gray-500">
                         support_agent
                       </span>
-                      {planData.shopId.customerServiceContact}
+                      {planData?.shopId?.customerServiceContact}
                     </li>
                     <li className="flex items-center">
                       <span className="material-icons mr-2 text-gray-500">
                         email
                       </span>
-                      {planData.author_id.email}
+                      {planData?.author_id?.email}
                     </li>
                     <li className="flex items-center">
                       <span className="material-icons mr-2 text-gray-500">
                         location_on
                       </span>
-                      {planData.shopId.shopAddress}
+                      {planData?.shopId?.shopAddress}
                     </li>
                   </ul>
                 </div>
@@ -108,27 +110,27 @@ const PlanDetailsPage = ({ planData }: { planData: any }) => {
                       <span className="material-icons mr-2 text-gray-500">
                         calendar_today
                       </span>
-                      Established: {planData.shopId.establishedYear}
+                      Established: {planData?.shopId?.establishedYear}
                     </li>
                     <li className="flex items-center">
                       <span className="material-icons mr-2 text-gray-500">
                         schedule
                       </span>
-                      Hours: {planData.shopId.operatingHours.open} -{" "}
-                      {planData.shopId.operatingHours.close}
+                      Hours: {planData?.shopId?.operatingHours?.open} -{" "}
+                      {planData?.shopId?.operatingHours?.close}
                     </li>
                     <li className="flex items-center">
                       <span className="material-icons mr-2 text-gray-500">
                         payment
                       </span>
-                      Accepts: {planData.shopId.paymentMethods.join(", ")}
+                      Accepts: {planData?.shopId?.paymentMethods.join(", ")}
                     </li>
                     <li className="flex items-center">
                       <span className="material-icons mr-2 text-gray-500">
                         public
                       </span>
                       <a
-                        href={planData.shopId.website}
+                        href={planData?.shopId?.website}
                         className="text-blue-600 hover:underline"
                       >
                         Visit Website
@@ -203,7 +205,7 @@ const PlanDetailsPage = ({ planData }: { planData: any }) => {
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-200">
-                {planData.meals.map((dayPlan: any, index: any) => (
+                {planData?.meals?.map((dayPlan: any, index: any) => (
                   <tr
                     key={index}
                     className={index % 2 === 0 ? "bg-white" : "bg-gray-50"}
@@ -218,7 +220,7 @@ const PlanDetailsPage = ({ planData }: { planData: any }) => {
                             {dayPlan.morning.menu}
                           </p>
                           <p className="text-gray-600">
-                            ৳{dayPlan.morning.price.toLocaleString()}
+                            ৳{dayPlan?.morning?.price?.toLocaleString()}
                           </p>
                         </div>
                       </div>
@@ -227,10 +229,10 @@ const PlanDetailsPage = ({ planData }: { planData: any }) => {
                       <div className="flex items-center">
                         <div>
                           <p className="text-gray-900 font-medium">
-                            {dayPlan.evening.menu}
+                            {dayPlan?.evening?.menu}
                           </p>
                           <p className="text-gray-600">
-                            ৳{dayPlan.evening.price.toLocaleString()}
+                            ৳{dayPlan?.evening?.price.toLocaleString()}
                           </p>
                         </div>
                       </div>
@@ -239,10 +241,10 @@ const PlanDetailsPage = ({ planData }: { planData: any }) => {
                       <div className="flex items-center">
                         <div>
                           <p className="text-gray-900 font-medium">
-                            {dayPlan.night.menu}
+                            {dayPlan?.night?.menu}
                           </p>
                           <p className="text-gray-600">
-                            ৳{dayPlan.night.price.toLocaleString()}
+                            ৳{dayPlan?.night?.price.toLocaleString()}
                           </p>
                         </div>
                       </div>
@@ -264,7 +266,7 @@ const PlanDetailsPage = ({ planData }: { planData: any }) => {
                   <div className="flex justify-between mb-2">
                     <span className="text-gray-600">Subtotal (7 days):</span>
                     <span className="font-medium">
-                      ৳{planData.totalPrice.toLocaleString()}
+                      ৳{planData?.totalPrice.toLocaleString()}
                     </span>
                   </div>
                   <div className="flex justify-between mb-2">
@@ -280,11 +282,11 @@ const PlanDetailsPage = ({ planData }: { planData: any }) => {
                       Total:
                     </span>
                     <span className="text-lg font-bold text-[#424242]">
-                      ৳{planData.totalPrice.toLocaleString()}
+                      ৳{planData?.totalPrice?.toLocaleString()}
                     </span>
                   </div>
                 </div>
-                <Link href={`/dashboard/order/details-menu/${planData._id}`}>
+                <Link href={`/dashboard/order/details-menu/${planData?._id}`}>
                   <button className="mt-6 w-full bg-[#424242] hover:bg-gray-700 text-white font-bold py-3 px-4 rounded-lg transition duration-300 flex items-center justify-center">
                     <span className="mr-2">Order now</span>
                     <span className="material-icons">arrow_forward</span>
@@ -311,14 +313,14 @@ const PlanDetailsPage = ({ planData }: { planData: any }) => {
                 shopId Address
               </h3>
               <div className="bg-gray-50 p-4 rounded-lg">
-                <p>{planData.shopId.address}</p>
+                <p>{planData?.shopId?.address}</p>
                 <p className="mt-1">
-                  {planData.author_id.address.district},{" "}
-                  {planData.author_id.address.subDistrict}
+                  {planData?.author_id?.address?.district},{" "}
+                  {planData?.author_id?.address?.subDistrict}
                 </p>
                 <p>
-                  {planData.author_id.address.post},{" "}
-                  {planData.author_id.address.postCode}
+                  {planData?.author_id?.address?.post},{" "}
+                  {planData?.author_id?.address?.postCode}
                 </p>
               </div>
             </div>
@@ -327,14 +329,14 @@ const PlanDetailsPage = ({ planData }: { planData: any }) => {
                 Provider Address
               </h3>
               <div className="bg-gray-50 p-4 rounded-lg">
-                <p>{planData.author_id.address.village}</p>
+                <p>{planData?.author_id?.address?.village}</p>
                 <p className="mt-1">
-                  {planData.author_id.address.district},{" "}
-                  {planData.author_id.address.subDistrict}
+                  {planData?.author_id?.address?.district},{" "}
+                  {planData?.author_id?.address?.subDistrict}
                 </p>
                 <p>
-                  {planData.author_id.address.post},{" "}
-                  {planData.author_id.address.postCode}
+                  {planData?.author_id?.address?.post},{" "}
+                  {planData?.author_id?.address?.postCode}
                 </p>
               </div>
             </div>

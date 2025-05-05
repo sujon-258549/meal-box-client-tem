@@ -27,6 +27,7 @@ type UserDataResponse = {
 };
 
 const AllUser = ({ data }: { data: UserDataResponse }) => {
+  console.log(data.meta);
   const [allCustomers, setAllCustomers] = useState<TUser[]>([]);
   const [allMealProviders, setAllMealProviders] = useState<TUser[]>([]);
   const router = useRouter();
@@ -143,7 +144,6 @@ const AllUser = ({ data }: { data: UserDataResponse }) => {
               </TableBody>
             </Table>
           </div>
-          <Pagination total={data.meta.totalPage} />
         </TabsContent>
 
         {/* Meal Providers Tab */}
@@ -203,9 +203,9 @@ const AllUser = ({ data }: { data: UserDataResponse }) => {
               </TableBody>
             </Table>
           </div>
-          <Pagination total={data.meta.totalPage} />
         </TabsContent>
       </Tabs>
+      <Pagination total={data.meta.totalPage} />
     </div>
   );
 };

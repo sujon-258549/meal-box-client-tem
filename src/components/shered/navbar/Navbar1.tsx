@@ -75,7 +75,7 @@ const Navbar1 = ({
           url: "/about-meal-provider",
         },
         {
-          title: "About Menu ",
+          title: "About Our Menu ",
 
           url: "/menu-about",
         },
@@ -92,6 +92,15 @@ const Navbar1 = ({
     {
       title: "Meal Box Services",
       url: "/meal-box-services",
+    },
+    {
+      title: "All Blog",
+      url: "/all-blogs",
+    },
+    {
+      title: "Contact Us ",
+
+      url: "/contact-us",
     },
   ],
   auth = {
@@ -115,7 +124,7 @@ const Navbar1 = ({
 
   return (
     <section className="box-shadow py-4 sticky top-0 z-50 bg-background">
-      <div className="max-w-5xl mx-auto sticky px-5 lg:px-0">
+      <div className="container sticky px-5">
         {/* Desktop Menu */}
         <nav className="hidden justify-between lg:flex">
           <div className="flex items-center gap-6">

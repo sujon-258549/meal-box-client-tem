@@ -63,6 +63,20 @@ export const getMyProvider = async () => {
     return Error(error);
   }
 };
+export const getAllProviderAll = async () => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/meal-provider?limit=5500000`,
+      {
+        method: "GET",
+      }
+    );
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
 export const getAllProvider = async (page?: string) => {
   try {
     const res = await fetch(

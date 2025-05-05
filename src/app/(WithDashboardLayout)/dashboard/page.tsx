@@ -22,12 +22,13 @@ const Dashboard = async ({
 }) => {
   const { data } = await getMyMenu();
   const { page, sort } = await searchParams;
+
   const receivedOrdersData = await getMealProviderOrder(page, sort);
   const myData = await getMyOrder(page);
   const userData = await getMe();
   const providerData = await getMyProvider();
-  const allUser = await getAllUser();
-
+  const allUser = await getAllUser(page);
+  console.log(allUser);
   return (
     <div>
       <DashboardMain

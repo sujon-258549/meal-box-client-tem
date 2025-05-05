@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 
 import React, { useState } from "react";
@@ -22,27 +23,57 @@ type loginSchema = z.infer<typeof loginSchema>;
 
 export function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { setIsLoading } = useUser();
+  const redirect = searchParams.get("redirectPath");
+  const [showPassword, setShowPassword] = useState(false);
+
+  // Demo credentials
+  const DEMO_CREDENTIALS = {
+    USER: {
+      email: "user@gmail.com",
+      password: "Pa$$w0rd!",
+      role: "User",
+    },
+    ADMIN: {
+      email: "admin@gmail.com",
+      password: "Pa$$w0rd!",
+      role: "Admin",
+    },
+    MEAL_PROVIDER: {
+      email: "sujon1@email.com",
+      password: "Pa$$w0rd!",
+      role: "Meal Provider",
+    },
+  };
+
   const form = useForm<loginSchema>({
     resolver: zodResolver(loginSchema),
   });
-  const {
-    formState: { isSubmitting },
-  } = form;
+
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
+    watch,
+    setValue,
   } = form;
-  const email = form.watch("emailOrPhone");
-  const password = form.watch("password");
 
-  const isDisabled = !email || !password;
+  const emailOrPhone = watch("emailOrPhone");
+  const password = watch("password");
+  const isDisabled = !emailOrPhone || !password;
 
-  const [showPassword, setShowPassword] = useState(false);
-
-  const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirectPath");
+  const fillDemoCredentials = (credentials: {
+    email: string;
+    password: string;
+    role: string;
+  }) => {
+    setValue("emailOrPhone", credentials.email);
+    setValue("password", credentials.password);
+    toast.info(
+      `Demo ${credentials.role} credentials filled. Click Login to continue.`
+    );
+  };
 
   const submit: SubmitHandler<FieldValues> = async (data) => {
     const toastId = toast.loading("Logging in...");
@@ -52,43 +83,47 @@ export function LoginForm() {
     };
 
     try {
-      const result = await loginUser(userData);
       setIsLoading(true);
+      const result = await loginUser(userData);
+
       if (result?.success) {
         toast.success(result.message || "Login successful", { id: toastId });
         sessionStorage.setItem("justLoggedIn", "true");
-        if (redirect) {
-          router.push(redirect);
-        } else {
-          router.push("/");
-        }
+        router.push(redirect || "/");
       } else {
         toast.error(result?.message || "Login failed. Please try again.", {
           id: toastId,
         });
       }
     } catch (error: any) {
-      return Error(error);
+      toast.error("An error occurred during login");
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
-  console.log(email);
+
   const handelForgetPassword = async () => {
-    if (email) {
-      const userEmail = {
-        email: email,
-      };
-      const result = await forgetPassword(userEmail);
+    if (!emailOrPhone) {
+      toast.error("Please enter your email first");
+      return;
+    }
+
+    try {
+      const result = await forgetPassword({ email: emailOrPhone });
       if (result.success) {
-        toast.success(`${result.message} Please Check Email`);
+        toast.success(`${result.message} Please check your email`);
       }
+    } catch (error) {
+      toast.error("Failed to send password reset email");
     }
   };
 
   return (
     <div className="mx-5">
       <div
-        style={{ boxShadow: "2px 2px 20px" }}
-        className=" my-10  shadow-input mx-auto w-full max-w-xl rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black"
+        style={{ boxShadow: "2px 2px 20px rgba(0, 0, 0, 0.1)" }}
+        className="my-10 shadow-input mx-auto w-full max-w-xl rounded-none bg-white p-4 md:rounded-2xl md:p-8 dark:bg-black"
       >
         <div className="flex gap-2.5 items-center">
           <Image
@@ -112,18 +147,18 @@ export function LoginForm() {
 
         <form className="my-8" onSubmit={handleSubmit(submit)}>
           <LabelInputContainer className="mb-4">
-            <Label htmlFor="email">Email Address</Label>
+            <Label htmlFor="emailOrPhone">Email or Phone</Label>
             <Input
-              id="email"
+              id="emailOrPhone"
               autoComplete="username"
               {...register("emailOrPhone")}
-              placeholder="projectmayhem@gmail.com"
+              placeholder="your@email.com or +1234567890"
             />
             <ErrorMsg msg={errors.emailOrPhone?.message} />
           </LabelInputContainer>
 
-          <LabelInputContainer className="mb-8">
-            <Label htmlFor="password"> Password</Label>
+          <LabelInputContainer className="mb-4">
+            <Label htmlFor="password">Password</Label>
             <Input
               id="password"
               autoComplete="current-password"
@@ -135,48 +170,81 @@ export function LoginForm() {
           </LabelInputContainer>
 
           <div className="flex justify-between items-center pb-5">
-            <div className="">
-              <Checkbox onClick={() => setShowPassword(!showPassword)} />
-              <span className="ml-2.5">
+            <div className="flex items-center">
+              <Checkbox
+                id="showPassword"
+                checked={showPassword}
+                onCheckedChange={() => setShowPassword(!showPassword)}
+              />
+              <Label htmlFor="showPassword" className="ml-2 cursor-pointer">
                 {showPassword ? "Hide Password" : "Show Password"}
-              </span>
+              </Label>
             </div>
             <button
               onClick={handelForgetPassword}
               type="button"
-              className="text-blue-600 cursor-pointer"
+              className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
             >
-              Forget Password
+              Forgot Password?
             </button>
           </div>
+
           <Button
-            disabled={isDisabled}
-            className="w-full cursor-pointer"
+            disabled={isDisabled || isSubmitting}
+            className="w-full cursor-pointer bg-primary hover:bg-primary-dark transition-colors"
             type="submit"
           >
             {isSubmitting ? <LoadingButton /> : "Login"}
           </Button>
+
+          {/* Demo Credentials Section */}
+          <div className="mt-6">
+            <div className="relative mb-4">
+              <div className="absolute inset-0 flex items-center">
+                <div className="w-full border-t border-gray-300"></div>
+              </div>
+              <div className="relative flex justify-center">
+                <span className="bg-white px-2 text-sm text-gray-500 dark:bg-black dark:text-gray-400">
+                  Or try demo accounts
+                </span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {Object.entries(DEMO_CREDENTIALS).map(([key, value]) => (
+                <Button
+                  key={key}
+                  type="button"
+                  variant="outline"
+                  onClick={() => fillDemoCredentials(value)}
+                  className="bg-white text-gray-700 hover:bg-gray-50 border-gray-300 dark:bg-gray-800 dark:text-gray-200 dark:hover:bg-gray-700"
+                >
+                  Demo {value.role}
+                </Button>
+              ))}
+            </div>
+          </div>
         </form>
-        <div className="my-2 h-[1px] w-full bg-gradient-to-r from-transparent via-neutral-300 to-transparent dark:via-neutral-700" />
-        <p className="mt-4 text-sm text-center text-neutral-600 dark:text-neutral-300">
-          Don t have an account?{" "}
-          <Link
-            href="/signup"
-            className="text-blue-600 hover:underline dark:text-blue-400"
-          >
-            Register here
-          </Link>
-        </p>
+
+        <div className="mt-6 text-center">
+          <p className="text-sm text-neutral-600 dark:text-neutral-300">
+            Don,t have an account?{" "}
+            <Link
+              href="/signup"
+              className="text-blue-600 hover:underline dark:text-blue-400 font-medium"
+            >
+              Register here
+            </Link>
+          </p>
+        </div>
       </div>
     </div>
   );
 }
 
-// Component to show errors
 const ErrorMsg = ({ msg }: { msg?: string }) =>
   msg ? <p className="text-red-500 text-sm mt-1">{msg}</p> : null;
 
-// Wrapper for input + label
 const LabelInputContainer = ({
   children,
   className,

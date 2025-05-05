@@ -15,12 +15,16 @@ const publicRoutes = [
   "/menu-about",
   "/meal-box-services",
   "/all-meal-provider",
+  "/contact-us",
+  "/all-blogs",
 ];
 const adminRoutes = [
   "/dashboard",
   "/dashboard/admin/all-user-status-change",
   "/dashboard/admin/delete-menu",
   "/about-meal-provider",
+  "/dashboard/admin/blog/create-blog",
+  "/dashboard/admin/blog/my-blog",
 ];
 const mealProviderRoutes = [
   "/dashboard/order/meal-provider-order",
@@ -33,6 +37,7 @@ const mealProviderRoutes = [
   "/dashboard/menu/all-menu",
   "/dashboard/order/my-order",
   "/about-meal-provider",
+  "/dashboard/meal-provider/contact-for-me",
 ];
 const customerRoutes = [
   "/create-meal-provider",
@@ -85,7 +90,11 @@ export const middleware = async (request: NextRequest) => {
     return NextResponse.redirect(new URL("/", request.url));
   }
   if (userInfo.role === "admin") {
-    if (adminRoutes.includes(pathname) || profileRoutes.includes(pathname)) {
+    if (
+      adminRoutes.includes(pathname) ||
+      pathname.startsWith("/dashboard/admin/blog/update-blog/") ||
+      profileRoutes.includes(pathname)
+    ) {
       return NextResponse.next();
     }
     return NextResponse.redirect(new URL("/", request.url));

@@ -16,13 +16,13 @@ export const SixCard = ({ data }: { data: any }) => {
     <>
       {data?.length > 0 && (
         <div>
-          <h1 className="text-2xl md:text-4xl text-center pt-6 md:pt-10 font-bold">
+          <h1 className="text-2xl md:text-4xl text-center pt-8 md:pt-16 font-bold">
             Meal Box menu
           </h1>
-          <div className="max-w-md  mx-auto border-b-2 mt-4 mb-8 border-[#424242]"></div>
+          <div className="max-w-md  mx-auto border-b-2 mt-4  border-[#424242]"></div>
         </div>
       )}
-      <div className="grid grid-cols-1 pt-8 md:pt-12 pb-10 md:pb-20 md:grid-cols-3 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-1 pt-8 md:pt-12 pb-10 md:pb-12 md:grid-cols-3 lg:grid-cols-5 gap-5">
         {data?.map((menu: any, index: number) => {
           // Calculate total for this specific menu
           const menuTotal =
@@ -99,7 +99,7 @@ export const SixCard = ({ data }: { data: any }) => {
           );
         })}
       </div>
-      {data.length >= 8 && (
+      {data.length >= 10 && (
         <div className="flex justify-center  mb-10 md:mb-16">
           <Link href={"/all-menu"}>
             <Button className="cursor-pointer">

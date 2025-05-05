@@ -24,7 +24,7 @@ const ImageGallery = ({
   }
   return (
     <section className={`py-3 md:py-6 ${className}`}>
-      <div className="text-center mb-8">
+      <div className="text-center">
         <h1 className="text-2xl md:text-4xl font-bold text-gray-800 dark:text-white">
           Meal Box Gallery
         </h1>
