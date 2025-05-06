@@ -28,12 +28,26 @@ interface ApiResponse {
   message?: string;
 }
 const AdminDashboard = ({ allUser }: { allUser: any }) => {
-  console.log("allUser", allUser);
+  console.log("allUser", allUser.data.data);
   const [allCustomers, setAllCustomers] = useState<TUser[]>([]);
   const [allMealProviders, setAllMealProviders] = useState<TUser[]>([]);
   const [data, setData] = useState();
   const [loading, setLoading] = useState<boolean>(true);
+  console.log("result", allUser.data.data);
+  useEffect(() => {
+    if (allUser?.data) {
+      const customers = allUser?.data?.data.filter(
+        (user: TUser) => user.role === "customer"
+      );
 
+      const mealProviders = allUser?.data?.data.filter(
+        (user: TUser) => user.role === "mealProvider"
+      );
+
+      setAllCustomers(customers);
+      setAllMealProviders(mealProviders);
+    }
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -51,21 +65,24 @@ const AdminDashboard = ({ allUser }: { allUser: any }) => {
   const [allCustomersData, setAllCustomersData] = useState<TUser[]>([]);
   const [allMealProvidersData, setAllMealProvidersData] = useState<TUser[]>([]);
   const [allAdminsData, setAllAdminsData] = useState<TUser[]>([]);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         setLoading(true);
         const result = await getAllUser2();
+
         setData(result);
 
         if (result?.data?.data) {
-          const customers = result.data.data.filter(
+          const customers = result?.data?.data.filter(
             (user: TUser) => user.role === "customer"
           );
-          const mealProviders = result.data.data.filter(
+
+          const mealProviders = result?.data?.data.filter(
             (user: TUser) => user.role === "mealProvider"
           );
-          const admins = result.data.data.filter(
+          const admins = result?.data?.data?.filter(
             (user: TUser) => user.role === "admin"
           );
 
@@ -87,9 +104,9 @@ const AdminDashboard = ({ allUser }: { allUser: any }) => {
   // Generate dynamic chart data
   const generateChartData = () => {
     const roleCounts = {
-      customer: allCustomersData.length,
-      mealProvider: allMealProvidersData.length,
-      admin: allAdminsData.length,
+      customer: allCustomersData?.length,
+      mealProvider: allMealProvidersData?.length,
+      admin: allAdminsData?.length,
     };
 
     return [
@@ -120,11 +137,13 @@ const AdminDashboard = ({ allUser }: { allUser: any }) => {
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
           <div className="p-4 bg-white rounded shadow">
             <p className="text-sm text-gray-500">Customer</p>
-            <p className="mt-1 text-xl font-bold">{allCustomers.length}</p>
+            <p className="mt-1 text-xl font-bold">{allAdminsData.length}</p>
           </div>
           <div className="p-4 bg-white rounded shadow">
             <p className="text-sm text-gray-500">All Meal Provider</p>
-            <p className="mt-1 text-xl font-bold">{allMealProviders.length}</p>
+            <p className="mt-1 text-xl font-bold">
+              {allMealProvidersData.length}
+            </p>
           </div>
         </div>
 
