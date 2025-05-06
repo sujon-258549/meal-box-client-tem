@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { deleteMyBlog } from "@/services/blog/blogServices";
 import Pagination from "../../ui/paginaciton";
+import { ReadMoreModal } from "@/components/blogs/ReadMoreModal";
 
 interface Blog {
   _id: string;
@@ -90,52 +91,55 @@ const AdminBlog = ({ blogs }: { blogs: BlogListResponse }) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {blogs.data.map((blog) => (
-                  <TableRow key={blog._id}>
+                {blogs.data.map((post) => (
+                  <TableRow key={post._id}>
                     <TableCell>
                       <Avatar>
-                        <AvatarImage src={blog?.imageUrl} />
+                        <AvatarImage src={post?.imageUrl} />
                         <AvatarFallback>
-                          {blog.title.charAt(0).toUpperCase()}
+                          {post.title.charAt(0).toUpperCase()}
                         </AvatarFallback>
                       </Avatar>
                     </TableCell>
                     <TableCell className="font-medium">
-                      <div className="font-bold">{blog.title}</div>
+                      <div className="font-bold">{post.title}</div>
                       <div className="text-sm text-muted-foreground">
-                        {blog.excerpt.substring(0, 50)}...
+                        {post.excerpt.substring(0, 50)}...
                       </div>
                     </TableCell>
                     <TableCell>
                       <span className="px-2 py-1 bg-secondary text-secondary-foreground rounded-full text-xs">
-                        {blog.category}
+                        {post.category}
                       </span>
                     </TableCell>
                     <TableCell>
-                      {new Date(blog.date).toLocaleDateString()}
+                      {new Date(post.date).toLocaleDateString()}
                     </TableCell>
                     <TableCell>
-                      {blog.authorId?.fullName || "Unknown"}
+                      {post.authorId?.fullName || "Unknown"}
                       <div className="text-sm text-muted-foreground">
-                        {blog.authorId?.email}
+                        {post.authorId?.email}
                       </div>
                     </TableCell>
                     <TableCell className="flex gap-2">
+                      {/* @ts-expect-error post */}
+                      <ReadMoreModal post={post} />
                       <Button
                         variant="outline"
                         size="sm"
                         onClick={() =>
                           router.push(
-                            `/dashboard/admin/blog/update-blog/${blog._id}`
+                            `/dashboard/admin/blog/update-blog/${post._id}`
                           )
                         }
                       >
                         Edit
                       </Button>
+
                       <Button
                         variant="destructive"
                         size="sm"
-                        onClick={() => handleDeleteBlog(blog._id)}
+                        onClick={() => handleDeleteBlog(post._id)}
                       >
                         Delete
                       </Button>

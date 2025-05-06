@@ -34,3 +34,39 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+# NEXT_PUBLIC_API_URL=5000
+
+NEXT_PUBLIC_API_URL=https://meal-box-server-team-production-8599.up.railway.app
+
+<!-- baked -->
+
+NODE_ENV=development
+PORT=4000
+DATABASE_URL=mongodb+srv://meal_box:7FqEL1bxAbjzkWtz@cluster0.yx0jx.mongodb.net/mealBox?retryWrites=true&w=majority&appName=Cluster0
+BCRYPT_SALT_ROUNDS=10
+
+JWT_ACCESS_SECRET= 1f2e3d4c5b6a7e8f9g0h1i2j3k4l5m6n7o8p9q0r
+JWT_ACCESS_EXPIRES_IN=10d
+
+JWT_REFRESH_SECRET= 1f2e3d4c5b6a7e8f9g0h1i2j3k4l5m6n7o8p9q0r
+JWT_REFRESH_EXPIRES_IN=365d
+
+# cloudinary
+
+CLOUDINARY_CLOUD_NAME=dkdibsanz
+CLOUDINARY_API_KEY=558721645753651
+CLOUDINARY_API_SECRET=Ky5Ga3DuiaRU77goqQem_bEdWQU
+
+# sslcommerz
+
+STORE_ID=sujon67c73b991d2a2
+STORE_PASSWORD=sujon67c73b991d2a2@ssl
+VALIDATION_URL=http://localhost:4000/ssl/validate
+SUCCESS_URL=http://localhost:3000/success
+FAIL_URL=http://localhost:3000/failed
+CANCEL_URL=cancel_url
+
+# reset ui link
+
+RESET_UI_LINK=http://localhost:3000/reset-ui

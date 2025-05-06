@@ -19,7 +19,7 @@ export const AllMenuCard = ({ data }: { data: any }) => {
         {" "}
         All Menu Product
       </h1>
-      <div className="grid grid-cols-1 pt-5 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 pt-5 md:grid-cols-3 lg:grid-cols-4 gap-5">
         {data?.data?.map((menu: any, index: number) => {
           // Calculate total for this specific menu
           const menuTotal =
@@ -44,7 +44,8 @@ export const AllMenuCard = ({ data }: { data: any }) => {
                 className="bg-[#130707] text-white mx-auto max-w-sm w-full rounded-xl p-2"
               >
                 {/* Image */}
-                <div className="bg-gray-600 w-full h-64 rounded-xl mb-4 overflow-hidden">
+                {/* Image */}
+                <div className="bg-gray-600 w-full h-60 lg:h-40 rounded-xl  overflow-hidden">
                   <img
                     src={menu?.menuImage}
                     className="h-full w-full object-cover"
@@ -53,7 +54,7 @@ export const AllMenuCard = ({ data }: { data: any }) => {
                 </div>
 
                 {/* Product Info */}
-                <div className="p-4 space-y-3">
+                <div className="px-2 pb-2 space-y">
                   <h2 className="text-lg font-semibold line-clamp-1">
                     {menu.shopId?.shopName || "Untitled Menu"}
                   </h2>

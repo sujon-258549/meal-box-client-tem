@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { menuDelete } from "@/services/Menu/menuServices";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 const DeleteMenu = ({ menus }: { menus: any }) => {
   const router = useRouter();
@@ -36,7 +37,7 @@ const DeleteMenu = ({ menus }: { menus: any }) => {
       if (result.isConfirmed) {
         try {
           const result = await menuDelete(_id);
-       
+
           if (result?.success) {
             toast.success(result?.message, { duration: 3000 });
             router.refresh();
@@ -84,8 +85,14 @@ const DeleteMenu = ({ menus }: { menus: any }) => {
                   <TableCell>{menu?.author_id?.email}</TableCell>
 
                   <TableCell>
-                    <Button onClick={() => handelDeleteMenuForAdmin(menu?._id)}>
-                      Details
+                    <Link href={`/details-menu/${menu._id}`}>
+                      <Button>Details</Button>
+                    </Link>
+                    <Button
+                      className="bg-red-700 ml-2"
+                      onClick={() => handelDeleteMenuForAdmin(menu?._id)}
+                    >
+                      Delete
                     </Button>
                   </TableCell>
                 </TableRow>

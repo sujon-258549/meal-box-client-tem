@@ -7,7 +7,7 @@ const PlanDetailsPage = ({ planData }: { planData: any }) => {
   // Full data object from provided JSON
 
   return (
-    <div className="min-h-screen max-w-5xl mx-auto bg-gray-50">
+    <div className="min-h-screen container bg-gray-50">
       <Head>
         <title>{planData?.shopId?.shopName} - Meal Plan</title>
         <meta name="description" content={planData?.shopId?.description} />
@@ -15,7 +15,7 @@ const PlanDetailsPage = ({ planData }: { planData: any }) => {
 
       {/* Header */}
       <header className="bg-[#424242] text-white py-8 shadow-lg mt-10 rounded-t-md">
-        <div className="container mx-auto px-4">
+        <div className="p-5">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div>
               <h1 className="text-3xl font-bold">
