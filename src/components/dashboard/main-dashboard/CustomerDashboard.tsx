@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import Pagination from "@/components/ui/paginaciton";
 import { useEffect, useState } from "react";
+import Chart from "react-google-charts";
 
 export default function SimpleCustomerDashboard({
   menu,
@@ -24,22 +25,47 @@ export default function SimpleCustomerDashboard({
 }) {
   const { meta, data }: any = menu;
   const [pendingMeal, setPendingMeal] = useState<any[]>([]);
+  const [successMeal, setSuccessMeal] = useState<any[]>([]);
 
   useEffect(() => {
     if (data && Array.isArray(data)) {
       const paidMeals = data.filter(
         (menu: any) => menu.paymentStatus === "Paid"
       );
-      setPendingMeal(paidMeals);
+      const pendingMeals = data.filter(
+        (menu: any) => menu.paymentStatus === "Pending"
+      );
+      setPendingMeal(pendingMeals);
+      setSuccessMeal(paidMeals);
     }
   }, [data]);
+  const generateChartData = () => {
+    const roleCounts = {
+      totalOrder: data.length,
+      success: successMeal.length,
+      pending: pendingMeal.length,
+    };
 
+    return [
+      ["Role", "Count", { role: "style" }],
+      ["Total Order", roleCounts.totalOrder, "#424242"],
+      ["Delivery", roleCounts.success, "#34A853"],
+      ["Pending", roleCounts.pending, "#EA4335"],
+    ];
+  };
   return (
     <div className="p-6 space-y-6">
       <div className="text-2xl font-bold text-center py-5">
         Welcome back, {user?.data?.fullName} 👋
       </div>
-
+      <div className="mb-10">
+        <Chart
+          chartType="ColumnChart"
+          width="100%"
+          height="100%"
+          data={generateChartData()}
+        />
+      </div>
       {/* Quick Stats */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card className="box-shadow">
@@ -60,50 +86,60 @@ export default function SimpleCustomerDashboard({
         </Card>
         <Card className="box-shadow">
           <CardHeader>
-            <CardTitle>Last Order</CardTitle>
+            <CardTitle>Delivery</CardTitle>
           </CardHeader>
           <CardContent className="text-2xl font-semibold">
-            Beef Curry
+            {successMeal.length}
           </CardContent>
         </Card>
       </div>
 
       {/* Menu Card */}
-
-      {/* Recent Orders Table */}
-      <Card className="box-shadow">
-        <CardHeader>
-          <CardTitle>Recent Orders</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Order ID</TableHead>
-                <TableHead>Total Price</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Date</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {data?.map((order: any, index: string) => (
-                <TableRow key={index}>
-                  <TableCell>{order?.transactionId}</TableCell>
-                  <TableCell>{order.total_price}</TableCell>
-                  <TableCell>
-                    {order.paymentStatus === "Paid" ? "Delivered" : "Pending"}
-                  </TableCell>
-                  <TableCell>{order.createdAt.slice(0, 10)}</TableCell>
+      {data.length ? (
+        <Card className="box-shadow">
+          <CardHeader>
+            <CardTitle>Recent Orders</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <Table>
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Order ID</TableHead>
+                  <TableHead>Total Price</TableHead>
+                  <TableHead>Status</TableHead>
+                  <TableHead>Date</TableHead>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-          <div className="flex justify-center py-10 border-t">
-            <Pagination total={meta?.totalPage} />
-          </div>
-        </CardContent>
-      </Card>
-
+              </TableHeader>
+              <TableBody>
+                {data?.map((order: any, index: string) => (
+                  <TableRow key={index}>
+                    <TableCell>{order?.transactionId}</TableCell>
+                    <TableCell>{order.total_price}</TableCell>
+                    <TableCell>
+                      {order.paymentStatus === "Paid" ? "Delivered" : "Pending"}
+                    </TableCell>
+                    <TableCell>{order.createdAt.slice(0, 10)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <div className="flex justify-center py-10 border-t">
+              <Pagination total={meta?.totalPage} />
+            </div>
+          </CardContent>
+        </Card>
+      ) : (
+        <Card className="box-shadow">
+          <CardHeader>
+            <CardTitle>Recent Orders</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="flex flex-col items-center justify-center py-10">
+              <p className="text-gray-500">No recent orders found</p>
+            </div>
+          </CardContent>
+        </Card>
+      )}
       {/* Profile Card */}
       <Card className="mt-4 box-shadow">
         <CardHeader>

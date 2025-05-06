@@ -10,6 +10,7 @@ import {
   Contact,
   Frame,
   GalleryVerticalEnd,
+  ListOrdered,
   Map,
   PieChart,
   SquareTerminal,
@@ -85,6 +86,21 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {
                 title: "Update Meal Provider",
                 url: "/dashboard/meal-provider/update-meal-provider",
+              },
+            ],
+          },
+          {
+            title: "Order",
+            url: "#",
+            icon: ListOrdered,
+            items: [
+              {
+                title: "My Order",
+                url: "/dashboard/order/my-order",
+              },
+              {
+                title: "Order For Me",
+                url: "/dashboard/order/meal-provider-order",
               },
             ],
           },

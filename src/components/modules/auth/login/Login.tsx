@@ -41,7 +41,7 @@ export function LoginForm() {
       role: "Admin",
     },
     MEAL_PROVIDER: {
-      email: "sujon1@email.com",
+      email: "sujon1@gmail.com",
       password: "Pa$$w0rd!",
       role: "Meal Provider",
     },

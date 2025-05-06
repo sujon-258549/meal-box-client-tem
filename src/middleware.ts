@@ -25,6 +25,8 @@ const adminRoutes = [
   "/about-meal-provider",
   "/dashboard/admin/blog/create-blog",
   "/dashboard/admin/blog/my-blog",
+  "/failed",
+  "/success",
 ];
 const mealProviderRoutes = [
   "/dashboard/order/meal-provider-order",
@@ -36,8 +38,11 @@ const mealProviderRoutes = [
   "/dashboard/meal-provider/update-meal-provider",
   "/dashboard/menu/all-menu",
   "/dashboard/order/my-order",
+  "/dashboard/order/meal-provider-order",
   "/about-meal-provider",
   "/dashboard/meal-provider/contact-for-me",
+  "/failed",
+  "/success",
 ];
 const customerRoutes = [
   "/create-meal-provider",
@@ -45,6 +50,8 @@ const customerRoutes = [
   "/dashboard/order/my-order",
   "/dashboard/menu/all-menu",
   "/about-meal-provider",
+  "/failed",
+  "/success",
 ];
 const profileRoutes = [
   "/dashboard/user/view-profile",

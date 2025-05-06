@@ -26,7 +26,8 @@ export function MealProviderDashboard({
   const today = date.toLocaleDateString("en-US", { weekday: "long" });
   // Or if your menu.day uses YYYY-MM-DD format:
   // const today = date.toISOString().split('T')[0];
-  console.log("get my", providerData);
+  console.log("get my", receivedOrdersData);
+
   return (
     <div className="min-h-screen  p-6">
       <header className="flex justify-between items-center mb-8">

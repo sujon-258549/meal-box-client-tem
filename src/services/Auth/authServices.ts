@@ -285,6 +285,23 @@ export const getAllUser = async (page?: string, limit?: string) => {
     return Error(error);
   }
 };
+export const getAllUser2 = async () => {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users?limit=150000`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
 export const changeUserStatus = async (blockUserData: any) => {
   const cookyStore = await cookies();
   let token = cookyStore.get("access-token")!.value;

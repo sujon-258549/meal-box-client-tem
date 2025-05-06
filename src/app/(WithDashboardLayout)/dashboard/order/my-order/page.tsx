@@ -10,10 +10,10 @@ export const metadata: Metadata = {
 const MyOrderPage = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ page: string }>;
+  searchParams: Promise<{ page: string; sort: string }>;
 }) => {
-  const { page } = await searchParams;
-  const data = await getMyOrder(page);
+  const { page, sort } = await searchParams;
+  const data = await getMyOrder(page, sort);
   return (
     <div>
       <MyOrder orders={data} />

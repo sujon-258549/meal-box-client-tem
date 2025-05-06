@@ -10,9 +10,10 @@ import Link from "next/link";
 import Pagination from "@/components/ui/paginaciton";
 import { FaExternalLinkAlt } from "react-icons/fa";
 import ShareBanner from "../shered/ShareBanner/ShareBanner";
+import SearchAndSort from "../modules/order/myorder/SearchAndSort";
 
 export const AllMenu = ({ data }: { data: any }) => {
-  console.log(data);
+  console.log("allmenu", data);
   return (
     <>
       <ShareBanner
@@ -21,6 +22,9 @@ export const AllMenu = ({ data }: { data: any }) => {
       />
       <div className="py-10">
         <div className=" container ">
+          <div className="mt-10">
+            <SearchAndSort />
+          </div>
           <div className="grid grid-cols-1 pt-8 md:pt-12 pb-10 md:pb-20 md:grid-cols-3 lg:grid-cols-5 gap-2 md:gap-5">
             {data?.data?.map((menu: any, index: number) => {
               // Calculate total for this specific menu
@@ -109,3 +113,22 @@ export const AllMenu = ({ data }: { data: any }) => {
     </>
   );
 };
+// Product.aggregate([
+//   {
+//     $lookup: {
+//       from: 'shops',
+//       localField: 'shopId',
+//       foreignField: '_id',
+//       as: 'shop'
+//     }
+//   },
+//   {
+//     $unwind: '$shop'
+//   },
+//   {
+//     $match: {
+//       'shop.name': { $regex: 'Starbucks', $options: 'i' }, // case-insensitive match
+//       // 'shop.address': { $regex: 'Dhaka', $options: 'i' } // add this if needed
+//     }
+//   }
+// ]

@@ -35,7 +35,7 @@ export const createOrder = async (data: FieldValues, id: string) => {
 };
 
 // get my order
-export const getMyOrder = async (page?: string) => {
+export const getMyOrder = async (page?: string, sort?: string) => {
   const cookyStore = await cookies();
   let token = cookyStore.get("access-token")!.value;
   if (!token || (await isTokenExpired(token))) {
@@ -45,7 +45,7 @@ export const getMyOrder = async (page?: string) => {
   }
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/order/my-order?page=${page}&limit=5`,
+      `${process.env.NEXT_PUBLIC_API_URL}/order/my-order?page=${page}&limit=5&sort=${sort}`,
       {
         method: "GET",
         headers: {
