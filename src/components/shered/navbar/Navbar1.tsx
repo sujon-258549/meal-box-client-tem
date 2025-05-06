@@ -247,11 +247,14 @@ const Navbar1 = ({
               />
             </a>
             <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="icon">
-                  <Menu className="size-4" />
-                </Button>
-              </SheetTrigger>
+              <div className="flex gap-2 items-center">
+                {user && <ProfileDropdown />}
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="icon">
+                    <Menu className="size-4" />
+                  </Button>
+                </SheetTrigger>
+              </div>
               <SheetContent className="overflow-y-auto">
                 <SheetHeader>
                   <SheetTitle className="border-b-2 border-black pb-1">
