@@ -190,8 +190,6 @@ export const updatePassword = async (payload: any) => {
 
 export const getNewToken = async () => {
   try {
-    // const res = await fetch(
-    //   "http://localhost:5000/auth/refresh-token",
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh-token`,
       {
