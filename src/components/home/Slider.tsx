@@ -29,7 +29,7 @@ export default function Slider({ sliderData }: { sliderData: any }) {
         }}
         // add auto aplay cod
         autoplay={{
-          delay: 40000,
+          delay: 4000,
           disableOnInteraction: false,
         }}
         loop={true}
