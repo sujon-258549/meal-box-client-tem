@@ -27,16 +27,15 @@ type UserDataResponse = {
 };
 
 const AllUser = ({ data }: { data: UserDataResponse }) => {
-  console.log(data.meta);
   const [allCustomers, setAllCustomers] = useState<TUser[]>([]);
   const [allMealProviders, setAllMealProviders] = useState<TUser[]>([]);
   const router = useRouter();
   useEffect(() => {
     if (data?.data) {
-      const customers = data.data.filter(
+      const customers = data?.data?.filter(
         (user: TUser) => user.role === "customer"
       );
-      const mealProviders = data.data.filter(
+      const mealProviders = data?.data?.filter(
         (user: TUser) => user.role === "mealProvider"
       );
 

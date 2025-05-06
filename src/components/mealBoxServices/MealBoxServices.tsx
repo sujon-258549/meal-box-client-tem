@@ -50,7 +50,7 @@ export default function MealBoxServices({ menuData }: { menuData: any }) {
         paragraph="Home / Meal Box Services"
       />
       <div className="container">
-        <main className=" mx-auto  md:px-0 px-4 py-12">
+        <main className="py-12">
           {/* Benefits */}
           <section className="mb-16">
             <h2 className="text-2xl font-bold mb-8 text-center">
