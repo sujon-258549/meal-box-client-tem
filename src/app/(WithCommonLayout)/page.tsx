@@ -13,7 +13,6 @@ import {
   getTenMenus,
 } from "@/services/Menu/menuServices";
 import { getAllProvider } from "@/services/Provider/providerSurvices";
-import React from "react";
 
 const HomePage = async () => {
   const { data } = await getSixMenus();

@@ -69,6 +69,9 @@ export const getAllProviderAll = async () => {
       `${process.env.NEXT_PUBLIC_API_URL}/meal-provider?limit=5500000`,
       {
         method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
       }
     );
 
@@ -83,6 +86,9 @@ export const getAllProvider = async (page?: string) => {
       `${process.env.NEXT_PUBLIC_API_URL}/meal-provider?page=${page}`,
       {
         method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
       }
     );
 

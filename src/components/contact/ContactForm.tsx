@@ -176,7 +176,7 @@ export default function ContactForm({ data }: ContactFormProps) {
                         </SelectTrigger>
                       </FormControl>
                       <SelectContent>
-                        {data.map((item) => (
+                        {data?.map((item) => (
                           <SelectItem key={item._id} value={item.userId}>
                             {item.authorShopId?.fullName || "Unknown Author"}
                           </SelectItem>

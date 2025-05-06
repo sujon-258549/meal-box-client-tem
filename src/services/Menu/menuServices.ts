@@ -167,10 +167,9 @@ export const getSixMenus = async () => {
       `${process.env.NEXT_PUBLIC_API_URL}/menu?limit=10`,
       {
         method: "GET",
-        // headers: {
-        //   "Content-type": "application/json",
-        //   // Authorization: (await cookies()).get("access-token")!.value,
-        // },
+        headers: {
+          "Content-type": "application/json",
+        },
       }
     );
     // console.log(res.json());
