@@ -55,5 +55,4 @@ Dark Mode (Tailwind CSS Theme)
 
 
 
-💡 Pro Tips:
-Badges for build status (e.g., [![Vercel Status](https://i.ibb.co.com/qFLXP8Tb/screencapture-meal-box-client-2-vercel-app-2025-05-11-10-47-10.png)])
+<img src="https://i.ibb.co/qFLXP8Tb/screencapture-meal-box-client-2-vercel-app-2025-05-11-10-47-10.png" width="100%" height='100%' alt="" />
