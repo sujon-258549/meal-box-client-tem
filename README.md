@@ -28,6 +28,7 @@ Admin Dashboard: Manage products, orders, and users.
 | MongoDB          | 6.0           |
 | Node.js          | 18+           |
 | React Hook Form  | 7.43.9        |
+| TypeScript       | 5.8.3         |
 
 ## 🚀 Local Installation  
 1. Clone the repo:  
