@@ -49,4 +49,5 @@ Meal prep video tutorials
 Dark mode implementation
 
 Loyalty program system
-![screencapture-car-shop-one-indol-vercel-app-dashboard-profile-2025-05-11-11_00_07](https://github.com/user-attachments/assets/22d98adb-4b84-4e0a-9de9-dc504d1e9eee)
+![Uploading screencapture-meal-box-client-2-vercel-app-2025-05-11-10_47_10 (1).jpg…]()
+
