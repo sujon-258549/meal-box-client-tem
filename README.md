@@ -20,15 +20,27 @@ Responsive UI: Mobile-friendly design with React/Next.js.
 Admin Dashboard: Manage products, orders, and users.
 
 ## 🛠 Tech Stack & Versions  
-| Technology       | Version       |
-|------------------|---------------|
-| Next.js          | 13.5          |
-| React            | 18.2          |
-| Tailwind CSS     | 3.3           |
-| MongoDB          | 6.0           |
-| Node.js          | 18+           |
-| React Hook Form  | 7.43.9        |
-| TypeScript       | 5.8.3         |
+| Technology              | Version / Use Case           |
+|--------------------------|------------------------------|
+| **Next.js**              | 13.5                         |
+| **TypeScript**           | 5.8.3                        |
+| **Tailwind CSS**         | 3.3                          |
+| **React Hook Form**      | 7.43.9 (form handling)       |
+| **Express.js**           | 4.18+                        |
+| **MongoDB**              | 6.0                          |
+| **Mongoose**             | 7.6+                         |
+| **Cloudinary**           | Latest (image upload)        |
+| **JWT (jsonwebtoken)**   | 9.0.2 (authentication)       |
+| **Vercel**               | Frontend Deployment          |
+| **Render**               | Backend Deployment           |
+| **Zod**                  | 3.22.4 (schema validation)   |
+| **dotenv**               | 16+ (env variables)          |
+| **cors**                 | 2.8.5 (CORS handling)        |
+| **ESLint + Prettier**    | Code linting & formatting    |
+| **Framer Motion**        | 10+ (animations)             |
+| **Day.js**               | 1.11+ (date formatting)      |
+| **React Icons**          | 5+ (icon library)            |
+
 
 ## 🚀 Local Installation  
 1. Clone the repo:  
