@@ -4,10 +4,20 @@
 **Server Repo:** [https://github.com/sujon-258549/meal-box-server--team](https://github.com/sujon-258549/meal-box-server--team)  
 
 ## ✨ Core Features  
-- **AI Meal Recommendations** (Dietary filters: Keto/Vegan/Gluten-Free)  
-- **Subscription Management** (Pause/Skip/Customize orders)  
-- **Payment Gateway** (SSLCommerz integration)  
-- **Review System** (Ratings + Photo Uploads)  
+
+User Authentication: Login, registration, JWT-based auth.
+
+Product Management: CRUD operations for products (admin-only).
+
+Shopping Cart: Add/remove items, quantity adjustment.
+
+Payment Integration: Stripe or PayPal for secure payments.
+
+Order Tracking: User order history and status updates.
+
+Responsive UI: Mobile-friendly design with React/Next.js.
+
+Admin Dashboard: Manage products, orders, and users.
 
 ## 🛠 Tech Stack & Versions  
 | Technology       | Version       |
