@@ -1,39 +1,34 @@
-🍱 Meal Box - Food Delivery Service
-Live Demo: [https://your-mealbox-app.vercel.app](https://meal-box-client-2.vercel.app/)
-Server Repo: [https://github.com/your-username/meal-box-server](https://github.com/sujon-258549/meal-box-server--team.git)
+# 🍱 Meal Box - Food Delivery Service  
 
-✨ Core Features
-AI Meal Recommendations (Dietary filters: Keto/Vegan/Gluten-Free)
+**Live Demo:** [https://meal-box-client-2.vercel.app/](https://meal-box-client-2.vercel.app/)  
+**Server Repo:** [https://github.com/sujon-258549/meal-box-server--team](https://github.com/sujon-258549/meal-box-server--team)  
 
-Subscription Management (Pause/Skip/Customize orders)
+## ✨ Core Features  
+- **AI Meal Recommendations** (Dietary filters: Keto/Vegan/Gluten-Free)  
+- **Subscription Management** (Pause/Skip/Customize orders)  
+- **Payment Gateway** (SSLCommerz integration)  
+- **Review System** (Ratings + Photo Uploads)  
 
-Payment Gateway (sslcommerz)
+## 🛠 Tech Stack & Versions  
+| Technology       | Version       |
+|------------------|---------------|
+| Next.js          | 13.5          |
+| React            | 18.2          |
+| Tailwind CSS     | 3.3           |
+| MongoDB          | 6.0           |
+| Node.js          | 18+           |
+| React Hook Form  | 7.43.9        |
 
-Review System (Ratings + Photo Uploads)
-
-Version Transparency
-Next.js: v13.5
-
-React: v18.2
-
-TailwindCSS: v3.3
-
-MongoDB: v6.0
-
-Node.js: v18+
-
-Form Handling	React Hook Form	7.43.9
-🚀 Local Installation
-Clone the repo:
-
-bash
-git clone [https://github.com/your-username/meal-box-client.git](https://github.com/sujon-258549/meal-box-client-tem)
-cd meal-box-client
+## 🚀 Local Installation  
+1. Clone the repo:  
+   ```bash
+   git clone https://github.com/sujon-258549/meal-box-client-tem.git
+   cd meal-box-client-tem
 Install dependencies:
 
 bash
 npm install
-Set up environment variables (create .env):
+Create .env file:
 
 env
 REACT_APP_API_URL=http://localhost:5000
@@ -41,17 +36,17 @@ Run the app:
 
 bash
 npm start
-🧗 Major Challenges & Solutions
-Challenge	Solution Implemented
+🧗 Challenges & Solutions
+Challenge	Solution
 Image optimization	Cloudinary + Lazy Loading
 Payment failure handling	Implemented retry logic
-
 🔮 Future Plans
-Update ui design unic
+Updated UI design unification
 
-Meal Prep Tutorials (Video Integration)
 
-Dark Mode (Tailwind CSS Theme)
+Meal prep video tutorials
 
-![Meal Box Screenshot](https://i.ibb.co.com/qFLXP8Tb/screencapture-meal-box-client-2-vercel-app-2025-05-11-10-47-10.png)
+Dark mode implementation
 
+Loyalty program system
+![screencapture-car-shop-one-indol-vercel-app-dashboard-profile-2025-05-11-11_00_07](https://github.com/user-attachments/assets/22d98adb-4b84-4e0a-9de9-dc504d1e9eee)
