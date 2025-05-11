@@ -45,9 +45,9 @@ Updated UI design unification
 
 
 Meal prep video tutorials
-
 Dark mode implementation
 
 Loyalty program system
-![Uploading screencapture-meal-box-client-2-vercel-app-2025-05-11-10_47_10 (1).jpg…]()
+
+![screencapture-meal-box-client-2-vercel-app-2025-05-11-10_47_10 (1)](https://github.com/user-attachments/assets/8975397a-63d7-4cbf-b56f-6927de7338c9)
 
