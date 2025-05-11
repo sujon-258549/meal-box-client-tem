@@ -1,72 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+🍱 Meal Box - Food Delivery Service
+Live Demo: [https://your-mealbox-app.vercel.app](https://meal-box-client-2.vercel.app/)
+Server Repo: [https://github.com/your-username/meal-box-server](https://github.com/sujon-258549/meal-box-server--team.git)
 
-## Getting Started
+✨ Core Features
+AI Meal Recommendations (Dietary filters: Keto/Vegan/Gluten-Free)
 
-First, run the development server:
+Subscription Management (Pause/Skip/Customize orders)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+Payment Gateway (sslcommerz)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Review System (Ratings + Photo Uploads)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Version Transparency
+Next.js: v13.5
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+React: v18.2
 
-## Learn More
+TailwindCSS: v3.3
 
-To learn more about Next.js, take a look at the following resources:
+MongoDB: v6.0
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Node.js: v18+
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Form Handling	React Hook Form	7.43.9
+🚀 Local Installation
+Clone the repo:
 
-## Deploy on Vercel
+bash
+git clone [https://github.com/your-username/meal-box-client.git](https://github.com/sujon-258549/meal-box-client-tem)
+cd meal-box-client
+Install dependencies:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+bash
+npm install
+Set up environment variables (create .env):
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+env
+REACT_APP_API_URL=http://localhost:5000
+Run the app:
 
-# NEXT_PUBLIC_API_URL=5000
+bash
+npm start
+🧗 Major Challenges & Solutions
+Challenge	Solution Implemented
+Image optimization	Cloudinary + Lazy Loading
+Payment failure handling	Implemented retry logic
 
-NEXT_PUBLIC_API_URL=https://meal-box-server-team-production-8599.up.railway.app
+🔮 Future Plans
+Update ui design unic
 
-<!-- baked -->
+Meal Prep Tutorials (Video Integration)
 
-NODE_ENV=development
-PORT=4000
-DATABASE_URL=mongodb+srv://meal_box:7FqEL1bxAbjzkWtz@cluster0.yx0jx.mongodb.net/mealBox?retryWrites=true&w=majority&appName=Cluster0
-BCRYPT_SALT_ROUNDS=10
+Dark Mode (Tailwind CSS Theme)
 
-JWT_ACCESS_SECRET= 1f2e3d4c5b6a7e8f9g0h1i2j3k4l5m6n7o8p9q0r
-JWT_ACCESS_EXPIRES_IN=10d
 
-JWT_REFRESH_SECRET= 1f2e3d4c5b6a7e8f9g0h1i2j3k4l5m6n7o8p9q0r
-JWT_REFRESH_EXPIRES_IN=365d
 
-# cloudinary
-
-CLOUDINARY_CLOUD_NAME=dkdibsanz
-CLOUDINARY_API_KEY=558721645753651
-CLOUDINARY_API_SECRET=Ky5Ga3DuiaRU77goqQem_bEdWQU
-
-# sslcommerz
-
-STORE_ID=sujon67c73b991d2a2
-STORE_PASSWORD=sujon67c73b991d2a2@ssl
-VALIDATION_URL=http://localhost:4000/ssl/validate
-SUCCESS_URL=http://localhost:3000/success
-FAIL_URL=http://localhost:3000/failed
-CANCEL_URL=cancel_url
-
-# reset ui link
-
-RESET_UI_LINK=http://localhost:3000/reset-ui
+💡 Pro Tips:
+Badges for build status (e.g., [![Vercel Status](https://i.ibb.co.com/qFLXP8Tb/screencapture-meal-box-client-2-vercel-app-2025-05-11-10-47-10.png)])
