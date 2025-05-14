@@ -39,7 +39,7 @@ const AllBlogs = ({ blogs }: { blogs: any }) => {
                   href={`/blog/${post.slug}`}
                   className="block text-[16px] font-semibold  mb-2"
                 >
-                  {post.title}
+                  {post.title.slice(0, 15)}
                 </Link>
                 <p className="text-gray-200 text-sm mb-4 ">
                   {post.excerpt.slice(0, 20)}

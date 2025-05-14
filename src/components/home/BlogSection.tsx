@@ -81,7 +81,7 @@ const BlogSection = ({ blogs }: BlogSectionProps) => {
                   href={`/blog/${featuredPost.slug}`}
                   className="block mt-1 text-2xl font-medium text-gray-900 hover:text-indigo-600 transition-colors"
                 >
-                  {featuredPost.title}
+                  {/* {featuredPost.title} */}
                 </Link>
                 <p className="mt-2 text-gray-600">
                   {featuredPost.excerpt}Discover helpful tips, recipes, and
@@ -135,7 +135,7 @@ const BlogSection = ({ blogs }: BlogSectionProps) => {
                   href={`/blog/${post.slug}`}
                   className="block text-[16px] font-semibold  mb-2"
                 >
-                  {post.title}
+                  {post.title.slice(0, 15)}
                 </Link>
                 <p className="text-gray-200 text-sm mb-4 ">
                   {post?.excerpt?.slice(0, 20)}
