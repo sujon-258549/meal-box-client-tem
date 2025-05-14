@@ -62,12 +62,9 @@ export const updateBlog = async (blogData: FormData, blogId: string) => {
 export const allBlog = async (page?: string) => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/blog?page=${page}`,
+      `${process.env.NEXT_PUBLIC_API_URL}/blog?page=${page}&limit=10`,
       {
         method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
       }
     );
 
@@ -91,7 +88,7 @@ export const singleBlog = async (id: string) => {
     return Error(error);
   }
 };
-export const getMyBlog = async () => {
+export const getMyBlog = async (page?: string) => {
   const cookyStore = await cookies();
   let token = cookyStore.get("access-token")!.value;
   if (!token || (await isTokenExpired(token))) {
@@ -101,12 +98,15 @@ export const getMyBlog = async () => {
   }
   console.log(token);
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/blog/my-blog`, {
-      method: "GET",
-      headers: {
-        Authorization: token,
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/blog/my-blog?page=${page}&limit=10`,
+      {
+        method: "GET",
+        headers: {
+          Authorization: token,
+        },
+      }
+    );
 
     return res.json();
   } catch (error: any) {
