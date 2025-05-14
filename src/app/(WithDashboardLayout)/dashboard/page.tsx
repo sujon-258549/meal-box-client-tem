@@ -1,11 +1,19 @@
 import DashboardMain from "@/components/dashboard/main-dashboard/DashboardMain";
 import {} from "@/components/ui/breadcrumb";
 import {} from "@/components/ui/sidebar";
-import { getAllUser, getMe } from "@/services/Auth/authServices";
+import {
+  getAllCustomer,
+  getAllMealProvider,
+  getAllUser,
+  getMe,
+} from "@/services/Auth/authServices";
 import { getMyMenu } from "@/services/Menu/menuServices";
 import {
+  getAllOrder,
   getMealProviderOrder,
+  getMealProviderOrder2,
   getMyOrder,
+  getMyOrder2,
 } from "@/services/Order/orderServices";
 import { getMyProvider } from "@/services/Provider/providerSurvices";
 import { Metadata } from "next";
@@ -21,13 +29,18 @@ const Dashboard = async ({
   searchParams: Promise<{ page: string; sort: string }>;
 }) => {
   const { data } = await getMyMenu();
-  const { page, sort } = await searchParams;
-
-  const receivedOrdersData = await getMealProviderOrder(page, sort);
+  const { page } = await searchParams;
+  console.log(page);
+  const receivedOrdersData = await getMealProviderOrder(page);
   const myData = await getMyOrder(page);
   const userData = await getMe();
   const providerData = await getMyProvider();
-  const allUser = await getAllUser(page);
+  const allUser = await getAllUser();
+  const orders = await getAllOrder();
+  const mealProvidersData = await getAllMealProvider(page);
+  const customersData = await getAllCustomer(page);
+  const meOrderData = await getMealProviderOrder2();
+  const myOrderData = await getMyOrder2();
   console.log(allUser);
   return (
     <div>
@@ -38,6 +51,11 @@ const Dashboard = async ({
         receivedOrders={receivedOrdersData}
         providerData={providerData}
         allUser={allUser}
+        orders={orders}
+        customersData={customersData}
+        mealProvidersData={mealProvidersData}
+        meOrderData={meOrderData}
+        myOrderData={myOrderData}
       />
     </div>
   );

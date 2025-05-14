@@ -1,7 +1,5 @@
 "use client";
-/* eslint-disable @typescript-eslint/no-unused-vars */
-import { TUser } from "@/types";
-import { useEffect, useState } from "react";
+import { TUser, TMeta } from "@/types";
 import { MdAdminPanelSettings } from "react-icons/md";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Chart } from "react-google-charts";
@@ -15,105 +13,76 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Pagination from "@/components/ui/paginaciton";
-import { getAllUser, getAllUser2 } from "@/services/Auth/authServices";
-import { toast } from "sonner";
-interface ApiResponse {
-  data: {
-    data: TUser[];
-    meta?: {
-      totalPage: number;
-    };
-  };
-  success: boolean;
-  message?: string;
+import { useEffect, useState } from "react";
+
+interface Order {
+  _id: string;
+  paymentStatus: string;
+  total_price: number;
 }
-const AdminDashboard = ({ allUser }: { allUser: any }) => {
-  console.log("allUser", allUser.data.data);
-  const [allCustomers, setAllCustomers] = useState<TUser[]>([]);
-  const [allMealProviders, setAllMealProviders] = useState<TUser[]>([]);
-  const [data, setData] = useState();
-  const [loading, setLoading] = useState<boolean>(true);
-  console.log("result", allUser.data.data);
+
+interface ApiResponse<T> {
+  data: T[];
+  meta?: TMeta;
+}
+
+interface DashboardProps {
+  allUser: ApiResponse<TUser>;
+  orders: ApiResponse<Order>;
+  mealProvidersData: ApiResponse<TUser>;
+  customersData: ApiResponse<TUser>;
+}
+
+const AdminDashboard = ({
+  allUser,
+  orders,
+  mealProvidersData,
+  customersData,
+}: DashboardProps) => {
+  // Process order data
+  const pendingOrder = orders.data.filter(
+    (data) => data.paymentStatus === "Pending"
+  );
+  const paidOrder = orders.data.filter((data) => data.paymentStatus === "Paid");
+
+  const totalPaidAmount = paidOrder.reduce((acc: number, o: Order) => {
+    return acc + Number(o.total_price);
+  }, 0);
+
+  // State for filtered users
+  const [customers, setCustomers] = useState<TUser[]>([]);
+  const [mealProviders, setMealProviders] = useState<TUser[]>([]);
+
   useEffect(() => {
     if (allUser?.data) {
-      const customers = allUser?.data?.data.filter(
-        (user: TUser) => user.role === "customer"
+      setCustomers(allUser?.data?.filter((user) => user.role === "customer"));
+      setMealProviders(
+        allUser.data.filter((user) => user?.role === "mealProvider")
       );
-
-      const mealProviders = allUser?.data?.data.filter(
-        (user: TUser) => user.role === "mealProvider"
-      );
-
-      setAllCustomers(customers);
-      setAllMealProviders(mealProviders);
     }
-  }, []);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const result = await getAllUser2();
-        setData(result);
-      } catch (err) {
-        console.error("Error fetching data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  }, [allUser]);
 
-    fetchData();
-  }, []);
-  const [allCustomersData, setAllCustomersData] = useState<TUser[]>([]);
-  const [allMealProvidersData, setAllMealProvidersData] = useState<TUser[]>([]);
-  const [allAdminsData, setAllAdminsData] = useState<TUser[]>([]);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const result = await getAllUser2();
-
-        setData(result);
-
-        if (result?.data?.data) {
-          const customers = result?.data?.data.filter(
-            (user: TUser) => user.role === "customer"
-          );
-
-          const mealProviders = result?.data?.data.filter(
-            (user: TUser) => user.role === "mealProvider"
-          );
-          const admins = result?.data?.data?.filter(
-            (user: TUser) => user.role === "admin"
-          );
-
-          setAllCustomersData(customers);
-          setAllMealProvidersData(mealProviders);
-          setAllAdminsData(admins);
-        }
-      } catch (err) {
-        toast.error("Failed to fetch user data");
-        console.error("Error fetching data:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
-
-  // Generate dynamic chart data
-  const generateChartData = () => {
-    const roleCounts = {
-      customer: allCustomersData?.length,
-      mealProvider: allMealProvidersData?.length,
-      admin: allAdminsData?.length,
-    };
-
+  // Chart data functions
+  const getUserDistributionData = () => {
     return [
-      ["Role", "Count", { role: "style" }],
-      ["Customers", roleCounts.customer, "#4285F4"],
-      ["Meal Providers", roleCounts.mealProvider, "#34A853"],
-      ["Admins", roleCounts.admin, "#EA4335"],
+      ["User Type", "Count", { role: "style" }],
+      ["Customers", customers.length, "#4285F4"],
+      ["Meal Providers", mealProviders.length, "#34A853"],
+    ];
+  };
+
+  const getOrderStatusData = () => {
+    return [
+      ["Order Status", "Count", { role: "style" }],
+      ["Pending", pendingOrder?.length, "#FBBC05"],
+      ["Paid", paidOrder?.length, "#0F9D58"],
+    ];
+  };
+
+  const getRevenueData = () => {
+    return [
+      ["Metric", "Amount", { role: "style" }],
+      ["Total Revenue", totalPaidAmount, "#673AB7"],
     ];
   };
 
@@ -125,25 +94,72 @@ const AdminDashboard = ({ allUser }: { allUser: any }) => {
             <MdAdminPanelSettings /> Admin Dashboard
           </h1>
         </header>
-        <div className="mb-10">
-          <Chart
-            chartType="ColumnChart"
-            width="100%"
-            height="100%"
-            data={generateChartData()}
-          />
+
+        {/* Charts Section */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
+          <div className="bg-white p-4 rounded shadow">
+            <Chart
+              chartType="ColumnChart"
+              width="100%"
+              height="300px"
+              data={getUserDistributionData()}
+              options={{
+                title: "User Distribution",
+                chartArea: { width: "80%" },
+                hAxis: { title: "User Type" },
+                vAxis: { title: "Count", minValue: 0 },
+              }}
+            />
+          </div>
+          <div className="bg-white p-4 rounded shadow">
+            <Chart
+              chartType="PieChart"
+              width="100%"
+              height="300px"
+              data={getOrderStatusData()}
+              options={{
+                title: "Order Status",
+                pieHole: 0.4,
+                is3D: false,
+              }}
+            />
+          </div>
+          <div className="bg-white p-4 rounded shadow">
+            <Chart
+              chartType="BarChart"
+              width="100%"
+              height="300px"
+              data={getRevenueData()}
+              options={{
+                title: "Revenue Overview",
+                chartArea: { width: "80%" },
+                hAxis: { title: "Amount", minValue: 0 },
+              }}
+            />
+          </div>
         </div>
-        {/* Stats */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
           <div className="p-4 bg-white rounded shadow">
-            <p className="text-sm text-gray-500">Customer</p>
-            <p className="mt-1 text-xl font-bold">{allAdminsData.length}</p>
+            <p className="text-sm text-gray-500">Total Revenue</p>
+            <p className="mt-1 text-xl font-bold">{totalPaidAmount} Taka</p>
           </div>
           <div className="p-4 bg-white rounded shadow">
-            <p className="text-sm text-gray-500">All Meal Provider</p>
-            <p className="mt-1 text-xl font-bold">
-              {allMealProvidersData.length}
-            </p>
+            <p className="text-sm text-gray-500">Total Users</p>
+            <p className="mt-1 text-xl font-bold">{allUser?.data?.length}</p>
+          </div>
+          <div className="p-4 bg-white rounded shadow">
+            <p className="text-sm text-gray-500">Customers</p>
+            <p className="mt-1 text-xl font-bold">{customers?.length}</p>
+          </div>
+          <div className="p-4 bg-white rounded shadow">
+            <p className="text-sm text-gray-500">Meal Providers</p>
+            <p className="mt-1 text-xl font-bold">{mealProviders?.length}</p>
+          </div>
+          <div className="p-4 bg-white rounded shadow">
+            <p className="text-sm text-gray-500">Orders</p>
+            <p className="mt-1 text-xl font-bold">{orders?.data?.length}</p>
           </div>
         </div>
 
@@ -151,8 +167,8 @@ const AdminDashboard = ({ allUser }: { allUser: any }) => {
         <div className="bg-white rounded shadow overflow-hidden p-5">
           <Tabs defaultValue="customers">
             <TabsList className="w-full sm:w-auto">
-              <TabsTrigger value="customers">Customers</TabsTrigger>
               <TabsTrigger value="providers">Meal Providers</TabsTrigger>
+              <TabsTrigger value="customers">Customers</TabsTrigger>
             </TabsList>
 
             {/* Customers Tab */}
@@ -165,18 +181,23 @@ const AdminDashboard = ({ allUser }: { allUser: any }) => {
                       <TableHead className="w-[50px]">#</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead className="hidden sm:table-cell">
+                        Create Date
+                      </TableHead>
+                      <TableHead className="hidden sm:table-cell">
                         Email
                       </TableHead>
+                      <TableHead className="text-right">Phone Number</TableHead>
                       <TableHead className="text-right">Role</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {allCustomers.map((user, index) => (
+                    {customersData.data.map((user, index) => (
                       <TableRow key={user._id}>
-                        <TableCell className="font-medium">
-                          {index + 1}
-                        </TableCell>
+                        <TableCell>{index + 1}</TableCell>
                         <TableCell>
+                          <div className="font-medium">
+                            {new Date(user.createdAt).toLocaleDateString()}
+                          </div>
                           <div className="font-medium">{user.fullName}</div>
                           <div className="text-sm text-gray-500 sm:hidden">
                             {user.email}
@@ -186,12 +207,18 @@ const AdminDashboard = ({ allUser }: { allUser: any }) => {
                           {user.email}
                         </TableCell>
                         <TableCell className="text-right capitalize">
+                          {user.phoneNumber}
+                        </TableCell>
+                        <TableCell className="text-right capitalize">
                           {user.role}
                         </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
+                <div className="py-5 md:py-10 flex justify-center mx-auto items-center">
+                  <Pagination total={customersData.meta?.totalPage || 1} />
+                </div>
               </div>
             </TabsContent>
 
@@ -203,19 +230,24 @@ const AdminDashboard = ({ allUser }: { allUser: any }) => {
                   <TableHeader>
                     <TableRow>
                       <TableHead className="w-[50px]">#</TableHead>
+                      <TableHead>Create Date</TableHead>
                       <TableHead>Name</TableHead>
                       <TableHead className="hidden sm:table-cell">
                         Email
                       </TableHead>
+                      <TableHead className="text-right">Phone Number</TableHead>
                       <TableHead className="text-right">Role</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {allMealProviders.map((user, index) => (
+                    {mealProvidersData.data.map((user, index) => (
                       <TableRow key={user._id}>
                         <TableCell>{index + 1}</TableCell>
                         <TableCell>
-                          <div className="font-medium">{user.name}</div>
+                          <div className="font-medium">
+                            {new Date(user.createdAt).toLocaleDateString()}
+                          </div>
+                          <div className="font-medium">{user.fullName}</div>
                           <div className="text-sm text-gray-500 sm:hidden">
                             {user.email}
                           </div>
@@ -224,15 +256,20 @@ const AdminDashboard = ({ allUser }: { allUser: any }) => {
                           {user.email}
                         </TableCell>
                         <TableCell className="text-right capitalize">
+                          {user.phoneNumber}
+                        </TableCell>
+                        <TableCell className="text-right capitalize">
                           {user.role}
                         </TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
                 </Table>
+                <div className="py-5 md:py-10 flex justify-center mx-auto items-center">
+                  <Pagination total={mealProvidersData.meta?.totalPage || 1} />
+                </div>
               </div>
             </TabsContent>
-            <Pagination total={allUser?.data?.meta?.totalPage} />
           </Tabs>
         </div>
       </main>

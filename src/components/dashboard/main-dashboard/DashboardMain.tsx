@@ -12,6 +12,11 @@ const DashboardMain = ({
   userData,
   providerData,
   allUser,
+  mealProvidersData,
+  orders,
+  customersData,
+  meOrderData,
+  myOrderData,
 }: {
   menu: any;
   receivedOrders: any;
@@ -19,20 +24,37 @@ const DashboardMain = ({
   userData: any;
   providerData: any;
   allUser: any;
+  orders: any;
+  customersData: any;
+  mealProvidersData: any;
+  meOrderData: any;
+  myOrderData: any;
 }) => {
   const { user }: any = useUser();
   return (
     <div>
-      {user?.role === "admin" && <AdminDashboard allUser={allUser} />}
+      {user?.role === "admin" && (
+        <AdminDashboard
+          allUser={allUser}
+          orders={orders}
+          mealProvidersData={mealProvidersData}
+          customersData={customersData}
+        />
+      )}
       {user?.role === "mealProvider" && (
         <MealProviderDashboard
           menu={menu}
           receivedOrdersData={receivedOrders}
           providerData={providerData}
+          meOrderData={meOrderData}
         />
       )}
       {user?.role === "customer" && (
-        <SimpleCustomerDashboard menu={myData} user={userData} />
+        <SimpleCustomerDashboard
+          menu={myData}
+          user={userData}
+          getMyOrders={myOrderData}
+        />
       )}
     </div>
   );

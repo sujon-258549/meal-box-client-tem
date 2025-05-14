@@ -60,6 +60,31 @@ export const getMyOrder = async (page?: string, sort?: string) => {
     return Error(error);
   }
 };
+export const getMyOrder2 = async () => {
+  const cookyStore = await cookies();
+  let token = cookyStore.get("access-token")!.value;
+  if (!token || (await isTokenExpired(token))) {
+    const { data } = await getNewToken();
+    token = data.accessToken;
+    cookyStore.set("access-token", token);
+  }
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/order/my-order?limit=15000000000`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
 export const getSingleOrder = async (id: string) => {
   const cookyStore = await cookies();
   let token = cookyStore.get("access-token")!.value;
@@ -99,6 +124,51 @@ export const getMealProviderOrder = async (page?: string, sort?: string) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          Authorization: token,
+        },
+      }
+    );
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+export const getMealProviderOrder2 = async () => {
+  const cookyStore = await cookies();
+  let token = cookyStore.get("access-token")!.value;
+  if (!token || (await isTokenExpired(token))) {
+    const { data } = await getNewToken();
+    token = data.accessToken;
+    cookyStore.set("access-token", token);
+  }
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/order`, {
+      method: "GET",
+      headers: {
+        Authorization: token,
+      },
+    });
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+export const getAllOrder = async () => {
+  const cookyStore = await cookies();
+  let token = cookyStore.get("access-token")!.value;
+  if (!token || (await isTokenExpired(token))) {
+    const { data } = await getNewToken();
+    token = data.accessToken;
+    cookyStore.set("access-token", token);
+  }
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/order/all-order`,
+      {
+        method: "GET",
+        headers: {
           Authorization: token,
         },
       }

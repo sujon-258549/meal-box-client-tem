@@ -243,7 +243,6 @@ export const UploadImage = async (data: FormData) => {
   let token = cookieStore.get("access-token")!.value;
   if (!token || (await isTokenExpired(token))) {
     const cookie = await getNewToken();
-    console.log("cookie data", cookie);
     token = cookie?.accessToken;
     cookieStore.set("access-token", token);
   }
@@ -266,13 +265,37 @@ export const UploadImage = async (data: FormData) => {
   }
 };
 
-export const getAllUser = async (page?: string, limit?: string) => {
+export const getAllUser = async () => {
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/users?page=${page}&limit=${limit}`,
+      `${process?.env?.NEXT_PUBLIC_API_URL}/users/user-meal-provider`,
+      {
+        method: "GET",
+      }
+    );
+
+    return res.json();
+  } catch (error: any) {
+    return Error(error);
+  }
+};
+export const getAllCustomer = async (page?: string) => {
+  const cookieStore = await cookies();
+  let token = cookieStore.get("access-token")!.value;
+  if (!token || (await isTokenExpired(token))) {
+    const cookie = await getNewToken();
+    console.log("cookie data", cookie);
+    token = cookie?.accessToken;
+    cookieStore.set("access-token", token);
+  }
+
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/users?page=${page}&limit=5`,
       {
         method: "GET",
         headers: {
+          Authorization: token,
           "Content-Type": "application/json",
         },
       }
@@ -283,13 +306,22 @@ export const getAllUser = async (page?: string, limit?: string) => {
     return Error(error);
   }
 };
-export const getAllUser2 = async () => {
+export const getAllMealProvider = async (page?: string) => {
+  const cookieStore = await cookies();
+  let token = cookieStore.get("access-token")!.value;
+  if (!token || (await isTokenExpired(token))) {
+    const cookie = await getNewToken();
+    console.log("cookie data", cookie);
+    token = cookie?.accessToken;
+    cookieStore.set("access-token", token);
+  }
   try {
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/users?limit=150000`,
+      `${process.env.NEXT_PUBLIC_API_URL}/users/meal-provider?page=${page}&limit=5`,
       {
         method: "GET",
         headers: {
+          Authorization: token,
           "Content-Type": "application/json",
         },
       }

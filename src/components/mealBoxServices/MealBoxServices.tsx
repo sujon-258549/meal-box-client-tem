@@ -118,14 +118,14 @@ export default function MealBoxServices({ menuData }: { menuData: any }) {
                   </CardHeader>
                   <CardContent style={{ padding: "0 10px" }}>
                     <ul className="space-y-1 mb-2 -mt-4">
-                      {plan.shopId?.shopFeatures?.map(
-                        (feature: string, index: string) => (
+                      {plan.shopId?.shopFeatures
+                        ?.slice(0, 2)
+                        .map((feature: string, index: string) => (
                           <li key={index} className="flex items-center text-sm">
                             <CheckIcon className="h-3 w-3 text-green-500 mr-2" />
-                            {feature || "250+Fresh Foods"}
+                            {feature}
                           </li>
-                        )
-                      )}
+                        ))}
                     </ul>
                     <div className="text-2xl font-bold mb-4">
                       ${plan.totalPrice}
@@ -135,7 +135,7 @@ export default function MealBoxServices({ menuData }: { menuData: any }) {
                     </div>
                     <Link href={`/meal-plan-services-details/${plan._id}`}>
                       {" "}
-                      <Button className="w-full cursor-pointer mb-3">
+                      <Button className="w-full mb-3 cursor-pointer">
                         Choose Plan
                       </Button>
                     </Link>

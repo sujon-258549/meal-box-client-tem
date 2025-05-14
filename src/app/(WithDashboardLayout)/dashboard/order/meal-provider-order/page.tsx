@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 const MealProviderOrders = async ({
   searchParams,
 }: {
-  searchParams: Promise<{ page: string; sort: string }>;
+  searchParams: Promise<{ page?: string; sort?: string }>;
 }) => {
   const { page, sort } = await searchParams;
   const data = await getMealProviderOrder(page, sort);

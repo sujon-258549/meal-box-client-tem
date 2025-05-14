@@ -51,7 +51,7 @@ export function ReadMoreModal({
     <Dialog>
       <DialogTrigger className="text-indigo-400" asChild>
         {children || (
-          <Button variant="link" className="p-0 h-auto">
+          <Button variant="link" className="p-0 -ml-2.5 h-auto">
             Read more
             <ArrowRight className="ml-1 h-4 w-4" />
           </Button>

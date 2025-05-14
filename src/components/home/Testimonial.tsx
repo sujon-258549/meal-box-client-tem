@@ -22,7 +22,7 @@ export const Testimonial = ({ mealProvider }: { mealProvider: any }) => {
 
     return (
       <div className="flex justify-center mb-4">
-        {[...Array(fullStars)].map((_, i) => (
+        {[...Array(fullStars)]?.map((_, i) => (
           <FaStar key={`full-${i}`} className="text-yellow-500 mx-0.5" />
         ))}
         {hasHalfStar && (
@@ -40,7 +40,7 @@ export const Testimonial = ({ mealProvider }: { mealProvider: any }) => {
 
   return (
     <div>
-      {mealProviderData.length > 0 && (
+      {mealProviderData?.length > 0 && (
         <div>
           <h1 className="text-2xl md:text-4xl text-center  font-bold">
             Testimonial Section
@@ -82,7 +82,7 @@ export const Testimonial = ({ mealProvider }: { mealProvider: any }) => {
                     {provider.shopLogo && (
                       <img
                         className="w-10 h-10 rounded-full"
-                        src={provider.shopLogo}
+                        src={provider?.shopLogo}
                         alt="profile picture"
                       />
                     )}
@@ -91,35 +91,35 @@ export const Testimonial = ({ mealProvider }: { mealProvider: any }) => {
                         {provider.authorShopId?.fullName || "Anonymous"}
                       </div>
                       <div className="pl-3 text-sm font-light text-gray-500 dark:text-gray-400">
-                        {provider.shopName
-                          ? `CEO at ${provider.shopName}`
+                        {provider?.shopName
+                          ? `CEO at ${provider?.shopName}`
                           : "Verified Customer"}
                       </div>
                     </div>
                   </figcaption>
 
                   <div className="flex gap-4 justify-center mt-5">
-                    {provider.socialLinks?.facebook && (
+                    {provider?.socialLinks?.facebook && (
                       <a
-                        href={provider.socialLinks.facebook}
+                        href={provider?.socialLinks?.facebook}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         <FaFacebook className="w-6 h-6 text-blue-600 hover:text-blue-800 transition-colors" />
                       </a>
                     )}
-                    {provider.socialLinks?.instagram && (
+                    {provider?.socialLinks?.instagram && (
                       <a
-                        href={provider.socialLinks.instagram}
+                        href={provider?.socialLinks?.instagram}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
                         <FaInstagram className="w-6 h-6 text-pink-500 hover:text-pink-700 transition-colors" />
                       </a>
                     )}
-                    {provider.socialLinks?.linkedin && (
+                    {provider?.socialLinks?.linkedin && (
                       <a
-                        href={provider.socialLinks.linkedin}
+                        href={provider?.socialLinks?.linkedin}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
@@ -128,7 +128,7 @@ export const Testimonial = ({ mealProvider }: { mealProvider: any }) => {
                     )}
                     {provider.socialLinks?.twitter && (
                       <a
-                        href={provider.socialLinks.twitter}
+                        href={provider?.socialLinks.twitter}
                         target="_blank"
                         rel="noopener noreferrer"
                       >

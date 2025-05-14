@@ -23,70 +23,48 @@ import { Button } from "../ui/button";
 import { ShoppingCart, UtensilsCrossed } from "lucide-react";
 import { Card, CardContent, CardHeader } from "../ui/card";
 
-interface Address {
-  village: string;
-  district: string;
-  subDistrict: string;
-  post: string;
-  postCode: string;
-}
+// ... (keep your existing interfaces)
 
-interface SocialMediaLinks {
-  facebook?: string;
-  instagram?: string;
-  twitter?: string;
-  linkedin?: string;
-}
-
-interface OperatingHours {
-  open: string;
-  close: string;
-  daysOpen: string[];
-}
-
-interface shopId {
-  shopName: string;
-  ownerName: string;
-  shopLogo: string;
-  shopAddress: string;
-  phoneNumber: string;
-  customerServiceContact: string;
-  establishedYear: number;
-  operatingHours: OperatingHours;
-  paymentMethods: string[];
-  productCategories: string[];
-  socialMediaLinks: SocialMediaLinks;
-  website: string;
-  address: Address;
-}
-
-interface MealTime {
-  menu?: string;
-  price?: number;
-  _id?: string;
-}
-
-interface DayMenu {
-  day?: string;
-  morning?: MealTime;
-  evening?: MealTime;
-  night?: MealTime;
-  _id?: string;
-}
-
+// Define the MenuData type if not already defined
 interface MenuData {
   _id: string;
-  meals?: DayMenu[];
   menuImage?: string;
-  shopId?: shopId;
+  meals?: {
+    _id?: string;
+    day?: string;
+    morning?: { menu?: string; price?: number };
+    evening?: { menu?: string; price?: number };
+    night?: { menu?: string; price?: number };
+  }[];
+  shopId?: {
+    shopName?: string;
+    shopLogo?: string;
+    ownerName?: string;
+    phoneNumber?: string;
+    customerServiceContact?: string;
+    shopAddress?: string;
+    operatingHours?: {
+      open?: string;
+      close?: string;
+      daysOpen?: string[];
+    };
+    paymentMethods?: string[];
+    socialMediaLinks?: {
+      facebook?: string;
+      instagram?: string;
+      twitter?: string;
+      linkedin?: string;
+    };
+    website?: string;
+    establishedYear?: string;
+  };
 }
 
 const DetailsMenu: React.FC<{ menu?: MenuData }> = ({ menu }) => {
-  console.log(menu);
-  if (!menu)
+  if (!menu) {
     return (
       <div className="flex container justify-center items-center min-h-screen">
-        <Card className="w-full  ">
+        <Card className="w-full max-w-md">
           <CardHeader className="pb-3">
             <div className="flex items-center justify-center gap-2">
               <UtensilsCrossed className="w-8 h-8 text-rose-500" />
@@ -105,309 +83,280 @@ const DetailsMenu: React.FC<{ menu?: MenuData }> = ({ menu }) => {
         </Card>
       </div>
     );
-  console.log(menu);
+  }
+
   return (
-    <div className="container">
-      <div className="  my-10">
-        {/* Shop Information Section */}
-
-        {/* Menu Image */}
-        {menu?.menuImage && (
-          <div className="mb-10 relative w-full h-64 rounded-lg overflow-hidden shadow-lg">
-            <Image
-              src={menu.menuImage}
-              alt={`${menu?.shopId?.shopName || "Shop"} menu`}
-              fill
-              className="object-cover"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
-            />
-            <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-              <h2 className="text-4xl font-bold text-white">
-                <FaUtensils className="inline mr-3" />
-                Our Menu
-              </h2>
-            </div>
-          </div>
-        )}
-
-        {/* Weekly Menu */}
-        <div className="space-y-6">
-          {menu?.meals?.map((dayMenu) => (
-            <div
-              key={dayMenu?._id || Math.random().toString()}
-              className="bg-white box-shadow rounded-lg shadow-md overflow-hidden"
-            >
-              {/* Day Header */}
-              <div className="bg-gradient-to-r from-[#424242] to-[#0c0101] text-white px-6 py-4">
-                <h3 className="text-xl font-semibold flex items-center">
-                  <FaCalendarAlt className="mr-2" />
-                  {dayMenu?.day || "Day"}
-                </h3>
-              </div>
-
-              {/* Meal Times */}
-              <div className="divide-y divide-gray-200">
-                {/* Morning */}
-                <div className="p-6">
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-start">
-                      <div className="bg-yellow-100 p-2 rounded-full mr-4">
-                        <IoMdTime className="text-yellow-600 text-xl" />
-                      </div>
-                      <div>
-                        <h4 className="text-lg font-medium text-gray-900">
-                          Morning
-                        </h4>
-                        <p className="text-gray-600 mt-1">
-                          {dayMenu?.morning?.menu || "Not specified"}
-                        </p>
-                      </div>
-                    </div>
-                    <span className="text-lg font-semibold text-gray-900 flex items-center">
-                      <FaMoneyBillWave className="mr-1 text-green-500" />$
-                      {dayMenu?.morning?.price?.toFixed(2) || "0.00"}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Evening */}
-                <div className="p-6">
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-start">
-                      <div className="bg-orange-100 p-2 rounded-full mr-4">
-                        <IoMdTime className="text-orange-600 text-xl" />
-                      </div>
-                      <div>
-                        <h4 className="text-lg font-medium text-gray-900">
-                          Evening
-                        </h4>
-                        <p className="text-gray-600 mt-1">
-                          {dayMenu?.evening?.menu || "Not specified"}
-                        </p>
-                      </div>
-                    </div>
-                    <span className="text-lg font-semibold text-gray-900 flex items-center">
-                      <FaMoneyBillWave className="mr-1 text-green-500" />$
-                      {dayMenu?.evening?.price?.toFixed(2) || "0.00"}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Night */}
-                <div className="p-6">
-                  <div className="flex justify-between items-start">
-                    <div className="flex items-start">
-                      <div className="bg-indigo-100 p-2 rounded-full mr-4">
-                        <IoMdTime className="text-indigo-600 text-xl" />
-                      </div>
-                      <div>
-                        <h4 className="text-lg font-medium text-gray-900">
-                          Night
-                        </h4>
-                        <p className="text-gray-600 mt-1">
-                          {dayMenu?.night?.menu || "Not specified"}
-                        </p>
-                      </div>
-                    </div>
-                    <span className="text-lg font-semibold text-gray-900 flex items-center">
-                      <FaMoneyBillWave className="mr-1 text-green-500" />$
-                      {dayMenu?.night?.price?.toFixed(2) || "0.00"}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="flex flex-col gap-2 mt-10 max-w-[200px] mx-auto ">
-          <Link href={`/dashboard/order/details-menu/${menu._id}`}>
-            <Button className="w-full py-6">
-              <ShoppingCart className="w-4 h-4 mr-1" />
-              Order now
-            </Button>
-          </Link>
-        </div>
-        <div className="bg-white mt-10 box-shadow rounded-xl shadow-md overflow-hidden mb-10">
-          <h2 className="text-2xl md:text-3xl text-center font-bold py-5 border-b-4 border-[#0c0101]">
-            Shop Information
-          </h2>
-          <div className="md:flex">
-            {/* Shop Logo */}
-            <div className="md:w-1/3 p-6 flex justify-center items-center bg-gray-50">
-              {menu?.shopId?.shopLogo && (
-                <div className="relative w-64 h-64 rounded-full overflow-hidden border-4 border-white shadow-lg">
-                  <img
-                    src={menu.shopId.shopLogo}
-                    alt={menu.shopId.shopName || "Shop logo"}
-                    className="object-cover w-full h-full"
-                  />
-                </div>
-              )}
-            </div>
-
-            {/* Shop Details */}
-            <div className="md:w-2/3 p-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center">
-                <FaStore className="mr-2 text-blue-600" />
+    <div className="container mx-auto px-4 py-8">
+      {/* Hero Section */}
+      {menu?.menuImage && (
+        <div className="relative w-full mt-5  md:mt-10 h-80 rounded-xl overflow-hidden mb-10 shadow-lg">
+          <Image
+            src={menu.menuImage}
+            alt={`${menu?.shopId?.shopName || "Shop"} menu`}
+            fill
+            className="object-cover "
+            priority
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#070000] to-transparent flex items-end p-6">
+            <div>
+              <h1 className="text-4xl font-bold text-white mb-2">
                 {menu?.shopId?.shopName}
               </h1>
-              <p className="text-lg text-gray-600 mb-4 flex items-center">
-                <FaUser className="mr-2 text-green-600" />
-                Owned by {menu?.shopId?.ownerName} | Established{" "}
-                {menu?.shopId?.establishedYear}
+              <p className="text-lg text-gray-200">
+                Discover our delicious meal plans
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Menu and Info Grid */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Menu Section */}
+        <div className="lg:col-span-2 space-y-6 mb-5 md:mb-10">
+          <h2 className="text-2xl font-bold flex items-center gap-2 mb-6">
+            <FaUtensils className="text-rose-500" />
+            Weekly Meal Plan
+          </h2>
+
+          {menu?.meals?.length ? (
+            <div className="space-y-4">
+              {menu.meals.map((dayMenu: any) => (
+                <Card key={dayMenu?._id || Math.random().toString()}>
+                  <CardHeader className="bg-gradient-to-r from-gray-800 to-gray-600 text-white rounded-t-lg">
+                    <h3 className="text-xl font-semibold flex items-center gap-2">
+                      <FaCalendarAlt />
+                      {dayMenu?.day || "Day"}
+                    </h3>
+                  </CardHeader>
+                  <CardContent className="p-0 divide-y divide-gray-100">
+                    {/* Morning */}
+                    <MealTimeCard
+                      time="Morning"
+                      icon={<IoMdTime className="text-yellow-500" />}
+                      menu={dayMenu?.morning?.menu}
+                      price={dayMenu?.morning?.price}
+                    />
+
+                    {/* Evening */}
+                    <MealTimeCard
+                      time="Evening"
+                      icon={<IoMdTime className="text-orange-500" />}
+                      menu={dayMenu?.evening?.menu}
+                      price={dayMenu?.evening?.price}
+                    />
+
+                    {/* Night */}
+                    <MealTimeCard
+                      time="Night"
+                      icon={<IoMdTime className="text-indigo-500" />}
+                      menu={dayMenu?.night?.menu}
+                      price={dayMenu?.night?.price}
+                    />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : (
+            <Card>
+              <CardContent className="p-6 text-center">
+                <FaUtensils className="mx-auto text-4xl text-gray-400 mb-3" />
+                <p className="text-gray-500">
+                  No menu available for this shop yet.
+                </p>
+              </CardContent>
+            </Card>
+          )}
+        </div>
+
+        {/* Shop Info Sidebar */}
+        <div className="space-y-6">
+          {/* Shop Card */}
+          <Card className="overflow-hidden">
+            {menu?.shopId?.shopLogo && (
+              <div className="relative h-48 w-full">
+                <Image
+                  src={menu.shopId.shopLogo}
+                  alt={menu.shopId.shopName || "Shop logo"}
+                  fill
+                  className="object-cover"
+                />
+              </div>
+            )}
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
+                <FaStore className="text-blue-500" />
+                {menu?.shopId?.shopName}
+              </h3>
+              <p className="text-gray-600 mb-4 flex items-center gap-2">
+                <FaUser className="text-green-500" />
+                Owned by {menu?.shopId?.ownerName}
               </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                {/* Contact Info */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider flex items-center">
-                    <FaPhone className="mr-1" /> Contact
-                  </h3>
-                  <div className="mt-2 space-y-2">
-                    <p className="text-gray-900 flex items-center">
-                      <span className="w-5 mr-2">
-                        <FaPhone className="text-blue-500" />
-                      </span>
-                      {menu?.shopId?.phoneNumber}
-                    </p>
-                    <p className="text-gray-900 flex items-center">
-                      <span className="w-5 mr-2">
-                        <FaPhone className="text-green-500" />
-                      </span>
-                      {menu?.shopId?.customerServiceContact}
-                    </p>
-                  </div>
-                </div>
+              <InfoItem
+                icon={<FaPhone className="text-blue-500" />}
+                title="Contact"
+                value={menu?.shopId?.phoneNumber}
+              />
+              <InfoItem
+                icon={<FaPhone className="text-green-500" />}
+                title="Customer Service"
+                value={menu?.shopId?.customerServiceContact}
+              />
+              <InfoItem
+                icon={<FaMapMarkerAlt className="text-red-500" />}
+                title="Address"
+                value={menu?.shopId?.shopAddress}
+              />
+              <InfoItem
+                icon={<FaClock className="text-yellow-500" />}
+                title="Hours"
+                value={`${menu?.shopId?.operatingHours?.open} - ${menu?.shopId?.operatingHours?.close}`}
+              />
+              <InfoItem
+                icon={<FaCalendarAlt className="text-purple-500" />}
+                title="Days Open"
+                value={menu?.shopId?.operatingHours?.daysOpen?.join(", ")}
+              />
 
-                {/* Address */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider flex items-center">
-                    <FaMapMarkerAlt className="mr-1" /> Address
-                  </h3>
-                  <div className="mt-2 space-y-2">
-                    <p className="text-gray-900 flex">
-                      <span className="w-5 mr-2">
-                        <FaMapMarkerAlt className="text-red-500 mt-1" />
-                      </span>
-                      {menu?.shopId?.shopAddress},{" "}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Hours */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider flex items-center">
-                    <IoMdTime className="mr-1" /> Hours
-                  </h3>
-                  <div className="mt-2 space-y-2">
-                    <p className="text-gray-900 flex items-center">
-                      <span className="w-5 mr-2">
-                        <FaClock className="text-yellow-500" />
-                      </span>
-                      {menu?.shopId?.operatingHours?.open} -{" "}
-                      {menu?.shopId?.operatingHours?.close}
-                    </p>
-                    <p className="text-gray-900 flex items-center">
-                      <span className="w-5 mr-2">
-                        <FaCalendarAlt className="text-purple-500" />
-                      </span>
-                      {menu?.shopId?.operatingHours?.daysOpen?.join(", ")}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Payment Methods */}
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wider flex items-center">
-                    <MdPayment className="mr-1" /> Payment Methods
-                  </h3>
-                  <div className="mt-2 flex flex-wrap gap-2">
-                    {menu?.shopId?.paymentMethods?.map((method, index) => (
+              {/* Payment Methods */}
+              <div className="mt-4">
+                <h4 className="font-medium flex items-center gap-2 mb-2">
+                  <MdPayment className="text-blue-500" />
+                  Payment Methods
+                </h4>
+                <div className="flex flex-wrap gap-2">
+                  {menu?.shopId?.paymentMethods?.map(
+                    (method: string, index: number) => (
                       <span
                         key={index}
-                        className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-blue-100 text-blue-800"
+                        className="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800"
                       >
                         <FaWallet className="mr-1" /> {method}
                       </span>
-                    ))}
-                  </div>
+                    )
+                  )}
                 </div>
               </div>
 
-              {/* Social Media Links */}
-              <div className="flex space-x-4">
-                {menu?.shopId?.socialMediaLinks?.facebook && (
-                  <a
-                    href={menu.shopId.socialMediaLinks.facebook}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-blue-600 transition-colors"
-                    aria-label="Facebook"
-                  >
-                    <FaFacebook className="h-6 w-6" />
-                  </a>
-                )}
-                {menu?.shopId?.socialMediaLinks?.instagram && (
-                  <a
-                    href={menu.shopId.socialMediaLinks.instagram}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-pink-600 transition-colors"
-                    aria-label="Instagram"
-                  >
-                    <FaInstagram className="h-6 w-6" />
-                  </a>
-                )}
-                {menu?.shopId?.socialMediaLinks?.twitter && (
-                  <a
-                    href={menu.shopId.socialMediaLinks.twitter}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-blue-400 transition-colors"
-                    aria-label="Twitter"
-                  >
-                    <FaTwitter className="h-6 w-6" />
-                  </a>
-                )}
-                {menu?.shopId?.socialMediaLinks?.linkedin && (
-                  <a
-                    href={menu.shopId.socialMediaLinks.linkedin}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-blue-700 transition-colors"
-                    aria-label="LinkedIn"
-                  >
-                    <FaLinkedin className="h-6 w-6" />
-                  </a>
-                )}
-                {menu?.shopId?.website && (
-                  <a
-                    href={menu.shopId.website}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-gray-600 hover:text-green-600 transition-colors"
-                    aria-label="Website"
-                  >
-                    <FaGlobe className="h-6 w-6" />
-                  </a>
-                )}
+              {/* Social Links */}
+              <div className="mt-6">
+                <h4 className="font-medium mb-2">Connect With Us</h4>
+                <div className="flex gap-4">
+                  {menu?.shopId?.socialMediaLinks?.facebook && (
+                    <SocialLink
+                      icon={<FaFacebook className="h-5 w-5" />}
+                      href={menu.shopId.socialMediaLinks.facebook}
+                      color="hover:text-blue-600"
+                    />
+                  )}
+                  {menu?.shopId?.socialMediaLinks?.instagram && (
+                    <SocialLink
+                      icon={<FaInstagram className="h-5 w-5" />}
+                      href={menu.shopId.socialMediaLinks.instagram}
+                      color="hover:text-pink-600"
+                    />
+                  )}
+                  {menu?.shopId?.socialMediaLinks?.twitter && (
+                    <SocialLink
+                      icon={<FaTwitter className="h-5 w-5" />}
+                      href={menu.shopId.socialMediaLinks.twitter}
+                      color="hover:text-blue-400"
+                    />
+                  )}
+                  {menu?.shopId?.socialMediaLinks?.linkedin && (
+                    <SocialLink
+                      icon={<FaLinkedin className="h-5 w-5" />}
+                      href={menu.shopId.socialMediaLinks.linkedin}
+                      color="hover:text-blue-700"
+                    />
+                  )}
+                  {menu?.shopId?.website && (
+                    <SocialLink
+                      icon={<FaGlobe className="h-5 w-5" />}
+                      href={menu.shopId.website}
+                      color="hover:text-green-600"
+                    />
+                  )}
+                </div>
               </div>
-            </div>
+            </CardContent>
+          </Card>
+
+          {/* Established Info */}
+          <Card>
+            <CardContent className="p-6">
+              <div className="text-center">
+                <p className="text-sm text-gray-500">Established</p>
+                <p className="text-2xl font-bold text-gray-800">
+                  {menu?.shopId?.establishedYear}
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+          <div className="my-8 w-full">
+            <Link href={`/dashboard/order/details-menu/${menu._id}`}>
+              <Button className="px-8 py-6 text-lg w-full">
+                <ShoppingCart className="w-5 h-5 mr-2" />
+                Order Now
+              </Button>
+            </Link>
           </div>
         </div>
-
-        {/* Empty State */}
-        {(!menu.meals || menu.meals.length === 0) && (
-          <div className="text-center py-10 bg-gray-100 rounded-lg">
-            <FaUtensils className="mx-auto text-4xl text-gray-400 mb-3" />
-            <p className="text-gray-500">
-              No menu available for this shop yet.
-            </p>
-          </div>
-        )}
       </div>
     </div>
   );
 };
+
+// Helper Components
+const MealTimeCard: React.FC<{
+  time: string;
+  icon: React.ReactNode;
+  menu?: string;
+  price?: number;
+}> = ({ time, icon, menu, price }) => (
+  <div className="p-4 flex justify-between items-center">
+    <div className="flex items-center gap-3">
+      <div className="p-2 rounded-full bg-opacity-20 bg-current">{icon}</div>
+      <div>
+        <h4 className="font-medium">{time}</h4>
+        <p className="text-sm text-gray-600">{menu || "Not specified"}</p>
+      </div>
+    </div>
+    <span className="font-semibold text-gray-900 flex items-center gap-1">
+      <FaMoneyBillWave className="text-green-500" />$
+      {price?.toFixed(2) || "0.00"}
+    </span>
+  </div>
+);
+
+const InfoItem: React.FC<{
+  icon: React.ReactNode;
+  title: string;
+  value?: string;
+}> = ({ icon, title, value }) => (
+  <div className="mb-3">
+    <h4 className="text-sm font-medium text-gray-500 flex items-center gap-2">
+      {icon} {title}
+    </h4>
+    <p className="text-gray-800 mt-1">{value || "Not available"}</p>
+  </div>
+);
+
+const SocialLink: React.FC<{
+  icon: React.ReactNode;
+  href: string;
+  color: string;
+}> = ({ icon, href, color }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className={`text-gray-500 ${color} transition-colors`}
+  >
+    {icon}
+  </a>
+);
 
 export default DetailsMenu;

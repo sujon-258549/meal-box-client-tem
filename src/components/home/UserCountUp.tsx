@@ -11,9 +11,9 @@ interface CountUpProps {
 }
 
 const UserCountUp: React.FC<CountUpProps> = ({ allUser, className }) => {
-  const users = allUser?.data?.data || [];
+  const users = allUser?.data || [];
   const [isVisible, setIsVisible] = useState(false);
-
+  console.log(users);
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {

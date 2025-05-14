@@ -44,3 +44,14 @@ export type TUser = {
   updatedAt: string; // ISO string
   __v: number;
 };
+export type TMeta = {
+  limit: number;
+  page: number;
+  total: number;
+  totalPage: number;
+};
+
+export interface TData {
+  data: TUser;
+  meta: TMeta;
+}

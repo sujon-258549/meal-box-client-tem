@@ -1,5 +1,8 @@
 import AllUser from "@/components/admin/AllUser";
-import { getAllUser } from "@/services/Auth/authServices";
+import {
+  getAllCustomer,
+  getAllMealProvider,
+} from "@/services/Auth/authServices";
 
 const page = async ({
   searchParams,
@@ -7,10 +10,11 @@ const page = async ({
   searchParams: Promise<{ page: string }>;
 }) => {
   const { page } = await searchParams;
-  const { data } = await getAllUser(page);
+  const customers = await getAllCustomer(page);
+  const mealProvider = await getAllMealProvider(page);
   return (
     <div>
-      <AllUser data={data}></AllUser>
+      <AllUser customers={customers} mealProvider={mealProvider}></AllUser>
     </div>
   );
 };

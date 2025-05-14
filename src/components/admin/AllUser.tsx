@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { TUser } from "@/types";
 import {
@@ -9,13 +10,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useEffect, useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
 import { Button } from "../ui/button";
 import Pagination from "../ui/paginaciton";
 import { toast } from "sonner";
 import { changeUserStatus } from "@/services/Auth/authServices";
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 type UserDataResponse = {
   data: TUser[];
@@ -26,24 +27,15 @@ type UserDataResponse = {
   };
 };
 
-const AllUser = ({ data }: { data: UserDataResponse }) => {
-  const [allCustomers, setAllCustomers] = useState<TUser[]>([]);
-  const [allMealProviders, setAllMealProviders] = useState<TUser[]>([]);
+const AllUser = ({
+  customers,
+  mealProvider,
+}: {
+  customers: UserDataResponse;
+  mealProvider: UserDataResponse;
+}) => {
   const router = useRouter();
-  useEffect(() => {
-    if (data?.data) {
-      const customers = data?.data?.filter(
-        (user: TUser) => user.role === "customer"
-      );
-      const mealProviders = data?.data?.filter(
-        (user: TUser) => user.role === "mealProvider"
-      );
-
-      setAllCustomers(customers);
-      setAllMealProviders(mealProviders);
-    }
-  }, [data]);
-
+  console.log("................................customers", customers);
   const handleBlockUser = async (userId: string, isBlocked?: boolean) => {
     const blockUserData = {
       id: userId,
@@ -52,13 +44,30 @@ const AllUser = ({ data }: { data: UserDataResponse }) => {
       },
     };
     console.log(blockUserData);
-    const result = await changeUserStatus(blockUserData);
-    if (result?.success) {
-      toast.success(result?.message, { duration: 3000 });
-      router.refresh();
-    } else {
-      toast.error(result?.message, { duration: 3000 });
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes!",
+    }).then(async (swalResult) => {
+      const result = await changeUserStatus(blockUserData);
+      if (result?.success) {
+        toast.success(result?.message, { duration: 3000 });
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your User has been Block.",
+            icon: "success",
+          });
+        }
+        router.refresh();
+      } else {
+        toast.error(result?.message, { duration: 3000 });
+      }
+    });
   };
 
   const handleDeleteUser = async (userId: string, isDelete?: boolean) => {
@@ -68,14 +77,30 @@ const AllUser = ({ data }: { data: UserDataResponse }) => {
         isDelete: isDelete === false ? true : false,
       },
     };
-
-    const result = await changeUserStatus(deleteUserData);
-    if (result?.success) {
-      toast.success(result?.message, { duration: 3000 });
-      router.refresh();
-    } else {
-      toast.error(result?.message, { duration: 3000 });
-    }
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes!",
+    }).then(async (swalResult) => {
+      const deleteResult = await changeUserStatus(deleteUserData);
+      if (deleteResult?.success) {
+        toast.success(deleteResult?.message, { duration: 3000 });
+        router.refresh();
+        if (swalResult.isConfirmed) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+        }
+      } else {
+        toast.error(deleteResult?.message, { duration: 3000 });
+      }
+    });
   };
 
   return (
@@ -101,7 +126,7 @@ const AllUser = ({ data }: { data: UserDataResponse }) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {allCustomers.map((user, index) => (
+                {customers?.data?.map((user, index) => (
                   <TableRow key={user._id}>
                     <TableCell className="font-medium">{index + 1}</TableCell>
                     <TableCell>
@@ -142,6 +167,9 @@ const AllUser = ({ data }: { data: UserDataResponse }) => {
                 ))}
               </TableBody>
             </Table>
+            <div className="flex justify-center items-center py-10">
+              <Pagination total={customers?.meta?.totalPage} />
+            </div>
           </div>
         </TabsContent>
 
@@ -160,7 +188,7 @@ const AllUser = ({ data }: { data: UserDataResponse }) => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {allMealProviders.map((user, index) => (
+                {mealProvider?.data?.map((user, index) => (
                   <TableRow key={user._id}>
                     <TableCell>{index + 1}</TableCell>
                     <TableCell>
@@ -202,9 +230,11 @@ const AllUser = ({ data }: { data: UserDataResponse }) => {
               </TableBody>
             </Table>
           </div>
+          <div className="flex justify-center items-center py-10">
+            <Pagination total={mealProvider?.meta?.totalPage} />
+          </div>
         </TabsContent>
       </Tabs>
-      <Pagination total={data.meta.totalPage} />
     </div>
   );
 };

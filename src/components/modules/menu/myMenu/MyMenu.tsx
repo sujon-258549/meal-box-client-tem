@@ -63,7 +63,10 @@ export function MyMenuCard({ data }: { data: TMealPlan }) {
 
         {/* Summary Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-10">
-          <Card className="border-0 shadow-sm bg-gradient-to-br from-blue-50 to-blue-100">
+          <Card
+            style={{ boxShadow: "3px 3px 10px #424242" }}
+            className="border-0 shadow-sm bg-gradient-to-br from-blue-400 to-blue-100"
+          >
             <CardHeader>
               <CardTitle className="text-blue-800 text-sm">
                 Weekly Total
@@ -74,7 +77,10 @@ export function MyMenuCard({ data }: { data: TMealPlan }) {
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-sm bg-gradient-to-br from-green-50 to-green-100">
+          <Card
+            style={{ boxShadow: "3px 3px 10px #424242" }}
+            className="border-0 shadow-sm bg-gradient-to-br from-cyan-400 to-green-100"
+          >
             <CardHeader>
               <CardTitle className="text-green-800 text-sm">
                 Daily Average
@@ -87,7 +93,10 @@ export function MyMenuCard({ data }: { data: TMealPlan }) {
             </CardContent>
           </Card>
 
-          <Card className="border-0 shadow-sm bg-gradient-to-br from-amber-50 to-amber-100">
+          <Card
+            style={{ boxShadow: "3px 3px 10px #424242" }}
+            className="border-0 shadow-sm bg-gradient-to-br from-amber-500 to-amber-100"
+          >
             <CardHeader>
               <CardTitle className="text-amber-800 text-sm">
                 Most Expensive Day
@@ -113,10 +122,11 @@ export function MyMenuCard({ data }: { data: TMealPlan }) {
 
             return (
               <Card
+                style={{ boxShadow: "3px 3px 10px #424242" }}
                 key={meal?._id}
                 className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 overflow-hidden"
               >
-                <div className="bg-gradient-to-r from-indigo-500 to-purple-600 p-4">
+                <div className="bg-gradient-to-r from-[#424242] to-[#424242] rounded-t-sm p-4">
                   <CardHeader className="p-0">
                     <CardTitle className="text-white flex justify-between items-center">
                       <span>{meal?.day}</span>
@@ -201,9 +211,9 @@ export function MyMenuCard({ data }: { data: TMealPlan }) {
         </div>
 
         {/* Nutrition Summary */}
-        <Card className="mt-10 border-0 shadow-sm bg-gradient-to-br from-rose-50 to-rose-100">
+        <Card className="my-10 border-0 shadow-sm bg-gradient-to-br from-[#424242] to-[#424242ac]">
           <CardHeader>
-            <CardTitle className="text-rose-800">
+            <CardTitle className="text-white">
               Weekly Nutrition Highlights
             </CardTitle>
           </CardHeader>
@@ -218,8 +228,8 @@ export function MyMenuCard({ data }: { data: TMealPlan }) {
                 <div key={i} className="flex items-center gap-3">
                   <div className={`w-3 h-3 rounded-full ${item.color}`}></div>
                   <div>
-                    <p className="font-medium">{item?.value}</p>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="font-medium text-white">{item?.value}</p>
+                    <p className="text-sm text-white font-muted">
                       {item?.label}
                     </p>
                   </div>

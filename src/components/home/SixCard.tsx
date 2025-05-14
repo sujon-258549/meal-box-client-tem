@@ -99,7 +99,7 @@ export const SixCard = ({ data }: { data: any }) => {
           );
         })}
       </div>
-      {data.length >= 10 && (
+      {data?.length >= 10 && (
         <div className="flex justify-center  mb-10 md:mb-16">
           <Link href={"/all-menu"}>
             <Button className="cursor-pointer">

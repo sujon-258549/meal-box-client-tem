@@ -39,14 +39,16 @@ const MealProviderReceivedOrder = ({ orders }: { orders: any }) => {
                 <TableRow key={order.id || `order-${index}`}>
                   <TableCell>
                     <Avatar>
-                      <AvatarImage src={order?.shopId?.shopLogo} />
-                      <AvatarFallback>{order?.shopId?.shopName}</AvatarFallback>
+                      <AvatarImage src={order?.customerId?.profileImage} />
+                      <AvatarFallback>
+                        {order?.customerId?.profileImage}
+                      </AvatarFallback>
                     </Avatar>
                   </TableCell>
                   <TableCell className="font-medium">
                     {order?.shopId?.shopName}
                   </TableCell>
-                  <TableCell>{order?.authorId?.fullName}</TableCell>
+                  <TableCell>{order?.customerId?.fullName}</TableCell>
                   <TableCell>{order?.shopId?.customerServiceContact}</TableCell>
                   <TableCell>${order?.total_price.toFixed(2)}</TableCell>
                   <TableCell>

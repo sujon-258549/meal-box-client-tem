@@ -63,14 +63,14 @@ export function MealBoxServices({ menuData }: { menuData: any }) {
               </CardHeader>
               <CardContent style={{ padding: "0 10px" }}>
                 <ul className="space-y-1 mb-2 -mt-4">
-                  {plan.shopId?.shopFeatures?.map(
-                    (feature: string, index: string) => (
+                  {plan.shopId?.shopFeatures
+                    ?.slice(0, 2)
+                    .map((feature: string, index: string) => (
                       <li key={index} className="flex items-center text-sm">
                         <CheckIcon className="h-3 w-3 text-green-500 mr-2" />
                         {feature}
                       </li>
-                    )
-                  )}
+                    ))}
                 </ul>
                 <div className="text-2xl font-bold mb-4">
                   ${plan.totalPrice}

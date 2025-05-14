@@ -25,7 +25,7 @@ const HomePage = async () => {
   return (
     <>
       <div>
-        <Slider sliderData={data} />
+        <Slider />
       </div>
       <div className="container py-10">
         <SixCard data={data} />
